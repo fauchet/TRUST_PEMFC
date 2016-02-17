@@ -1,0 +1,110 @@
+Parameters {
+        Title "Test pefmc cas1 "
+        Description "Cas 1"
+        Author "G.F."
+ 
+	TestCase . prem_0
+	TestCase . prem_1
+	TestCase . prem_2
+	TestCase . prem_VEF
+ }
+
+Chapter {
+Title "VDF" 
+
+
+Figure {
+	Title Phi
+	Dimension 2
+	LabelX "x"
+	LabelY "V"
+        include_description_curves 0
+	width 12cm
+	
+	Curve {
+		legend prem_0
+		segment prem_0 PHI
+		Style lines
+}	
+	
+	Curve {
+		legend prem_1
+		segment prem_1 PHI
+		Style lines
+}	
+	
+	Curve {
+		legend prem_2
+		segment prem_2 PHI
+		Style lines
+}	
+	
+	Curve {
+		legend prem_VEF
+		segment prem_VEF PHI
+		Style lines
+}	
+}
+
+Figure {
+	Title Ie 
+	Dimension 2
+	LabelX "x"
+	LabelY "A/m3"
+        include_description_curves 0
+	width 12cm
+	Curve {
+		legend prem_0
+		segment prem_0 PSEG
+		Style lines
+}
+	Curve {
+		legend prem_1
+		segment prem_1 PSEG
+		Style lines
+}
+	Curve {
+		legend prem_2
+		segment prem_2 PSEG
+		Style lines
+}
+	Curve {
+		legend prem_VEF
+		segment prem_VEF PSEG
+		Style lines
+}
+}
+Figure {
+	Title convergence 
+	Dimension 2
+	LabelX "t"
+	LabelY "res"
+	logy
+        include_description_curves 0
+	width 12cm
+	Curve {
+		legend prem_0
+		file prem_0.dt_ev
+		columns $1 $4
+		Style lines
+}
+	Curve {
+		legend prem_1
+		file prem_1.dt_ev
+		columns $1 $4
+		Style lines
+}
+	Curve {
+		legend prem_2
+		file prem_2.dt_ev
+		columns $1 $4
+		Style lines
+}
+	Curve {
+		legend prem_VEF
+		file prem_VEF.dt_ev
+		columns $1 $4
+		Style lines
+}
+}
+}

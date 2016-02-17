@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+
+
+
+cp prem.data prem_0.data
+prev=0
+list="prem_0"
+echo >  liste_cas_exclu_nr
+for cas in   1 2 
+do
+ 
+sed "s/# marqueur #/raffiner_isotrope dom # marqueur #/" prem_$prev.data > prem_$cas.data
+prev=$cas
+echo ./prem_$cas.data >>  liste_cas_exclu_nr
+list=$list" "prem_$cas
+done
+list=$list" "prem_VEF
+echo "#Pset(listcas "$list")" > list_cas
+python $TRUST_ROOT/bin/KSH/preprocessor.py pemfc.prm.P pemfc.prm

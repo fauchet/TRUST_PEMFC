@@ -1,0 +1,64 @@
+Parameters {
+        Title "Test pefmc cas1 "
+        Description "Cas 1"
+        Author "G.F."
+ 
+#Pinclude(list_cas)
+#Pforeach _cas_ (listcas)
+	TestCase . _cas_
+#Pendforeach(_cas_)
+ }
+
+Chapter {
+Title "VDF" 
+
+
+Figure {
+	Title Phi
+	Dimension 2
+	LabelX "x"
+	LabelY "V"
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)	
+	Curve {
+		legend _cas_
+		segment _cas_ PHI
+		Style lines
+}	
+#Pendforeach(_cas_)
+}
+
+Figure {
+	Title Ie 
+	Dimension 2
+	LabelX "x"
+	LabelY "A/m3"
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)
+	Curve {
+		legend _cas_
+		segment _cas_ PSEG
+		Style lines
+}
+#Pendforeach(_cas_)
+}
+Figure {
+	Title convergence 
+	Dimension 2
+	LabelX "t"
+	LabelY "res"
+	logy
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)
+	Curve {
+		legend _cas_
+		file _cas_.dt_ev
+		columns $1 $4
+		Style lines
+}
+#Pendforeach(_cas_)
+}
+}
