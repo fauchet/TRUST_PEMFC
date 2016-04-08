@@ -345,7 +345,8 @@ Read pb_electrique
 	Probes
 	{
 	T2 temperature periode 1e-20 points 1 1000.e-6 30e-6
-	
+        Psi grav temperature periode 1 segment 100  0.001  25e-6 0.001 235e-6
+
 	}
 		Format lata
 		fields dt_post 10.

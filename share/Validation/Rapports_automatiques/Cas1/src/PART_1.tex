@@ -1,0 +1,176 @@
+
+\subsection{Intérêt du cas-test}
+
+Le principal intérêt de ce cas est de tester la capacité à ne pas
+résoudre toutes les équations dans tous les domaines géométriques.
+En effet, le transport ionique est résolu dans la membrane et la couche
+active (CA) mais n'est pas résolu dans la couche de diffusion (GDL),
+alors que le transport électrique est résolu dans la couche active
+et la couche de diffusion mais pas dans la membrane.
+
+\begin{center}
+\input{\orig/transp_ion_elec.pdftex_t}
+\par\end{center}
+
+
+\subsection{Géométrie}
+
+Les hauteurs des différentes couches sont les suivantes:
+\[
+h_{mem}=25\,\text{\textmu m}
+\]
+\[
+h_{CA}=10\,\text{\textmu m}
+\]
+\[
+h_{GDL}=200\,\text{\textmu m}
+\]
+
+
+La longueur du domaine est la suivante:
+\[
+L=2\,\text{mm}
+\]
+
+
+
+\subsection{Équations}
+
+
+\subsubsection{Transport électrique}
+
+\[
+\nabla\cdot\boldsymbol{j}_{e}=S_{e}
+\]
+\[
+\boldsymbol{j}_{e}=-\sigma_{eff}\,\nabla\psi
+\]
+avec
+\[
+S_{e}=\begin{cases}
+0 & \text{dans la GDL}\\
+-i_{e} & \text{dans la CA}
+\end{cases}
+\]
+
+
+
+\subsubsection{Transport ionique}
+
+\[
+\nabla\cdot\boldsymbol{j}_{i}=S_{i}
+\]
+\[
+\boldsymbol{j}_{i}=-\kappa_{eff}\,\nabla\phi
+\]
+avec
+\[
+S_{i}=\begin{cases}
+0 & \text{dans la membrane}\\
++i_{e} & \text{dans la CA}
+\end{cases}
+\]
+
+
+
+\subsubsection{Autres relations et constantes}
+
+\[
+i_{e}=i_{0}\,\gamma_{CL}\left[\exp\left(\frac{\alpha nF}{RT}\,\eta\right)-\exp\left(-\frac{\left(1-\alpha\right)nF}{RT}\,\eta\right)\right]
+\]
+où
+\[
+\eta=\left(\psi-\phi\right)-E_{rev}
+\]
+
+
+Les valeurs des paramètres sont données dans le tableau suivant:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+Paramètre & Valeur & Unité\tabularnewline
+\hline 
+\hline 
+$\sigma_{eff}$ & $\begin{cases}
+65 & \text{dans la GDL}\\
+20 & \text{dans la CA}
+\end{cases}$ & S/m\tabularnewline
+\hline 
+$\kappa_{eff}$ & $\begin{cases}
+12 & \text{dans la membrane}\\
+1.5 & \text{dans la CA}
+\end{cases}$ & S/m\tabularnewline
+\hline 
+$E_{rev}$ & $1.18$ & V\tabularnewline
+\hline 
+$\alpha$ & $0.5$ & -\tabularnewline
+\hline 
+$n$ & $2$ & -\tabularnewline
+\hline 
+$R$ & $8.314$ & \tabularnewline
+\hline 
+$T$ & $353.15$ & K\tabularnewline
+\hline 
+$i_{0}$ & $10^{-5}$ & A/m$^{2}$\tabularnewline
+\hline 
+$F$ & $96500$ & C/mol\tabularnewline
+\hline 
+$\gamma_{CL}$ & $2.5\times10^{7}$ & m$^{-1}$\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+
+\subsection{Conditions aux limites}
+
+
+\subsubsection{Transport électrique}
+
+\[
+\psi=0.7
+\]
+sur la frontière supérieure de la GDL et
+\[
+\boldsymbol{n}\cdot\boldsymbol{j}_{e}=0
+\]
+ailleurs.
+
+
+\subsubsection{Transport ionique}
+
+\[
+\phi=0
+\]
+sur la frontière inférieure de la membrane et
+\[
+\boldsymbol{n}\cdot\boldsymbol{j}_{i}=0
+\]
+ailleurs.
+
+
+\subsection{Cas-tests supplémentaires}
+
+
+\subsubsection{Collecte de courant localisée}
+
+Pour s'approcher plus du cas d'application, la condition
+\[
+\psi=0.7
+\]
+n'est imposée que sur le tiers central de la frontière supérieure
+de la GDL, la condition
+\[
+\boldsymbol{n}\cdot\boldsymbol{j}_{e}=0
+\]
+sur les deux autres tiers ainsi que sur les autres frontières.
+
+
+\subsubsection{Champ de conductivité électrique variable}
+
+Pour prendre en compte l'un des effets de l'appui de la dent collectrice
+de courant, les champs $\sigma_{eff}$ et $\kappa_{eff}$ sont des
+fonctions de l'espace qui sont données.
+
+\clearpage{}
+

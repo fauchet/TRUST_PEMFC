@@ -1,0 +1,4 @@
+for f in `ls *.txt`
+do
+grep -v NaN $f | sed "s/%/#/"  > `basename $f .txt`
+done

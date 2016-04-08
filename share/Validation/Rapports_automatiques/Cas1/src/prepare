@@ -19,3 +19,4 @@ done
 list=$list" "prem_VEF
 echo "#Pset(listcas "$list")" > list_cas
 python $TRUST_ROOT/bin/KSH/preprocessor.py pemfc.prm.P pemfc.prm
+(cd resr_comsol_cas_1; ./modifie)

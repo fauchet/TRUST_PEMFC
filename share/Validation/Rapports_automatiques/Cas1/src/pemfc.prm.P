@@ -1,23 +1,43 @@
 Parameters {
-        Title "Test pefmc cas1 "
-        Description "Cas 1"
-        Author "G.F."
+        Title Test pefmc cas1 : Transport ionique et électrique
+        Description Cas 1
+        Author G.Fauchet (DEN), M. Chandesris, P. Schott \& D. Jamet (DRT)
  
 #Pinclude(list_cas)
 #Pforeach _cas_ (listcas)
 	TestCase . _cas_
 #Pendforeach(_cas_)
  }
-
+Chapter { 
+Title Description
+Description \latex_(\input{\orig/PART_1}\latex_)
+}
 Chapter {
-Title "VDF" 
+Title Codage/Mise en données
+
+Description <<EOF
+    Un champ de couplage entre Psi et Phi a été développé (Champ_couplage_ionique_electrique.cpp).
+Quelque soit la discrétisation, il est calculé aux éléments.
+Pour rendre le codage //, il faudra passer par MEDCoupling::OverlapDEC.
+
+La création des deux domaines et des différentes zones est un peu pédestre, mais pourrait être automatisé.
+
+On a utilisé 2 problèmes de conduction. Les inconnues sont les températures.
+
+On génère 3 maillages VDF (maillage initial (prem_0)  puis chaque maille est coupée en 4 (prem_1) puis encore en 4 (prem_2)) et un maillage VEF (prem_VEF).
+
+EOF
+
+}
+Chapter {
+Title Résultats 
 
 
 Figure {
 	Title Phi
 	Dimension 2
-	LabelX "x"
-	LabelY "V"
+	LabelX x
+	LabelY V
         include_description_curves 0
 	width 12cm
 #Pforeach _cas_ (listcas)	
@@ -27,13 +47,38 @@ Figure {
 		Style lines
 }	
 #Pendforeach(_cas_)
+	Curve {
+		legend comsol 
+		file resr_comsol_cas_1/Cas_1_Phi
+		Style lines
+}
 }
 
 Figure {
+	Title Psi
+	Dimension 2
+	LabelX x
+	LabelY V
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)	
+	Curve {
+		legend _cas_
+		segment _cas_ PSI
+		Style lines
+}	
+#Pendforeach(_cas_)
+	Curve {
+		legend comsol 
+		file resr_comsol_cas_1/Cas_1_Psi
+		Style lines
+}
+}
+Figure {
 	Title Ie 
 	Dimension 2
-	LabelX "x"
-	LabelY "A/m3"
+	LabelX x
+	LabelY A/m3
         include_description_curves 0
 	width 12cm
 #Pforeach _cas_ (listcas)
@@ -43,12 +88,17 @@ Figure {
 		Style lines
 }
 #Pendforeach(_cas_)
+	Curve {
+		legend comsol 
+		file resr_comsol_cas_1/Cas_1_i_e
+		Style lines
+}
 }
 Figure {
 	Title convergence 
 	Dimension 2
-	LabelX "t"
-	LabelY "res"
+	LabelX t
+	LabelY res
 	logy
         include_description_curves 0
 	width 12cm
@@ -61,4 +111,15 @@ Figure {
 }
 #Pendforeach(_cas_)
 }
+}
+Chapter {
+Title Conclusion
+Description  <<EOF
+ 
+ Les résultats sont en accord avec ceux de comsol.
+
+ Seuls des calculs 2D ont été faits, mais aucun soucis pour le 3D. 
+
+ Il faudrait adimensionner un peu les quantités. TRUST n'aime pas trop les varibales trop grandes, ni les temps caractéristiques trop petits.
+EOF
 }
