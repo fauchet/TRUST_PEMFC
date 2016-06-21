@@ -1,0 +1,197 @@
+
+%\section{Transport d'espèces Darcy / Knudsen}
+
+
+\subsection{Intérêt du cas-test}
+
+Le principal intérêt de ce cas est de tester la capacité traiter un
+problème de transport couplé de plusieurs espèces prenant en compte
+l'effet de la couche de Knudsen et le transport de type Darcy.
+
+\begin{center}
+\input{\orig/transp_Darcy_Kn.pdftex_t}
+\par\end{center}
+
+
+\subsection{Géométrie}
+
+La hauteur et la longueur du domaine sont respectivement:
+\[
+h_{GDL}=200\text{ \textmu m}
+\]
+\[
+L=2\text{ mm}
+\]
+
+
+
+\subsection{Équations}
+
+Pour simplifier la lecture du système d'équations suivants, on adopte
+le code couleur suivant:
+\begin{itemize}
+\item en \textcolor{red}{rouge} les variables principales;
+\item en \textcolor{magenta}{rose} les variables intermédiaires, c'est-à-dire
+les variables qui s'expriment à partir des variables principales;
+\item en \textcolor{cyan}{bleu clair} les constantes.
+\end{itemize}
+\[
+{\color{cyan}\epsilon}\,\frac{\partial{\color{red}c_{O_{2}}}}{\partial t}=-\nabla\cdot{\color{magenta}\boldsymbol{N}_{O_{2}}}
+\]
+
+
+\[
+{\color{cyan}\epsilon}\,\frac{\partial{\color{red}c_{vap}}}{\partial t}=-\nabla\cdot{\color{magenta}\boldsymbol{N}_{vap}}
+\]
+
+\[
+{\color{cyan}\epsilon}\,\frac{\partial{\color{red}c_{N_{2}}}}{\partial t}=-\nabla\cdot{\color{magenta}\boldsymbol{N}_{N_{2}}}
+\]
+
+Les flux des espèces $\boldsymbol{N}_{i}$ sont calculés à partir
+des gradients de concentration et du gradient de pression en inversant
+un système d'équations.
+\[
+\begin{bmatrix}\left(-\frac{{\color{magenta}X_{N_{2}}}}{{\color{cyan}\left(D_{A}\right)_{O_{2},N_{2}}}}-\frac{{\color{magenta}X_{vap}}}{{\color{cyan}\left(D_{A}\right)_{O_{2},vap}}}\right) & \frac{{\color{magenta}X_{O_{2}}}}{{\color{cyan}\left(D_{A}\right)_{vap,O_{2}}}} & \frac{{\color{magenta}X_{O_{2}}}}{{\color{cyan}\left(D_{A}\right)_{N_{2},O_{2}}}}\\
+\frac{{\color{magenta}X_{vap}}}{{\color{cyan}\left(D_{A}\right)_{O_{2},vap}}} & \left(-\frac{{\color{magenta}X_{O_{2}}}}{{\color{cyan}\left(D_{A}\right)_{vap,O_{2}}}}-\frac{{\color{magenta}X_{N_{2}}}}{{\color{cyan}\left(D_{A}\right)_{vap,N_{2}}}}\right) & \frac{{\color{magenta}X_{vap}}}{{\color{cyan}\left(D_{A}\right)_{N_{2},vap}}}\\
+-{\color{magenta}A_{A}}\,\sqrt{{\color{cyan}M_{O_{2}}}} & -{\color{magenta}A_{A}}\,\sqrt{{\color{cyan}M_{vap}}} & -{\color{magenta}A_{A}}\,\sqrt{{\color{cyan}M_{N_{2}}}}
+\end{bmatrix}\begin{bmatrix}{\color{magenta}\boldsymbol{N}_{O_{2}}}\\
+{\color{magenta}\boldsymbol{N}_{vap}}\\
+{\color{magenta}\boldsymbol{N}_{N_{2}}}
+\end{bmatrix}=\frac{{\color{cyan}\epsilon}}{{\color{cyan}\tau}^{2}}\begin{bmatrix}{\color{magenta}c_{g}}\,\nabla{\color{red}X_{O_{2}}}\\
+{\color{magenta}c_{g}}\,\nabla{\color{red}X_{vap}}\\
+\nabla{\color{magenta}P_{g}}
+\end{bmatrix}
+\]
+
+
+\[
+{\color{magenta}X_{O_{2}}}=\frac{{\color{red}c_{O_{2}}}}{{\color{magenta}c_{g}}}
+\]
+\[
+{\color{magenta}X_{N_{2}}}=\frac{{\color{red}c_{N_{2}}}}{{\color{magenta}c_{g}}}
+\]
+\[
+{\color{magenta}X_{vap}}=\frac{{\color{red}c_{vap}}}{{\color{magenta}c_{g}}}
+\]
+\[
+{\color{magenta}c_{g}}={\color{red}c_{O_{2}}}+{\color{red}c_{N_{2}}}+{\color{red}c_{vap}}
+\]
+\[
+{\color{magenta}P_{g}}={\color{magenta}c_{g}}\,{\color{cyan}R}\,{\color{cyan}T}
+\]
+\[
+\frac{1}{{\color{cyan}\left(D_{A}\right)_{i,j}}}=\frac{1}{{\color{cyan}D_{i,j}}}+\frac{1}{{\color{cyan}D_{i}^{k}}},\,\left(i;j\right)\in\left\{ O_{2};N_{2};vap\right\} ^{2};\, j\neq i
+\]
+\[
+{\color{cyan}D_{i}^{k}}=\frac{2\,{\color{cyan}R_{p}}}{3}\,\sqrt{\frac{8\,{\color{cyan}R}\,{\color{cyan}T}}{\pi\,{\color{cyan}M_{i}}}},\, i\in\left\{ O_{2};N_{2};vap\right\} 
+\]
+\[
+\frac{1}{{\color{magenta}A_{A}}}=\frac{1}{{\color{magenta}A_{C}}}+\frac{1}{{\color{cyan}A_{K}}}
+\]
+\[
+{\color{magenta}A_{C}}=\frac{{\color{cyan}\epsilon}\,{\color{cyan}\mu}}{{\color{magenta}c_{g}}\,{\color{cyan}\tau}^{2}\,{\color{cyan}K}\,{\color{cyan}K_{rg}}\,\sum_{i}\left({\color{magenta}X_{i}}\,\sqrt{{\color{cyan}M_{i}}}\right)}
+\]
+\[
+{\color{cyan}A_{K}}=\frac{3}{4\,{\color{cyan}R_{p}}}\,\sqrt{\frac{\pi\,{\color{cyan}R}\,{\color{cyan}T}}{2}}
+\]
+\[
+{\color{cyan}D_{O_{2},N_{2}}}=\frac{6.43\times10^{-5}\,{\color{cyan}T}^{1.823}}{P_{g}}
+\]
+\[
+{\color{cyan}D_{O_{2},vap}}=\frac{4.26\times10^{-6}\,{\color{cyan}T}^{2.334}}{P_{g}}
+\]
+\[
+{\color{cyan}D_{N_{2},vap}}=\frac{4.45\times10^{-6}\,{\color{cyan}T}^{2.334}}{P_{g}}
+\]
+
+
+La vitesse du gaz est alors donnée par
+\[
+{\color{magenta}\boldsymbol{u}_{g}}=\frac{{\color{magenta}\boldsymbol{N}_{O_{2}}}+{\color{magenta}\boldsymbol{N}_{N_{2}}}+{\color{magenta}\boldsymbol{N}_{vap}}}{c_{g}}
+\]
+
+
+\medskip{}
+
+
+Les constantes sont les suivantes:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+Paramètre & Valeur & Unité\tabularnewline
+\hline 
+\hline 
+$T$ & $353.15$ & K\tabularnewline
+\hline 
+$R$ & $8.314$ & \tabularnewline
+\hline 
+$R_{p}$ & $10^{-5}$ & m\tabularnewline
+\hline 
+$\epsilon$ & $0.7$ & -\tabularnewline
+\hline 
+$M_{O_{2}}$ & $32\times10^{-3}$ & kg/mol\tabularnewline
+\hline 
+$M_{N_{2}}$ & $28\times10^{-3}$ & kg/mol\tabularnewline
+\hline 
+$M_{vap}$ & $18\times10^{-3}$ & kg/mol\tabularnewline
+\hline 
+$\mu$ & $1.2\times10^{-5}$ & Pa.s\tabularnewline
+\hline 
+$\tau$ & $3$ & -\tabularnewline
+\hline 
+$K$ & $6\times10^{-12}$ & m2\tabularnewline
+\hline 
+$K_{rg}$ & $1$ & -\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+\bigskip{}
+
+
+Les équations sont écrites sous forme instationnaire mais c'est la
+solution stationnaire qui nous intéresse. A noter cependant que sur
+des problème complet, on peut s'intéresser à des problèmes instationnaires.
+
+
+\subsection{Conditions aux limites}
+
+Les flux sont uniformément nuls sur les deux frontières latérales:
+\[
+\boldsymbol{n}\cdot\boldsymbol{N}_{X}=0,\, X\in\left\{ O_{2};N_{2};vap\right\} 
+\]
+Les flux sur la frontière du bas sont donnés par
+\[
+\boldsymbol{n}\cdot\boldsymbol{N}_{O_{2}}=-\frac{i_{0}}{4\, F}
+\]
+\[
+\boldsymbol{n}\cdot\boldsymbol{N}_{N_{2}}=0
+\]
+\[
+\boldsymbol{n}\cdot\boldsymbol{N}_{vap}=+\frac{i_{0}}{2\, F}
+\]
+avec
+\[
+i_{0}=10\,000\text{ A/m}{}^{2}
+\]
+\[
+F=96\,500\text{ C/mol}
+\]
+
+
+Les concentrations sont imposées sur la frontière du haut:
+\[
+c_{O_{2}}=9\text{ mol/m}^{3}
+\]
+\[
+c_{N_{2}}=34\text{ mol/m}^{3}
+\]
+\[
+c_{vap}=8\text{ mol/m}^{3}
+\]
+
+
+\clearpage{}
+

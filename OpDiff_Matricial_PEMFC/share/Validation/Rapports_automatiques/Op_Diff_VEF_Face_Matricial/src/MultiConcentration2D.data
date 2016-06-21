@@ -1,0 +1,148 @@
+# Thermohydraulique 2D avec transport 4 constituants et terme source #
+# PARALLEL OK 2 #
+dimension 2
+
+Pb_hydraulique_Concentration pb
+Domaine dom
+
+# BEGIN MESH #
+Mailler dom
+{
+	Pave Cavite 
+		{
+		Origine 0. 0.
+		Nombre_de_Noeuds 33 33
+		Longueurs 2 2
+		}
+		{
+		Bord Gauche X = 0.	0. <= Y <= 2    
+		Bord Haut   Y = 2	0. <= X <= 2    
+		Bord Bas    Y = 0.	0. <= X <= 2    
+		Bord Droit  X = 2	0. <= Y <= 2    
+		}
+}
+Trianguler_H dom
+# END MESH #
+
+# BEGIN PARTITION 
+Partition dom
+{
+    Partitionneur metis { Nb_parts 2 }
+    Larg_joint 2
+    Nom_Zones DOM
+    Nb_parts_tot 2
+}
+End 
+ END PARTITION #
+
+# BEGIN SCATTER 
+Scatter DOM.Zones dom
+  END SCATTER #
+
+VEFPreP1B dis
+
+
+Scheme_euler_explicit sch
+Read sch
+{
+	tinit 0
+	dt_min 1.e-6
+	dt_max 0.01
+	dt_impr 0.001
+	dt_sauv 100
+	seuil_statio 2.e-4
+        nb_pas_dt_max 0
+
+}
+
+Fluide_Incompressible fluide
+Read fluide
+{
+	mu	Champ_Uniforme 1 1.85e-5
+	rho	Champ_Uniforme 1 1.17
+	beta_co	Champ_Uniforme 4 1e-4 1e-4 1e-4 1e-4
+}
+
+Constituant c
+Read c
+{
+  coefficient_diffusion Champ_Uniforme 4 1e-8 1e-8 1e-8 1e-8
+}
+
+Champ_Uniforme gravite
+Read gravite 2 0 -9.81
+
+Associate fluide gravite
+Associate pb dom
+Associate pb sch
+Associate pb fluide
+Associate pb c
+
+Discretize pb dis
+Read pb
+{
+	Navier_Stokes_standard
+	{
+	 	solveur_pression GCP { 
+			precond ssor { omega 1.500000 } 
+			seuil 1.e-14
+		}
+                projection_initiale 0								
+
+		convection { negligeable }
+		diffusion { }
+		sources { boussinesq_concentration { C0 4 1 1 1 1 } }
+		initial_conditions
+		{
+			vitesse Champ_Uniforme 2 0. 0.
+		}
+		boundary_conditions
+		{
+			Haut	Paroi_fixe
+			Droit	Paroi_fixe
+			Bas	Paroi_fixe
+			Gauche	Paroi_fixe
+		}
+		
+	}
+	Convection_diffusion_Concentration
+	{
+		diffusion { Matricial { Diffusivity Champ_Uniforme 16 1 2 100 -1 4 8 200 -1 0 0 16 0 32 64 0 -2 } }
+		convection { negligeable }
+		initial_conditions
+		{
+			concentration Champ_Fonc_XYZ dom 4 x*x y*y 1+x+y 0.5*x*x+1*y*y
+		}
+		boundary_conditions
+		{
+			   Haut	  Paroi_flux_impose Champ_Front_Fonc_tXYZ 4  2*y+100    14*y+200     16   124*y
+			   Droit  Paroi_flux_impose Champ_Front_Fonc_tXYZ 4  x+100       7*x+200     16   62*x
+			   Gauche Paroi_flux_impose Champ_Front_Fonc_tXYZ 4  -x-100     -7*x-200    -16  -62*x
+			   Bas    Paroi_flux_impose Champ_Front_Fonc_tXYZ 4  -2*y-100  -14*y-200    -16  -124*y
+		}
+	}
+
+	Post_processing
+	{
+
+		Definition_champs 
+		{
+			diffusion_matrice operateur_eqn 
+			{ 
+				sources { refchamp { pb_champ pb concentration } }
+				numero_op 0
+			}
+		}
+      	 	format lata
+                fields dt_post 1
+                {
+                	diffusion_matrice elem
+		}
+	}
+
+
+}
+
+Solve pb
+End
+

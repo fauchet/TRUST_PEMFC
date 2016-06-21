@@ -1,0 +1,55 @@
+Parameters {
+        Title "Check Op_Diff_VEF_Face_Matricial operator"
+	Description "This is to check the good behavior of the VEF diffusion operator in a matricial case. To introduce this operator we begin to introduce some notations : \latex_( $dim$ \latex_) is the space dimension and \latex_( $nc$ \latex_) is the number of components of the concentration denoted \latex_( $C$ \latex_). Here is considering the following operator : \latex_( $\nabla \cdot \left( \lambda ~ \nabla C \right) $ \latex_) where  \latex_( $\lambda$ \latex_) is a bloc matrix of dimension \latex_( $nc \times nc$  \latex_) containing diagonal matrices of dimension \latex_( $dim \times dim$ \latex_). As what we have denoted \latex_( $C$ \latex_) is composed of \latex_( $nc$ \latex_) concentrations \latex_( $c_i$ \latex_) for \latex_( $1 \leq i \leq nc$ \latex_), the dimension of the quantity \latex_( $\nabla C$ \latex_) is \latex_( $nc \times dim$ \latex_). To illustrate this, we consider the special case \latex_( $nc=2$ and $dim=3$ \latex_). The operator can be written as: \latex_( \begin{equation} \nabla \cdot \left( \left[ \begin{matrix} M_{11} & M_{12} \\ M_{21} & M_{22} \end{matrix} \right]  ~  \left[ \begin{matrix} \nabla c_1 \\ \nabla c_2 \end{matrix} \right]  \right) \end{equation} \latex_) where \latex_($M_{11},M_{12},M_{21},M_{22}$ \latex_) are diagonal matrices which can be written, for \latex_( $1 \leq i,j \leq nc$ \latex_) : \latex_( \begin{equation} M_{ij} = \lambda_{ij} ~ \left[ \begin{matrix} 1&0&0\\0&1&0\\0&0&1 \end{matrix} \right] \end{equation} \latex_) The user parameters for this operator are thus coefficients \latex_( $\lambda_{11},\lambda_{12},\lambda_{21},\lambda_{22}$ \latex_) (in this order !)
+        Author "Stephane Veys"
+        TestCase . MultiConcentration2D.data
+        TestCase . MultiConcentration2D_perio.data
+}
+Chapter {	
+	Title "Operator applied on different concentrations fields -- Neumann conditions "
+	Description "2D case with the 4 following concentrations : \latex_( $c_1 = x^2$ , $c_2 = y^2$ , $c_3 = 1+x+y$ and $c_4 = 0.5~x^2 + 1~y^2$ \newline \latex_) Coefficients are given by \latex_( \begin{equation} \lambda = \left[ \begin{matrix} 1 & 2 & 100 & -1 \\  4 & 8 & 200 & -1 \\ 0 & 0 & 16 & 0 \\ 32 & 64 & 0 & -2   \end{matrix} \right] \end{equation} \latex_) \newline In this case the flux is imposed on all boundaries."
+	Visu {
+		Title "First component of the result, expected value : 3"
+		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_0 ELEM
+		cycles 0
+		width 8cm
+	}
+	Visu {
+		Title "Second component of the result, expected value : 21"
+		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_1 ELEM
+		cycles 0
+		width 8cm
+	}
+	Visu {
+		Title "Third component of the result, expected value : 0"
+		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_2 ELEM
+		cycles 0
+		width 8cm
+	}
+	Visu {
+		Title "Fourth component of the result, expected value : 186"
+		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_3 ELEM
+		cycles 0
+		width 8cm
+	}
+}
+Chapter {	
+	Title "Operator applied on different concentrations fields -- Periodic and Neumann conditions "
+	Description "2D case with the 2 following concentrations : \latex_( $c_1 = y^2$ , $c_2 = y$ \newline \latex_) Coefficients are given by \latex_( \begin{equation} \lambda = \left[ \begin{matrix} 1 & 2 \\ 4 & 8  \end{matrix} \right] \end{equation} \latex_) \newline In this case the flux is imposed on boundaries top and bottom. Boundaries right and left are periodic."
+	Visu {
+		Title "First component of the result, expected value : 2"
+		pseudocolor MultiConcentration2D_perio.lata dom DIFFUSION_MATRICE_X ELEM
+		cycles 0
+		width 8cm
+	}
+	Visu {
+		Title "Second component of the result, expected value : 8"
+		pseudocolor MultiConcentration2D_perio.lata dom DIFFUSION_MATRICE_Y ELEM
+		cycles 0
+		width 8cm
+	}
+}
+Chapter {	
+	Title "WARNING : 3D case is not tested yet"
+}
+

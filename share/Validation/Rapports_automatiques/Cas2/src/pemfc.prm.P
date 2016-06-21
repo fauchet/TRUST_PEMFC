@@ -1,0 +1,90 @@
+Parameters {
+        Title Test pefmc cas 2 : Transport d'espèces Darcy / Knudsen
+        Description Cas 2
+        Author G.Fauchet (DEN), M. Chandesris, P. Schott \& D. Jamet (DRT)
+ 
+#Pinclude(list_cas)
+#Pforeach _cas_ (listcas)
+	TestCase . _cas_
+#Pendforeach(_cas_)
+ }
+Chapter { 
+Title Description
+Description \latex_(\input{\orig/PART_2}\latex_)
+}
+Chapter {
+Title Codage/Mise en données
+
+Description <<EOF
+Un opérateur différentiel tensoriel a été codé en VEF (version explicite et implicite).
+
+Ume méthode de calcul de la matrice de diffusion implémentée.
+
+
+Réécriture du terme de droite pour "rentrer dans le moule" (en supposant T=constante)
+\latex_(
+\[ 
+\begin{bmatrix}{\color{magenta}c_{g}}\,\nabla{\color{red}X_{O_{2}}}\\
+{\color{magenta}c_{g}}\,\nabla{\color{red}X_{vap}}\\
+\nabla{\color{magenta}P_{g}}
+\end{bmatrix} 
+=
+ \begin{bmatrix}{\nabla{c_{O_{2}}}-\frac{c_{O_{2}}}{c_{g}}\nabla{c_{g}}} \\
+{\nabla{c_{vap}}-\frac{c_{vap}}{c_{g}}\nabla{c_{g}}} \\
+R T \nabla{c_{g}}
+\end{bmatrix} 
+=
+ \begin{bmatrix} 1-X_{O_{2}} & -X_{O_{2}} &-X_{O_{2}} \\
+-X_{vap} & 1-X_{vap} & -X_{vap} \\
+R T & R T & R T 
+\end{bmatrix}  
+\begin{bmatrix}\nabla{c_{O_{2}}}\\
+\nabla{c_{vap}} \\
+\nabla{c_{N_{2}}}
+\end{bmatrix} 
+\]
+\latex_)
+
+EOF
+
+}
+Chapter {
+Title Résultats 
+
+
+Figure {
+	Title C02
+	Dimension 2
+	LabelX x
+	LabelY ""
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)	
+	Curve {
+		legend _cas_
+		segment _cas_ C
+		Style linespoints
+}	
+#Pendforeach(_cas_)
+	Curve {
+		legend Comsol sans vap
+		fichier 2esp_cO2_1e4.comsol
+		Style lines
+}	
+	Curve {
+		legend Comsol avec vap
+		fichier 3esp_cO2_1e4.comsol
+		Style lines
+}	
+}
+}
+Chapter {
+Title Conclusion
+Description  <<EOF
+ 
+ Les résultats sont en accord avec ceux de comsol.
+
+ Seuls des calculs 2D ont été faits, mais aucun soucis pour le 3D. 
+
+EOF
+}

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+
+
+
+sed "s/3 9. 0. 34./3 9. 8. 34./;s?0\*1e4?1e4?" 2especes.data > 3especes.data
+diff  2especes.data  3especes.data
+
+#cp prem.data prem_0.data
+#prev=0
+#list="prem_0"
+#echo >  liste_cas_exclu_nr
+for es in 2 3
+  do
+  for cas in 1e4 
+    do
+ 
+    sed "s/1e4/$cas/" ${es}especes.data > ${es}especes_$cas.data
+
+    # echo ./prem_$cas.data >>  liste_cas_exclu_nr
+    list=$list" "${es}especes_$cas.data
+  done
+done
+#list=$list" "prem_VEF
+echo "#Pset(listcas "$list")" > list_cas
+python $TRUST_ROOT/bin/KSH/preprocessor.py pemfc.prm.P pemfc.prm
+# (cd resr_comsol_cas_1; ./modifie)
