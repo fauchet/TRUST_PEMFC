@@ -642,9 +642,13 @@ int Champ_base::calculer_valeurs_elem_compo_post(DoubleTab& les_valeurs,int ncom
 }
 
 // Ajoute la contribution des autres processeurs a valeurs et compteur
-inline void add_sommets_communs(const Domaine& dom, DoubleTab& les_valeurs, IntTab& compteur, IntList& sommets_dirichlet)
+inline void add_sommets_communs(const Domaine& dom, DoubleTab& les_valeurs, IntTab& compteur)
 {
-  if (Process::nproc()>9) return;
+
+  //  if (Process::nproc()>9) return;
+  char* theValue = getenv("TRUST_POST_SOM_NON_PARA");
+  if (theValue != NULL)
+    return;
   int nb_compo_ = 0;
   if (les_valeurs.nb_dim()==2)
     nb_compo_ = les_valeurs.dimension(1);
@@ -673,7 +677,7 @@ inline void add_sommets_communs(const Domaine& dom, DoubleTab& les_valeurs, IntT
         {
           int sommet = sommets_communs(j);
           // Si ce sommet commun appartient a la liste des sommets Dirichlet:
-          if (sommets_dirichlet.contient(sommet))
+          if ( compteur(sommet)>0)
             {
               // Le numero du sommet voisin distant est:
               int sommet_voisin = joint_item.renum_items_communs()(j,0);
@@ -683,22 +687,22 @@ inline void add_sommets_communs(const Domaine& dom, DoubleTab& les_valeurs, IntT
               size++;
               envoie_sommets.resize(size);
               envoie_sommets(size-1) = sommet_voisin;
+              envoie_compteur.resize(size);
+              envoie_compteur(size-1) = compteur(sommet);
               if (nb_compo_)
                 {
                   envoie_valeurs.resize(size, nb_compo_);
-                  envoie_compteur.resize(size, nb_compo_);
                   for(int compo=0; compo<nb_compo_; compo++)
                     {
                       envoie_valeurs(size-1,compo) = les_valeurs(sommet,compo);
-                      envoie_compteur(size-1,compo) = compteur(sommet,compo);
                     }
                 }
               else
                 {
                   envoie_valeurs.resize(size);
-                  envoie_compteur.resize(size);
+
                   envoie_valeurs(size-1) = les_valeurs(sommet);
-                  envoie_compteur(size-1) = compteur(sommet);
+
                 }
             }
         }
@@ -731,30 +735,29 @@ inline void add_sommets_communs(const Domaine& dom, DoubleTab& les_valeurs, IntT
       for (int i=0; i<recoit_size; i++)
         {
           int sommet = recoit_sommets(i);
-          if (nb_compo_)
+
+          // Contribution recu d'un sommet Dirichlet
+          if (recoit_compteur(i))
             {
-              for(int compo=0; compo<nb_compo_; compo++)
+              // Si le sommet local n'est pas Dirichlet, on annulle valeurs
+              if (compteur(sommet)==0)
                 {
-                  // Contribution recu d'un sommet Dirichlet
-                  if (recoit_compteur(i,compo))
-                    {
-                      // Si le sommet local n'est pas Dirichlet, on annulle valeurs
-                      if (compteur(sommet,compo)==0) les_valeurs(sommet,compo)=0;
-                      les_valeurs(sommet,compo)+=recoit_valeurs(i,compo);
-                      compteur(sommet,compo)+=recoit_compteur(i,compo);
-                    }
+                  if (nb_compo_)
+                    for(int compo=0; compo<nb_compo_; compo++)
+                      les_valeurs(sommet,compo)=0;
+                  else
+                    les_valeurs(sommet)=0;
                 }
-            }
-          else
-            {
-              // Contribution recu d'un sommet Dirichlet
-              if (recoit_compteur(i))
-                {
-                  // Si le sommet local n'est pas Dirichlet, on annulle valeurs
-                  if (compteur(sommet)==0) les_valeurs(sommet)=0;
-                  les_valeurs(sommet)+=recoit_valeurs(i);
-                  compteur(sommet)+=recoit_compteur(i);
-                }
+
+              compteur(sommet)+=recoit_compteur(i);
+              if (nb_compo_)
+                for(int compo=0; compo<nb_compo_; compo++)
+
+                  les_valeurs(sommet,compo)+=recoit_valeurs(i,compo);
+              else
+                les_valeurs(sommet)+=recoit_valeurs(i);
+
+
             }
         }
     }
@@ -787,11 +790,27 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
     {
       valeur_aux(coord_sommets, les_valeurs);
     }
+  int old_traitement_symetrie=0;
+  {
+    char* theValue = getenv("TRUST_POST_SOM_SYMETRIE_ERREUR");
+    if (theValue != NULL)
+      {
+        Cerr<<"results depend on order of bc or faces in bc ..."<<endl;
+        old_traitement_symetrie=1;
+      }
+  }
+  int impose_cl_diri=1;
 
-  // Liste des sommets de bord au contact d'une face de Dirichlet:
-  IntList sommets_dirichlet;
+  {
+    char* theValue = getenv("TRUST_POST_SOM_NO_DIRICHLET");
+    if (theValue != NULL)
+      {
+        impose_cl_diri=0;
+      }
+  }
+
   // Prise en compte des conditions aux limites :
-  if (sub_type(Champ_Inc_base, *this))
+  if (sub_type(Champ_Inc_base, *this)&&impose_cl_diri)
     {
       const Champ_Inc_base& chi=ref_cast(Champ_Inc_base, *this);
       const Equation_base& eqn=chi.equation();
@@ -801,7 +820,7 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
             && (sub_type(Champ_Inc_base, *this))
             && (dom==(ref_cast(Champ_Inc_base, *this).equation().probleme().domaine() ) ) )
           {
-            IntTab compteur(dom.nb_som(),nb_compo_);
+            IntTab compteur(dom.nb_som());
             compteur = 0;
 
             const Zone_Cl_dis& zcl=eqn.zone_Cl_dis();
@@ -823,15 +842,15 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
                       for(int num_som=0; num_som<nb_som_faces; num_som++)
                         {
                           int sommet=faces.sommet(num_face, num_som);
-                          sommets_dirichlet.add_if_not(sommet);
                           for(int compo=0; compo<nb_compo_; compo++)
                             {
-                              if (compteur(sommet,compo) == 0)
+                              if (compteur(sommet) == 0)
                                 les_valeurs(sommet, compo) = 0;
 
                               les_valeurs(sommet, compo) += diri.val_imp(num_face, compo);
-                              compteur(sommet,compo) += 1;
+
                             }
+                          compteur(sommet) += 1;
                         }
                   }
                 else if(sub_type(Dirichlet_homogene, la_cl.valeur()))
@@ -840,18 +859,18 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
                       for(int num_som=0; num_som<nb_som_faces; num_som++)
                         {
                           int sommet=faces.sommet(num_face, num_som);
-                          sommets_dirichlet.add_if_not(sommet);
                           for(int compo=0; compo<nb_compo_; compo++)
                             {
-                              if (compteur(sommet,compo) == 0)
+                              if (compteur(sommet) == 0)
                                 les_valeurs(sommet, compo) = 0;
 
                               les_valeurs(sommet, compo) += 0;
-                              compteur(sommet,compo) += 1;
+
                             }
+                          compteur(sommet) += 1;
                         }
                   }
-                else if(sub_type(Symetrie, la_cl.valeur()))
+                else if((sub_type(Symetrie, la_cl.valeur()))&&old_traitement_symetrie)
                   {
                     if(nb_compo_==dimension)
                       {
@@ -902,7 +921,7 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
                   }
               }
             // Ajoute la contribution des autres processeurs a valeurs et compteur
-            add_sommets_communs(dom, les_valeurs, compteur, sommets_dirichlet);
+            add_sommets_communs(dom, les_valeurs, compteur);
 
             // On termine le calcul de la moyenne pour les cas qui ont ete modifies
             // par une condition de type Dirichlet
@@ -910,8 +929,8 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
             assert (nb_som_l==nb_som_l); // GF je ne suis pas sur de l'assert c'est pour voir
             for (int sommet = 0; sommet<nb_som_l; sommet++)
               for(int compo=0; compo<nb_compo_; compo++)
-                if (compteur(sommet,compo) != 0)
-                  les_valeurs(sommet,compo) /= compteur(sommet,compo);
+                if (compteur(sommet) != 0)
+                  les_valeurs(sommet,compo) /= compteur(sommet);
 
           }
     }
@@ -962,10 +981,20 @@ int Champ_base::calculer_valeurs_som_compo_post(DoubleTab& les_valeurs,int ncomp
     {
       valeur_aux_compo(coord_sommets, les_valeurs, ncomp);
     }
+
+  //int impose_cl_diri=1;
+
+  {
+    char* theValue = getenv("TRUST_POST_SOM_NO_DIRICHLET");
+    if (theValue != NULL)
+      {
+        appliquer_cl=0;
+      }
+  }
+
   if (appliquer_cl)
     {
       // Liste des sommets de bord au contact d'une face de Dirichlet:
-      IntList sommets_dirichlet;
       // Prise en compte des conditions aux limites :
       if (sub_type(Champ_Inc_base, *this))
         {
@@ -998,7 +1027,6 @@ int Champ_base::calculer_valeurs_som_compo_post(DoubleTab& les_valeurs,int ncomp
                           for(int num_som=0; num_som<nb_som_faces; num_som++)
                             {
                               int sommet=faces.sommet(num_face, num_som);
-                              sommets_dirichlet.add_if_not(sommet);
                               if (compteur(sommet) == 0)
                                 les_valeurs(sommet) = 0;
 
@@ -1015,14 +1043,16 @@ int Champ_base::calculer_valeurs_som_compo_post(DoubleTab& les_valeurs,int ncomp
                           for(int num_som=0; num_som<nb_som_faces; num_som++)
                             {
                               int sommet=faces.sommet(num_face, num_som);
-                              sommets_dirichlet.add_if_not(sommet);
+
                               les_valeurs(sommet) = diri.val_imp(num_face,ncomp);
+                              compteur(sommet) += 1;
+
                             }
                         }
                     }
                 }
               // Ajoute la contribution des autres processeurs a les_valeurs et compteur
-              add_sommets_communs(dom, les_valeurs, compteur, sommets_dirichlet);
+              add_sommets_communs(dom, les_valeurs, compteur);
 
               // On termine le calcul de la moyenne pour les cas qui ont ete modifies
               // par une condition de type Dirichlet
@@ -1514,30 +1544,6 @@ const Zone_dis_base& Champ_base::zone_dis_base() const
   return zone_dis_base();
 }
 
-// Description:
-//    Calcule la trace d'un champ sur une frontiere au temps du champ
-// Precondition: x doit etre dimensionne
-// Parametre: Frontiere_dis_base&
-//    Signification: frontiere discretisee sur laquelle on veut
-//                   calculer la trace du champ
-//    Valeurs par defaut:
-//    Contraintes: reference constante
-//    Acces: entree
-// Parametre: DoubleTab& x
-//    Signification: les valeurs du champ sur la frontiere
-//    Valeurs par defaut:
-//    Contraintes:
-//    Acces: entree/sortie
-// Retour: DoubleTab&
-//    Signification: les valeurs du champ sur la frontiere
-//    Contraintes:
-// Exception:
-// Effets de bord:
-// Postcondition: la methode ne modifie pas l'objet
-DoubleTab& Champ_base::trace(const Frontiere_dis_base& fr, DoubleTab& x) const
-{
-  return trace(fr,x,temps_);
-}
 
 // Description:
 //    Calcule la trace d'un champ sur une frontiere au temps tps
@@ -1573,7 +1579,7 @@ DoubleTab& Champ_base::trace(const Frontiere_dis_base& fr, DoubleTab& x) const
 // Exception:
 // Effets de bord:
 // Postcondition: la methode ne modifie pas l'objet
-DoubleTab& Champ_base::trace(const Frontiere_dis_base& , DoubleTab& x , double tps) const
+DoubleTab& Champ_base::trace(const Frontiere_dis_base& , DoubleTab& x , double tps,int distant) const
 {
   Cerr << que_suis_je() << "did not overloaded Champ_base::trace" << finl;
   exit();
