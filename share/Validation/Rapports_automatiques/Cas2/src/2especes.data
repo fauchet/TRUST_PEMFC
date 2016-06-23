@@ -51,9 +51,14 @@ Read sch
 	dt_max 5e-1
 	dt_impr 0.001
 	dt_sauv 100
-	seuil_statio 2.e-4
-solveur implicite { solveur gmres { diag seuil -1 nb_it_max 5 } }
-facsec 1000.
+	seuil_statio 1e-6
+solveur implicite { 
+	solveur gmres { diag seuil -1 nb_it_max 5 }
+	solveur gmres { diag seuil -1 nb_it_max 10 impr dim_espace_krilov 10 }
+	solveur petsc bicgstab { seuil 1e-12 seuil_relatif 0e-3 impr precond  pilut { level 30 epsilon 0.01   } }	
+ }
+facsec 1.e8
+facsec_max 1.e8
 }
 
 Fluide_Incompressible fluide

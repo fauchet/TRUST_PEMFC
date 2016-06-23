@@ -188,11 +188,11 @@ void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VEF 
 
       eval_matrice_diffusion(c[0],c[1],c[2],  nu, elem);
     }
-  nu.echange_espace_virtuel();
   double epsilon=0.7;
   double tau=3.;
-  nu*=epsilon/tau/tau;
+  nu*=epsilon/(tau*tau);
   nu*=-1;
+  nu.echange_espace_virtuel();
   double maxc=local_max_vect(nu);
   if (local_min_vect(nu)<0)
     {
