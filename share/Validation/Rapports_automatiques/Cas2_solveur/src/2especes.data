@@ -1,0 +1,161 @@
+# Thermohydraulique 2D avec transport 4 constituants et terme source #
+# PARALLEL OK 2 #
+dimension 2
+
+Pb_hydraulique_Concentration pb
+Domaine dom
+
+# BEGIN MESH #
+Mailler dom
+{
+	Pave Cavite 
+		{
+		Origine 0. 0.
+		Nombre_de_Noeuds  5 5
+		Longueurs 2 2
+		}
+		{
+		Bord Gauche X = 0.	0. <= Y <= 2    
+		Bord Haut   Y = 2	0. <= X <= 2    
+		Bord Bas    Y = 0.	0. <= X <= 2    
+		Bord Droit  X = 2	0. <= Y <= 2    
+		}
+}
+Transformer dom x*1e-3 y*100e-6
+Trianguler_H dom
+# END MESH #
+
+# BEGIN PARTITION 
+Partition dom
+{
+    Partitionneur metis { Nb_parts 2 }
+    Larg_joint 2
+    Nom_Zones DOM
+    Nb_parts_tot 2
+}
+End 
+ END PARTITION #
+
+# BEGIN SCATTER 
+Scatter DOM.Zones dom
+  END SCATTER #
+
+VEFPreP1B dis
+
+
+Scheme_euler_implicit sch
+Read sch
+{
+	tinit 0
+	dt_min 1.e-12
+	dt_max 1
+	dt_impr 0.001
+	dt_sauv 100
+	nb_pas_dt_max 500000
+	seuil_statio 1e-4
+solveur implicite { 
+	solveur gmres { diag seuil -1 nb_it_max 5 }
+	solveur gmres { diag seuil -1 nb_it_max 10 impr dim_espace_krilov 10 }
+	solveur petsc bicgstab { seuil 1e-12 seuil_relatif 0e-3 impr precond  pilut { level 30 epsilon 0.01   } }	
+	solveur __solveur__
+ }
+facsec __facsec__
+facsec_max __facsec__
+}
+
+Fluide_Incompressible fluide
+Read fluide
+{
+	mu	Champ_Uniforme 1 1.85e-5
+	rho	Champ_Uniforme 1 1.17
+	beta_co	Champ_Uniforme 3 1e-4 1e-4 1e-4
+}
+
+Constituant c
+Read c
+{
+  coefficient_diffusion Champ_Uniforme 3 5e-2 5e-2 5e-2 
+}
+
+Associate pb dom
+Associate pb sch
+Associate pb fluide
+Associate pb c
+
+Discretize pb dis
+Read pb
+{
+	Navier_Stokes_standard
+	{
+	equation_non_resolue 1
+	 	solveur_pression GCP { 
+			precond ssor { omega 1.500000 } 
+			seuil 1.e-14
+			impr
+		}
+                projection_initiale 0								
+
+		convection { negligeable }
+		diffusion { negligeable }
+		initial_conditions
+		{
+			vitesse Champ_Uniforme 2 0. 0.
+		}
+		boundary_conditions
+		{
+			Haut Paroi_fixe	/* entree_vitesse_imposee champ_front_uniforme 2 0 0  */
+		
+			Droit	Paroi_fixe
+			Bas	Paroi_fixe
+			Gauche	Paroi_fixe
+		}
+		
+	}
+	Convection_diffusion_Concentration
+	{
+		diffusion { pemfc { 
+	
+			 } 
+		}
+		convection { negligeable }
+		initial_conditions
+		{
+			concentration Champ_Fonc_XYZ dom 3 9. 0. 34.
+		}
+		boundary_conditions
+		{
+			   Haut	  Paroi_temperature_imposee Champ_Front_uniforme 3 9. 0. 34.
+			   Droit  Paroi
+			   Gauche Paroi
+			   Bas    Paroi_flux_impose Champ_Front_Fonc_tXYZ 3   -1e4/4./96500.  0*1e4/2./96500. 0. 
+		}
+	}
+
+	Post_processing
+	{
+
+		Definition_champs 
+		{
+			diffusion_matrice operateur_eqn 
+			{ 
+				sources { refchamp { pb_champ pb concentration } }
+				numero_op 0
+			}
+		}
+		Sondes {
+	c concentration periode 1e-4 segment 20 1e-3 0. 1e-3 200e-6  
+	}	
+      	 	format lata
+                fields dt_post 1000
+                {
+                	diffusion_matrice elem
+			concentration elem
+		}
+	}
+
+
+}
+
+Solve pb
+End
+

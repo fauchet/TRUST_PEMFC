@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+
+
+
+sed "s/3 9. 0. 34./3 9. 8. 34./;s?0\*1e4?1e4?" 2especes.data > 3especes.data
+
+
+
+
+python genere_data.py   1e8 
+python genere_data.py   1e3 
+
+list=`ls gene*.data | sed "s/.data//g"`
+#list=$list" "prem_VEF
+echo "#Pset(listcas "$list")" > list_cas
+python $TRUST_ROOT/bin/KSH/preprocessor.py pemfc.prm.P pemfc.prm
+# (cd resr_comsol_cas_1; ./modifie)

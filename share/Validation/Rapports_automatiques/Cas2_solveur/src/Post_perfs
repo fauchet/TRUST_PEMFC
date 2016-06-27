@@ -1,0 +1,18 @@
+
+ref=genere_gmres_3pts_1e3
+tref=`head -1 $ref.perf | awk '{print $4}'`
+cat /dev/null > resume_perf.txt
+for file in `ls *.perf`
+do
+stat="OK"
+cas=`basename $file .perf`	
+[ ! -f ${cas}_C.coupe ] &&  extrait_coupe ${cas} C
+compare_sonde ${cas}_C.coupe ${ref}_C.coupe -seuil_erreur 1e-3  2>/dev/null
+[ $? -ne 0 ] &&stat="KO"
+
+
+
+gain=`head -1 $cas.perf | awk -v tref=$tref '{print tref/$4}'`
+echo $cas $stat $gain >> resume_perf.txt
+
+done

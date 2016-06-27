@@ -1,0 +1,203 @@
+Parameters {
+        Title Test pefmc cas 2 : Test des solveurs, options...
+        Description Cas 2
+        Author G.Fauchet (DEN)
+ 
+#Pinclude(list_cas)
+#Pforeach _cas_ (listcas)
+	TestCase . _cas_
+#Pendforeach(_cas_)
+prerequis ./Post_perfs
+ }
+Chapter { 
+Title Description
+# Description \latex_(\input{\orig/PART_2}\latex_)
+Description on ne rappelle pas ici le cas test. On essaye juste différents solveurs.
+}
+Chapter {
+Title Codage/Mise en données
+
+Description <<EOF
+Un opérateur différentiel tensoriel a été codé en VEF (version explicite et implicite).
+
+Ume méthode de calcul de la matrice de diffusion implémentée.
+
+
+Réécriture du terme de droite pour "rentrer dans le moule" (en supposant T=constante)
+\latex_(
+\[ 
+\begin{bmatrix}{\color{magenta}c_{g}}\,\nabla{\color{red}X_{O_{2}}}\\
+{\color{magenta}c_{g}}\,\nabla{\color{red}X_{vap}}\\
+\nabla{\color{magenta}P_{g}}
+\end{bmatrix} 
+=
+ \begin{bmatrix}{\nabla{c_{O_{2}}}-\frac{c_{O_{2}}}{c_{g}}\nabla{c_{g}}} \\
+{\nabla{c_{vap}}-\frac{c_{vap}}{c_{g}}\nabla{c_{g}}} \\
+R T \nabla{c_{g}}
+\end{bmatrix} 
+=
+ \begin{bmatrix} 1-X_{O_{2}} & -X_{O_{2}} &-X_{O_{2}} \\
+-X_{vap} & 1-X_{vap} & -X_{vap} \\
+R T & R T & R T 
+\end{bmatrix}  
+\begin{bmatrix}\nabla{c_{O_{2}}}\\
+\nabla{c_{vap}} \\
+\nabla{c_{N_{2}}}
+\end{bmatrix} 
+\]
+\latex_)
+
+EOF
+
+}
+Chapter {
+Title Résultats 
+
+
+Figure {
+	Title C02
+	Dimension 2
+	LabelX x
+	LabelY ""
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)	
+	Curve {
+		legend _cas_
+		segment _cas_ C
+		Style linespoints
+}	
+#Pendforeach(_cas_)
+	Curve {
+		legend Comsol sans vap
+		fichier 2esp_cO2_1e4.comsol
+		Style lines
+}	
+	Curve {
+		legend Comsol avec vap
+		fichier 3esp_cO2_1e4.comsol
+		Style lines
+}	
+}
+}
+Chapter {
+Title Résultats 
+
+
+Figure {
+	Title Convergence
+	Dimension 2
+	LabelX t
+	LabelY ""
+	Logy
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)	
+	Curve {
+		legend _cas_
+		fichier _cas_.dt_ev
+		Style lines
+		colonnes 0 4
+		
+}	
+#Pendforeach(_cas_)
+}
+Figure {
+	Title Convergence Zoom premières itérations
+	Dimension 2
+	LabelX t
+	LabelY ""
+	rangex 0 10
+	Logy
+        include_description_curves 0
+	width 12cm
+#Pforeach _cas_ (listcas)	
+	Curve {
+		legend _cas_
+		fichier _cas_.dt_ev
+		Style lines
+		colonnes 0 4
+		
+}	
+#Pendforeach(_cas_)
+}
+Table {
+Title "gain en performance"
+        nb_columns 2
+        label  status  | gain
+        lines {
+        file resume_perf.txt
+       #  nb_columns_file 4
+        }
+
+}
+}
+Chapter {
+Title Conclusion
+Description  <<EOF
+
+
+Attention au solveur !!
+Gain possible 5 000 sur le cas test, mais divergence possible !:
+
+
+Il faudait tester solveur gen {     preconcd ilu .... } 
+
+
+Peut être faut il coder un schema_permanent (c.a.d reprendre celui de mpcube)
+et coder un solveur de Newton avec relaxation.
+
+
+
+
+Traces du  solveur de comsol
+
+*******************************************
+
+***COMSOL 5.2.0.220 progress output file***
+
+*******************************************
+
+Tue Apr 05 16:21:57 CEST 2016
+
+Stationary Solver 1 in Study 1/Solution 1 (sol1) started at 5-avr.-2016 16:21:57.
+
+Nonlinear solver
+
+Number of degrees of freedom solved for: 42194 (plus 5856 internal DOFs).
+
+Symmetric matrices found.
+
+Scales for dependent variables:
+
+Dependent variable Psi (mod1.Psi): 0.7
+
+Dependent variable Phi (mod1.Phi): 2
+
+Orthonormal null-space function used.
+
+Iter      SolEst      ResEst     Damping    Stepsize \#Res \#Jac \#Sol   LinErr   LinRes
+
+1    7.2e+002    2.4e+003   0.0001000    7.2e+002    2    1    2 4.9e-011 2.5e-014
+
+2      5e+002    2.4e+003   0.0010000      5e+002    3    2    4 5.1e-011 2.5e-014
+
+3          62    2.4e+003   0.0100000          63    4    3    6 4.4e-011 2.5e-014
+
+4         5.7    2.2e+003   0.1000000         6.3    5    4    8 4.4e-011 2.6e-014
+
+5         0.3    8.3e+002   0.7693830        0.79    6    5   10   3e-011 2.5e-014
+
+6        0.04    1.2e+002   1.0000000        0.28    7    6   12 3.4e-011 3.8e-014
+
+7      0.0013         3.1   1.0000000        0.05    8    7   14 3.5e-011   5e-014
+
+8    9.7e-007      0.0022   1.0000000      0.0014    9    8   16   5e-011 5.6e-014
+
+Stationary Solver 1 in Study 1/Solution 1 (sol1): Solution time: 4 s
+
+
+
+
+EOF
+}
