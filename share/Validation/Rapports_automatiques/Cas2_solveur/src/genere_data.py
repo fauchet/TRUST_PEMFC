@@ -6,6 +6,7 @@ dico_solveur={
     "seuil_rel_level20":" petsc bicgstab { seuil 1e-12 seuil_relatif 1e-3 impr precond  pilut { level 30 epsilon 0.01   } }",
     
     "seuil_non_rel":" petsc bicgstab { seuil 1e-12 seuil_relatif 0e-3 impr precond  pilut { level 30 epsilon 0.01   } }",
+    "petsc_direct":" petsc cholesky { }",
  #   "bicgstab_lapack":"gen { seuil 1.0e-15 solv_elem bicgstab precond ilu { type    2 filling 0 } impr  } ",
  #   "bicgstab_lapack_filling10":"gen { seuil 1.0e-15 solv_elem bicgstab precond ilu { type    2 filling 10 } impr } ",
  #   "bicgstab_lapack_gmres":"gen { seuil 1.0e-15 solv_elem gmres precond ilu { type    2 filling 10 } impr } ",
