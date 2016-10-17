@@ -123,7 +123,7 @@ Read pb
 		}
 		boundary_conditions
 		{
-			   Haut	  Paroi_temperature_imposee Champ_Front_uniforme 3 9. 0. 34.
+			   Haut	  Scalaire_impose_paroi Champ_Front_uniforme 3 9. 0. 34.
 			   Droit  Paroi
 			   Gauche Paroi
 			   Bas    Paroi_flux_impose Champ_Front_Fonc_tXYZ 3   -1e4/4./96500.  0*1e4/2./96500. 0. 
