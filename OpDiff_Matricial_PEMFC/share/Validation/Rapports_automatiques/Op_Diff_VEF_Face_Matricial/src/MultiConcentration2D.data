@@ -137,6 +137,7 @@ Read pb
                 fields dt_post 1
                 {
                 	diffusion_matrice elem
+			concentration elem
 		}
 	}
 

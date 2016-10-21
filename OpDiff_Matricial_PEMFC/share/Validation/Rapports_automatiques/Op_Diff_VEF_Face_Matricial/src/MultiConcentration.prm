@@ -8,46 +8,133 @@ Parameters {
 Chapter {	
 	Title "Operator applied on different concentrations fields -- Neumann conditions "
 	Description "2D case with the 4 following concentrations : \latex_( $c_1 = x^2$ , $c_2 = y^2$ , $c_3 = 1+x+y$ and $c_4 = 0.5~x^2 + 1~y^2$ \newline \latex_) Coefficients are given by \latex_( \begin{equation} \lambda = \left[ \begin{matrix} 1 & 2 & 100 & -1 \\  4 & 8 & 200 & -1 \\ 0 & 0 & 16 & 0 \\ 32 & 64 & 0 & -2   \end{matrix} \right] \end{equation} \latex_) \newline In this case the flux is imposed on all boundaries."
+		Visu {
+		mesh  MultiConcentration2D.lata dom
+		pseudocolor MultiConcentration2D.lata dom CONCENTRATION_3 ELEM
+		cycles 0
+	
+	}
 	Visu {
-		Title "First component of the result, expected value : 3"
 		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_0 ELEM
 		cycles 0
-		width 8cm
+		width -8cm
+		query MinMax minmax_1
+	}
+	Table {
+		Title "First component of the result, expected value : 3"
+		nb_columns 2
+		label Min |Max
+		line { 
+		nb_columns_file 3
+	        file minmax_1
+		columns ($2) ($3)
+		legend "expected 3."
+		  }
 	}
 	Visu {
-		Title "Second component of the result, expected value : 21"
 		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_1 ELEM
 		cycles 0
-		width 8cm
+		width -8cm
+		query MinMax minmax_2
+
 	}
+
+		Table {
+			Title "Second component of the result, expected value : 21"
+
+		nb_columns 2
+		label Min |Max
+		line { 
+		nb_columns_file 3
+	        file minmax_2
+		columns ($2) ($3)
+		legend "expected 21."
+		  }
+}
 	Visu {
-		Title "Third component of the result, expected value : 0"
 		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_2 ELEM
 		cycles 0
-		width 8cm
+		width -8cm
+		query MinMax minmax_3
+
+	}
+		Table {
+		Title "Third component of the result, expected value : 0"
+
+		nb_columns 2
+		label Min |Max
+		line { 
+		nb_columns_file 3
+	        file minmax_3
+		columns ($2) ($3)
+		legend "expected 0."
+		  }
 	}
 	Visu {
-		Title "Fourth component of the result, expected value : 186"
 		pseudocolor MultiConcentration2D.lata dom DIFFUSION_MATRICE_3 ELEM
 		cycles 0
-		width 8cm
+		width -8cm
+		query MinMax minmax_4
+	}
+		Table {
+	
+	Title "Fourth component of the result, expected value : 186"
+	
+		nb_columns 2
+		label Min |Max
+		line { 
+		nb_columns_file 3
+	        file minmax_4
+		columns ($2) ($3)
+		legend "expected 186."
+		  }
 	}
 }
 Chapter {	
 	Title "Operator applied on different concentrations fields -- Periodic and Neumann conditions "
 	Description "2D case with the 2 following concentrations : \latex_( $c_1 = y^2$ , $c_2 = y$ \newline \latex_) Coefficients are given by \latex_( \begin{equation} \lambda = \left[ \begin{matrix} 1 & 2 \\ 4 & 8  \end{matrix} \right] \end{equation} \latex_) \newline In this case the flux is imposed on boundaries top and bottom. Boundaries right and left are periodic."
+	
+
 	Visu {
-		Title "First component of the result, expected value : 2"
 		pseudocolor MultiConcentration2D_perio.lata dom DIFFUSION_MATRICE_X ELEM
 		cycles 0
-		width 8cm
+		width -8cm
+		query MinMax minmax2_1
+	
 	}
+	Table {
+		Title "First component of the result, expected value : 2"
+		nb_columns 2
+		label Min |Max
+		line { 
+		nb_columns_file 3
+	        file minmax2_1
+		columns ($2) ($3)
+		legend "expected 2."
+		}
+	}
+
 	Visu {
-		Title "Second component of the result, expected value : 8"
 		pseudocolor MultiConcentration2D_perio.lata dom DIFFUSION_MATRICE_Y ELEM
 		cycles 0
-		width 8cm
+		width -8cm
+		query MinMax minmax2_2
+	
 	}
+	Table {
+	
+		Title "Second component of the result, expected value : 8"
+	
+		nb_columns 2
+		label Min |Max
+		line { 
+		nb_columns_file 3
+	        file minmax2_2
+		columns ($2) ($3)
+		legend "expected 8."
+		  }
+	}
+
 }
 Chapter {	
 	Title "WARNING : 3D case is not tested yet"
