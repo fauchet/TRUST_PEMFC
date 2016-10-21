@@ -22,6 +22,10 @@
 #include <Op_Diff_VEF_Face_PEMFC.h>
 #include <Param.h>
 #include <EChaine.h>
+#include <Discretisation_base.h>
+#include <Champ_P1NC.h>
+#include <Milieu_base.h>
+
 
 Implemente_instanciable( Op_Diff_VEF_Face_PEMFC, "Op_Diff_VEFPEMFC_const_P1NC", Op_Diff_VEF_Face_Matricial ) ;
 
@@ -33,6 +37,7 @@ Sortie& Op_Diff_VEF_Face_PEMFC::printOn( Sortie& os ) const
 
 Entree& Op_Diff_VEF_Face_PEMFC::readOn( Entree& is )
 {
+  is_cas4_=0;
   //Op_Diff_VEF_Face_Matricial::readOn( is );
   //diffusivity_read_from_datafile_.fixer_nb_comp(9);
   //diffusivity_read_from_datafile_.typer("Champ_uniforme");
@@ -44,10 +49,19 @@ Entree& Op_Diff_VEF_Face_PEMFC::readOn( Entree& is )
 
   //param.lire_avec_accolades_depuis(is);
 
+
+  equation().discretisation().discretiser_champ("champ_elem",equation().zone_dis().valeur(),"Ni","unit", equation().inconnue().valeur().nb_comp()*dimension,0.,Ni_);
+  Ni_->fixer_nature_du_champ(multi_scalaire);
+  champs_compris_.ajoute_champ(Ni_);
+  equation().discretisation().discretiser_champ("champ_elem",equation().zone_dis().valeur(),"ud","m/s", dimension,0.,ud_);
+  ud_->fixer_nature_du_champ(vectoriel);
+  champs_compris_.ajoute_champ(ud_);
+
   return is;
 }
 void Op_Diff_VEF_Face_PEMFC::set_param(Param& param)
 {
+  param.ajouter("is_cas4",&is_cas4_);
   // abort();
 }
 
@@ -150,15 +164,120 @@ double  eval_matrice_diffusion(const double& cO2,const double& cvap,const double
         double p=0;
         for (int k=0; k<3; k++)
           p+=invM(i,k)*coef(k,j);
-        Diff(elem,i*3+j)=p;
+        p*=epsilon/(tau*tau);
+        Diff(elem,i*3+j)=-p;
       }
 
+  // double epsilon=0.7;
+  //double tau=3.;
+
+  return 1.;
+}
+
+double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const double& XN2b, DoubleTab& Diff,int elem)
+{
+  // Valeur
+  double  T=353.15;
+  // double  R=8.314;
+  //
+  double  Pg=1.5e5;
+  double  DO2N2 = 6.43e-5*pow( T ,1.823)/Pg;
+  double  DO2vap = 4.26e-6*pow( T ,2.334)/Pg;
+  double  DN2vap = 4.45e-6*pow( T ,2.334)/Pg;
+
+  double DN2O2=DO2N2;
+  double DvapO2=DO2vap;
+  double DvapN2=DN2vap;
+
+  double XN2=1.-Xvap-XO2;
+//  XN2=XN2b;
+
+  double  invDAO2vap=1./DO2vap;
+  double  invDAO2N2=1./DO2N2;
+  double  invDAvapO2=1./DvapO2;
+  double  invDAvapN2=1./DvapN2;
+  double  invDAN2O2=1./DN2O2;
+  double  invDAN2vap=1./DN2vap;
+
+  // Matrice
+  double a11=-XN2*invDAO2N2-Xvap*invDAO2vap;
+  double a12=XO2*invDAvapO2;
+  double a13=XO2*invDAN2O2;
+
+  double a21=Xvap*invDAO2vap;
+  double a22=-XO2*invDAvapO2-XN2*invDAvapN2;
+  double a23=Xvap*invDAN2vap;
+
+  Matrice33 invM;
+#if 1
+  double a31= 1;
+
+  double a32= 1;
+  double a33=1;
+
+
+
+  Matrice33 M(a11,a12,a13,
+              a21,a22,a23,
+              a31,a32,a33);
+  Matrice33::inverse(M,invM);
+  Matrice33 coef(1,0,0,
+                 0,1,0,
+                 0,0,0);
+
+  for (int i=0; i<3; i++)
+    for (int j=0; j<3; j++)
+      {
+        double p=0;
+        for (int k=0; k<3; k++)
+          p+=invM(i,k)*coef(k,j);
+        Diff(elem,i*3+j)=-p;
+      }
+#else
+
+
+  double a31=XN2*invDAO2N2;
+  double a32=XN2*invDAvapN2;
+  double a33=-XO2*invDAO2N2-Xvap*invDAvapN2;
+
+  Matrice33 M(a11,a12,a13,
+              a21,a22,a23,
+              a31,a32,a33);
+  for (int j=0; j<3; j++)
+    {
+      double t=0;
+      for (int i=0; i<3; i++)
+        t+=M(i,j);
+      if (!est_egal(t,0)) throw;
+    }
+  for (int i=2; i<3; i++)
+    for (int j=0; j<3; j++)
+      {
+        M(i,j)+=1.e3;
+      }
+  Matrice33::inverse(M,invM);
+  for (int i=0; i<3; i++)
+    for (int j=0; j<3; j++)
+      {
+        double p=0;
+        p+=invM(i,j);
+        Diff(elem,i*3+j)=-p;
+      }
+#endif
+
+  for (int i=0; i<3*0; i++)
+    for (int j=0; j<3; j++)
+      {
+        Cout <<"Diff "<<i<<" "<<j<<" "<< Diff(elem,i*3+j) <<" "<<M (i,j)<<finl;
+      }
+  //Process::exit();
+  assert(Diff(elem,0)>=0);
 
   return 1.;
 }
 
 
-void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VEF zone_VEF)
+void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VEF zone_VEF,int is_cas4)
 {
 
   int nb_comp=inconnue_org.dimension(1);
@@ -185,13 +304,11 @@ void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VEF 
             c(nc)+=inconnue_org(face,nc);
           }
       c*=invnbf;
-
-      eval_matrice_diffusion(c[0],c[1],c[2],  nu, elem);
+      if (is_cas4)
+        eval_matrice_diffusion_cas4(c[0],c[1],c[2],  nu, elem);
+      else
+        eval_matrice_diffusion(c[0],c[1],c[2],  nu, elem);
     }
-  double epsilon=0.7;
-  double tau=3.;
-  nu*=epsilon/(tau*tau);
-  nu*=-1;
   nu.echange_espace_virtuel();
   double maxc=local_max_vect(nu);
   if (local_min_vect(nu)<0)
@@ -204,10 +321,58 @@ void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VEF 
 
 }
 
+void Op_Diff_VEF_Face_PEMFC::calculer_Ni(Champ_Fonc& Ni,Champ_Fonc& ud,const double& temps) const
+{
+  const  DoubleTab& inco= equation().inconnue().valeurs();
+  int nb_comp=inco.dimension(1);
+  // calcul du gradient
+  DoubleTab grad(0, nb_comp, Objet_U::dimension);
+  equation().zone_dis().zone().creer_tableau_elements(grad);
 
+  ArrOfDouble mi(3);
+  mi[0]=32e-3;
+  mi[1]=18e-3;
+  mi[2]=28e-3;
 
+  Champ_P1NC::calcul_gradient(inco,grad,ref_cast(Zone_Cl_VEF,equation().zone_Cl_dis().valeur()));
+  for (int elem=0; elem<grad.dimension(0); elem++)
+    {
 
-void Op_Diff_VEF_Face_PEMFC::mettre_a_jour(double)
+      for (int j=0; j<dimension; j++)
+        {
+          ud(elem,j)=0;
+
+          for (int i=0; i<nb_comp; i++)
+
+            {
+              double p=0;
+              for (int k=0; k<nb_comp; k++)
+                p+=nu_(elem,i*nb_comp+k)*grad(elem,k,j);
+
+              Ni(elem,i*dimension+j)=-p;
+
+              ud(elem,j)-=p*mi[i] ;
+            }
+
+        }
+      for (int j=0; j<dimension; j++)
+        {
+          double pt=0;
+          for (int i=0; i<nb_comp; i++)
+            pt+=Ni(elem,i*dimension+j);
+          if (!est_egal(pt,0))
+            {
+              Cerr<<" oooo "<< pt<<" "<<Ni(elem,0*dimension+j)<<" "<<Ni(elem,1*dimension+j)<<" "<<Ni(elem,2*dimension+j)<< finl;
+
+              exit();
+            }
+
+        }
+    }
+  Ni.changer_temps(temps);
+  ud.changer_temps(temps);
+}
+void Op_Diff_VEF_Face_PEMFC::mettre_a_jour(double temps)
 {
   const Zone_VEF& zone_VEF = la_zone_vef.valeur();
   const DoubleTab& inconnue_org=equation().inconnue().valeurs();
@@ -215,7 +380,9 @@ void Op_Diff_VEF_Face_PEMFC::mettre_a_jour(double)
   // diffusivity_read_from_datafile_.valeur().dimensionner(1,nb_comp*nb_comp);
   remplir_nu(nu_);
 
-  bidouille_nu(nu_,inconnue_org,zone_VEF);
+  bidouille_nu(nu_,inconnue_org,zone_VEF,is_cas4_);
+  if (is_cas4_)
+    calculer_Ni(Ni_,ud_,temps);
 }
 
 
@@ -223,3 +390,9 @@ void Op_Diff_VEF_Face_PEMFC::mettre_a_jour(double)
 
 
 
+void Op_Diff_VEF_Face_PEMFC::completer()
+{
+  Op_Diff_VEF_Face_Matricial::completer();
+
+  // throw;
+}

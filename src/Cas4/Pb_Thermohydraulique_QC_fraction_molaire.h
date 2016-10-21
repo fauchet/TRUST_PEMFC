@@ -14,38 +14,36 @@
 *****************************************************************************/
 /////////////////////////////////////////////////////////////////////////////
 //
-// File      : Op_Diff_VEF_Face_PEMFC.h
-// Directory : $PEMFC_ROOT/src/Cas2
+// File      : Pb_Thermohydraulique_QC_fraction_molaire.h
+// Directory : $PEMFC_ROOT/src/Cas4
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef Op_Diff_VEF_Face_PEMFC_included
-#define Op_Diff_VEF_Face_PEMFC_included
+#ifndef Pb_Thermohydraulique_QC_fraction_molaire_included
+#define Pb_Thermohydraulique_QC_fraction_molaire_included
 
-#include <Op_Diff_VEF_Face_Matricial.h>
-#include <Champ_Fonc.h>
-
+#include <Pb_Thermohydraulique_QC.h>
+#include <Convection_Diffusion_Fraction_Molaire_QC.h>
 /////////////////////////////////////////////////////////////////////////////
 //
-// .DESCRIPTION : class Op_Diff_VEF_Face_PEMFC
+// .DESCRIPTION : class Pb_Thermohydraulique_QC_fraction_molaire
 //
-// <Description of class Op_Diff_VEF_Face_PEMFC>
+// <Description of class Pb_Thermohydraulique_QC_fraction_molaire>
 //
 /////////////////////////////////////////////////////////////////////////////
 
-class Op_Diff_VEF_Face_PEMFC : public Op_Diff_VEF_Face_Matricial
+class Pb_Thermohydraulique_QC_fraction_molaire : public Pb_Thermohydraulique_QC
 {
 
-  Declare_instanciable( Op_Diff_VEF_Face_PEMFC ) ;
+  Declare_instanciable( Pb_Thermohydraulique_QC_fraction_molaire ) ;
 
 public :
-  void mettre_a_jour(double);
-  void set_param(Param& param);
-  void completer();
-  void calculer_Ni(Champ_Fonc& Ni,Champ_Fonc& ud,const double& temps) const;
+  const Equation_base& equation(int) const ;
+  Equation_base& equation(int);
+  int nombre_d_equations() const;
+  int verifier();
 protected :
-  int is_cas4_;
-  Champ_Fonc Ni_,ud_;
+  Convection_Diffusion_Fraction_Molaire_QC eq_fraction_molaire_;
 };
 
-#endif /* Op_Diff_VEF_Face_PEMFC_included */
+#endif /* Pb_Thermohydraulique_QC_fraction_molaire_included */

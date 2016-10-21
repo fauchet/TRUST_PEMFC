@@ -14,38 +14,60 @@
 *****************************************************************************/
 /////////////////////////////////////////////////////////////////////////////
 //
-// File      : Op_Diff_VEF_Face_PEMFC.h
-// Directory : $PEMFC_ROOT/src/Cas2
+// File      : Pb_Thermohydraulique_QC_fraction_molaire.cpp
+// Directory : $PEMFC_ROOT/src/Cas4
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef Op_Diff_VEF_Face_PEMFC_included
-#define Op_Diff_VEF_Face_PEMFC_included
+#include <Pb_Thermohydraulique_QC_fraction_molaire.h>
 
-#include <Op_Diff_VEF_Face_Matricial.h>
-#include <Champ_Fonc.h>
+Implemente_instanciable( Pb_Thermohydraulique_QC_fraction_molaire, "Pb_Thermohydraulique_QC_fraction_molaire", Pb_Thermohydraulique_QC ) ;
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// .DESCRIPTION : class Op_Diff_VEF_Face_PEMFC
-//
-// <Description of class Op_Diff_VEF_Face_PEMFC>
-//
-/////////////////////////////////////////////////////////////////////////////
-
-class Op_Diff_VEF_Face_PEMFC : public Op_Diff_VEF_Face_Matricial
+Sortie& Pb_Thermohydraulique_QC_fraction_molaire::printOn( Sortie& os ) const
 {
+  Pb_Thermohydraulique_QC::printOn( os );
+  return os;
+}
 
-  Declare_instanciable( Op_Diff_VEF_Face_PEMFC ) ;
+Entree& Pb_Thermohydraulique_QC_fraction_molaire::readOn( Entree& is )
+{
+  Pb_Thermohydraulique_QC::readOn( is );
+  return is;
+}
 
-public :
-  void mettre_a_jour(double);
-  void set_param(Param& param);
-  void completer();
-  void calculer_Ni(Champ_Fonc& Ni,Champ_Fonc& ud,const double& temps) const;
-protected :
-  int is_cas4_;
-  Champ_Fonc Ni_,ud_;
-};
+int Pb_Thermohydraulique_QC_fraction_molaire::nombre_d_equations() const
+{
+  return 3;
+}
+const Equation_base& Pb_Thermohydraulique_QC_fraction_molaire::equation(int i) const
+{
+  assert ((i>=0) && (i<=2));
+  if (i == 0)
+    return eq_hydraulique;
+  else
+    {
+      if (i==1)
+        return eq_thermique;
+      else
+        return eq_fraction_molaire_;
+    }
+}
+Equation_base& Pb_Thermohydraulique_QC_fraction_molaire::equation(int i)
+{
+  assert ((i>=0) && (i<=2));
+  if (i == 0)
+    return eq_hydraulique;
+  else
+    {
+      if (i==1)
+        return eq_thermique;
+      else
+        return eq_fraction_molaire_;
+    }
+}
 
-#endif /* Op_Diff_VEF_Face_PEMFC_included */
+
+int Pb_Thermohydraulique_QC_fraction_molaire::verifier()
+{
+  return  Pb_Thermohydraulique_QC::verifier();
+}
