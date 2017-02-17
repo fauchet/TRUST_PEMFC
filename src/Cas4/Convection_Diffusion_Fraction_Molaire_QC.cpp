@@ -365,7 +365,21 @@ Fluide_Incompressible& Convection_Diffusion_Fraction_Molaire_QC::fluide()
 // Postcondition:
 DoubleTab& Convection_Diffusion_Fraction_Molaire_QC::derivee_en_temps_inco(DoubleTab& derivee)
 {
-  throw;
+  int nb_c=derivee.dimension(1);
+  int ndl=derivee.dimension(0);
+  Cerr<< " iiii" << inconnue().valeurs()(1050,nb_c-1)<<finl;
+  for (int f=0; f<3; f++)
+    {
+      DoubleTab& mod_inco=inconnue().futur(f);
+      for (int i=0; i<ndl; i++)
+        {
+          mod_inco(i,nb_c-1)=1.;
+          for(int c=0; c<nb_c-1; c++)
+            mod_inco(i,nb_c-1)-=mod_inco(i,c);
+        }
+    }
+
+
   derivee=0;
 
   les_sources.ajouter(derivee);

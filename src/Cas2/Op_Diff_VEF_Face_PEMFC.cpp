@@ -362,9 +362,9 @@ void Op_Diff_VEF_Face_PEMFC::calculer_Ni(Champ_Fonc& Ni,Champ_Fonc& ud,const dou
             pt+=Ni(elem,i*dimension+j);
           if (!est_egal(pt,0))
             {
-              Cerr<<" oooo "<< pt<<" "<<Ni(elem,0*dimension+j)<<" "<<Ni(elem,1*dimension+j)<<" "<<Ni(elem,2*dimension+j)<< finl;
+              Cerr<<"Ni oooo "<< pt<<" "<<Ni(elem,0*dimension+j)<<" "<<Ni(elem,1*dimension+j)<<" "<<Ni(elem,2*dimension+j)<< finl;
 
-              exit();
+              //   exit();
             }
 
         }
