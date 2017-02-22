@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015, CEA
+* Copyright (c) 2015 - 2016, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -118,7 +118,7 @@ Champ_base::Champ_base()
 // Retour: reference a "valeurs"
 DoubleVect& Champ_base::valeur_a(const DoubleVect& pos, DoubleVect& les_valeurs) const
 {
-  assert(les_valeurs.size() == nb_comp());
+  //assert(les_valeurs.size() == nb_comp());
   DoubleTrav values(1,les_valeurs.size());
   int taille=pos.size();
   DoubleTrav pos2(1,taille);
@@ -813,6 +813,16 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
   if (sub_type(Champ_Inc_base, *this)&&impose_cl_diri)
     {
       const Champ_Inc_base& chi=ref_cast(Champ_Inc_base, *this);
+      if (!chi.mon_equation_non_nul())
+        {
+          Cerr<<"no equation assocuate to "<<que_suis_je()<<finl;
+          impose_cl_diri=0;
+        }
+    }
+  if (sub_type(Champ_Inc_base, *this)&&impose_cl_diri)
+    {
+      const Champ_Inc_base& chi=ref_cast(Champ_Inc_base, *this);
+
       const Equation_base& eqn=chi.equation();
       // GF on ne veut pas prendre en compte les CL en EF
       if (eqn.discretisation().que_suis_je()!="EF")
@@ -926,7 +936,7 @@ int Champ_base::calculer_valeurs_som_post(DoubleTab& les_valeurs,int nb_som,Nom&
             // On termine le calcul de la moyenne pour les cas qui ont ete modifies
             // par une condition de type Dirichlet
             int nb_som_l = dom.nb_som();
-            assert (nb_som_l==nb_som_l); // GF je ne suis pas sur de l'assert c'est pour voir
+            //assert (nb_som_l==nb_som_l); // GF je ne suis pas sur de l'assert c'est pour voir
             for (int sommet = 0; sommet<nb_som_l; sommet++)
               for(int compo=0; compo<nb_compo_; compo++)
                 if (compteur(sommet) != 0)

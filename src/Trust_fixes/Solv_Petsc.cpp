@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015, CEA
+* Copyright (c) 2015 - 2016, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -19,6 +19,7 @@
 // Version:     /main/95
 //
 //////////////////////////////////////////////////////////////////////////////
+
 #include <Solv_Petsc.h>
 #include <Matrice_Morse_Sym.h>
 #include <stat_counters.h>
@@ -39,7 +40,6 @@
 
 Implemente_instanciable_sans_constructeur_ni_destructeur(Solv_Petsc,"Solv_Petsc",SolveurSys_base);
 Implemente_instanciable_sans_constructeur(Solv_Petsc_GPU,"Solv_Petsc_GPU",Solv_Petsc);
-
 
 // printOn
 Sortie& Solv_Petsc::printOn(Sortie& s ) const
@@ -742,8 +742,8 @@ void Solv_Petsc::create_solver(Entree& entree)
                 //check_not_defined(epsilon);
                 //check_not_defined(ordering);
                 //
-                // CHANGES in the PETSc 3.6 Version: Removed -pc_hypre_type euclid due to bit-rot
-                Cerr << "Error: CHANGES in the PETSc 3.6 Version: Removed -pc_hypre_type euclid due to bit-rot." << finl;
+                // CHANGES in the PETSc 3.6 version: Removed -pc_hypre_type euclid due to bit-rot
+                Cerr << "Error: CHANGES in the PETSc 3.6 version: Removed -pc_hypre_type euclid due to bit-rot." << finl;
                 Cerr << "So the ILU { level k } preconditionner no longer available. " << finl;
                 Cerr << "Change your data file." << finl;
                 Process::exit();
@@ -973,12 +973,12 @@ void Solv_Petsc::MorseHybToMorse(const Matrice_Morse& MM_tot, Matrice_Morse& M, 
   int nbrows_M=nb_items_to_keep_;
   M.dimensionner(nbrows_M,0);
 
-  const IntVect& tab1_tot = MM_tot.tab1_;
-  const IntVect& tab2_tot = MM_tot.tab2_;
-  const DoubleVect& coeff_tot = MM_tot.coeff_;
-  IntVect& tab1 = M.tab1_;
-  IntVect& tab2 = M.tab2_;
-  DoubleVect& coeff = M.coeff_;
+  const IntVect& tab1_tot = MM_tot.get_tab1();
+  const IntVect& tab2_tot = MM_tot.get_tab2();
+  const DoubleVect& coeff_tot = MM_tot.get_coeff();
+  IntVect& tab1 = M.get_set_tab1();
+  IntVect& tab2 = M.get_set_tab2();
+  DoubleVect& coeff = M.get_set_coeff();
 
   // Construction de tab1 de la matrice morse hybride
   tab1(0)=1;
@@ -1406,8 +1406,8 @@ int Solv_Petsc::resoudre_systeme(const Matrice_Base& la_matrice, const DoubleVec
 inline int ligne_inutile(const Matrice_Morse& mat, const DoubleVect& secmem, int& i)
 {
   if (secmem(i)==0.                         // Le second membre est nul
-      && mat.tab1_[i+1]-mat.tab1_[i]==1        // Et il n'y a qu'un terme non nul sur la ligne
-      && mat.tab2_[mat.tab1_[i]-1]-1==i)        // Et c'est la diagonale
+      && mat.get_tab1()(i+1)-mat.get_tab1()(i)==1        // Et il n'y a qu'un terme non nul sur la ligne
+      && mat.get_tab2()(mat.get_tab1()(i)-1)-1==i)        // Et c'est la diagonale
     {
       Cerr << "[" << Process::me() << "] Line " << i << " useless..." << finl;
       return 1;                        // Alors cette ligne est inutile (item periodique, arete superflue,...)
@@ -1542,9 +1542,9 @@ int Solv_Petsc::Create_objects(Matrice_Morse& mat, const DoubleVect& b)
       // les mets a 0 et on appelle compacte qui les supprime
       if (mataij_==0)
         {
-          IntVect& tab1=mat.tab1_;
-          IntVect& tab2=mat.tab2_;
-          DoubleVect& coeff=mat.coeff_;
+          IntVect& tab1=mat.get_set_tab1();
+          IntVect& tab2=mat.get_set_tab2();
+          DoubleVect& coeff=mat.get_set_coeff();
           for (int i=0; i<nb_rows_; i++)
             for (int k=tab1(i)-1; k<tab1(i+1)-1; k++)
               if (renum_array[tab2(k)-1]<i+decalage_local_global_)
@@ -1628,22 +1628,34 @@ int Solv_Petsc::Create_objects(Matrice_Morse& mat, const DoubleVect& b)
     }
   else if (solveur_direct_==2)
     {
-      Cout << "Cholesky from SUPERLU_DIST may take several minutes, please wait..." << finl;
+      if( message_affi )
+        {
+          Cout << "Cholesky from SUPERLU_DIST may take several minutes, please wait..." << finl;
+        }
       PCFactorSetMatSolverPackage(PreconditionneurPetsc_, MATSOLVERSUPERLU_DIST);
     }
   else if (solveur_direct_==3)
     {
-      Cout << "Cholesky from PETSc may take several minutes, please wait..." << finl;
+      if( message_affi )
+        {
+          Cout << "Cholesky from PETSc may take several minutes, please wait..." ;
+        }
       PCFactorSetMatSolverPackage(PreconditionneurPetsc_, MATSOLVERPETSC);
     }
   else if (solveur_direct_==4)
     {
-      Cout << "Cholesky from UMFPACK may take several minutes, please wait..." << finl;
+      if( message_affi )
+        {
+          Cout << "Cholesky from UMFPACK may take several minutes, please wait..." ;
+        }
       PCFactorSetMatSolverPackage(PreconditionneurPetsc_, MATSOLVERUMFPACK);
     }
   else if (solveur_direct_==5)
     {
-      Cout << "Cholesky from Pastix may take several minutes, please wait..." << finl;
+      if( message_affi )
+        {
+          Cout << "Cholesky from Pastix may take several minutes, please wait..." ;
+        }
       PCFactorSetMatSolverPackage(PreconditionneurPetsc_, MATSOLVERPASTIX);
     }
   else if (solveur_direct_)
@@ -1652,6 +1664,13 @@ int Solv_Petsc::Create_objects(Matrice_Morse& mat, const DoubleVect& b)
       Cerr << "Contact TRUST support." << finl;
       exit();
     }
+
+  if( ( solveur_direct_ > 1 ) && ( message_affi ) )
+    {
+      Cout << " OK "<<finl;
+      message_affi = 0;
+    }
+
 
   /****************************************/
   /* Association de la matrice au solveur */
@@ -1881,9 +1900,9 @@ int Solv_Petsc::compute_nb_rows_petsc(int nb_rows_tot)
 void Solv_Petsc::Create_MatricePetsc(Mat& MatricePetsc, int mataij, Matrice_Morse& mat)
 {
   // Recuperation des donnees
-  IntVect& tab1_=mat.tab1_;
-  IntVect& tab2_=mat.tab2_;
-  DoubleVect& coeff_=mat.coeff_;
+  IntVect& tab1_=mat.get_set_tab1();
+  IntVect& tab2_=mat.get_set_tab2();
+  DoubleVect& coeff_=mat.get_set_coeff();
   int nb_rows = mat.nb_lignes();
   int nb_rows_tot = mp_sum(nb_rows);
 

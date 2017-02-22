@@ -26,9 +26,22 @@
 #include <Champ_Uniforme.h>
 #include <Param.h>
 
-#include <Les_Cl.h>
 #include <DoubleTrav.h>
 #include <Porosites_champ.h>
+
+
+#include <Periodique.h>
+#include <Dirichlet_paroi_fixe.h>
+#include <Dirichlet_paroi_defilante.h>
+#include <Dirichlet_entree_fluide.h>
+#include <Neumann_paroi.h>
+#include <Echange_externe_impose.h>
+#include <Neumann_homogene.h>
+#include <Symetrie.h>
+#include <Echange_global_impose.h>
+#include <Temperature_imposee_paroi.h>
+#include <Sortie_libre_pression_moyenne_imposee.h>
+//
 
 Implemente_instanciable(Op_Diff_VEF_Face_Matricial,"Op_Diff_VEFMATRICIAL_const_P1NC",Op_Diff_VEF_Face);
 

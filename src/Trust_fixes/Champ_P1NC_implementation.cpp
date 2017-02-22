@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015, CEA
+* Copyright (c) 2015 - 2016, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -38,6 +38,14 @@
 #include <Matrice_Bloc.h>
 #include <IntLists.h>
 
+
+
+static int methode_calcul_valeurs_sommets = 2 ;
+
+// -1 moyenne des faces
+// 1 moyenne des sommets sans min/max
+// 2 moyenne des sommets avec min/max (ancienne version)
+
 Champ_P1NC_implementation::Champ_P1NC_implementation()
 {
   // Initialise l'attribut
@@ -51,9 +59,14 @@ Champ_P1NC_implementation::Champ_P1NC_implementation()
   solveur_H1.typer("Solv_GCP");
   ref_cast(Solv_GCP,solveur_H1.valeur()).set_precond(p);
   solveur_H1.nommer("solveur_H1");
+
+
+
 }
 
 static const double coeff_penalisation = 1e9;
+
+
 
 // Description:
 // Projection du champ P1NC "cha" sur l'espace des champs P1.
@@ -2115,92 +2128,148 @@ valeur_aux_sommets(const Domaine& dom,
 {
   const Zone& mazone = dom.zone(0);
 
-  int nb_elem_tot = mazone.nb_elem_tot();
   int nb_som = mazone.nb_som_tot();
   int nb_som_return = champ_som.dimension_tot(0);
 
-  int nb_som_elem = mazone.nb_som_elem();
   const Champ_base& cha=le_champ();
   const DoubleTab& ch = cha.valeurs();
   int nb_compo_=cha.nb_comp();
   ArrOfInt compteur(nb_som);
 
   const Zone_VEF& zone_VEF = zone_vef();
-  const IntTab& elem_faces = zone_VEF.elem_faces();
+  assert(zone_vef().zone()==mazone);
 
-  DoubleTab min_som(nb_som,nb_compo_) ;
-  DoubleTab max_som(nb_som,nb_compo_) ;
-  int ncomp, face_adj,face_glob;
-  int num_elem,num_som,j;
-
-  champ_som = 0;
-  compteur = 0;
-  for (j=0; j<nb_som; j++)
-    for (int k = 0; k < nb_compo_; k++ )
-      {
-        min_som(j,k) = 1.e+30 ;
-        max_som(j,k) = 1.e-30 ;
-      }
-
-  if (nb_compo_ == 1)
+  if ( methode_calcul_valeurs_sommets>0)
     {
-      ncomp = 0;
-      for (num_elem=0; num_elem<nb_elem_tot; num_elem++)
+      int nb_elem_tot = mazone.nb_elem_tot();
+      int nb_som_elem = mazone.nb_som_elem();
+
+      const IntTab& elem_faces = zone_VEF.elem_faces();
+
+      DoubleTab min_som(nb_som,nb_compo_) ;
+      DoubleTab max_som(nb_som,nb_compo_) ;
+      int ncomp, face_adj,face_glob;
+      int num_elem,num_som,j;
+
+      champ_som = 0;
+      compteur = 0;
+      for (j=0; j<nb_som; j++)
+        for (int k = 0; k < nb_compo_; k++ )
+          {
+            min_som(j,k) = 1.e+30 ;
+            max_som(j,k) = 1.e-30 ;
+          }
+
+      if (nb_compo_ == 1)
         {
-          for (j=0; j<nb_som_elem; j++)
+          ncomp = 0;
+          for (num_elem=0; num_elem<nb_elem_tot; num_elem++)
             {
-              num_som = mazone.sommet_elem(num_elem,j);
-              if(num_som < nb_som_return)
+              for (j=0; j<nb_som_elem; j++)
                 {
-                  compteur[num_som]++;
-                  champ_som(num_som,ncomp) += valeur_a_sommet_compo(num_som,num_elem,ncomp);
-                  for(face_adj=0; face_adj<nb_som_elem; face_adj ++)
+                  num_som = mazone.sommet_elem(num_elem,j);
+                  if(num_som < nb_som_return)
                     {
-                      if (face_adj != j )
-                        {
-                          face_glob = elem_faces(num_elem, face_adj);
-                          min_som(num_som,ncomp) = min ( ch(face_glob),min_som(num_som,ncomp) ) ;
-                          max_som(num_som,ncomp) = max ( ch(face_glob),max_som(num_som,ncomp) ) ;
-                        }
-                    }
-                }
-            }
-        }
-    }
-  else
-    {
-      for (num_elem=0; num_elem<nb_elem_tot; num_elem++)
-        {
-          for (j=0; j<nb_som_elem; j++)
-            {
-              num_som = mazone.sommet_elem(num_elem,j);
-              if(num_som < nb_som_return)
-                {
-                  compteur[num_som]++;
-                  for (ncomp=0; ncomp<nb_compo_; ncomp++)
-                    {
+                      compteur[num_som]++;
                       champ_som(num_som,ncomp) += valeur_a_sommet_compo(num_som,num_elem,ncomp);
                       for(face_adj=0; face_adj<nb_som_elem; face_adj ++)
                         {
                           if (face_adj != j )
                             {
                               face_glob = elem_faces(num_elem, face_adj);
-                              min_som(num_som,ncomp) = min ( ch(face_glob,ncomp),min_som(num_som,ncomp) ) ;
-                              max_som(num_som,ncomp) = max ( ch(face_glob,ncomp),max_som(num_som,ncomp) ) ;
+                              min_som(num_som,ncomp) = min ( ch(face_glob),min_som(num_som,ncomp) ) ;
+                              max_som(num_som,ncomp) = max ( ch(face_glob),max_som(num_som,ncomp) ) ;
                             }
                         }
                     }
                 }
             }
         }
+      else
+        {
+          for (num_elem=0; num_elem<nb_elem_tot; num_elem++)
+            {
+              for (j=0; j<nb_som_elem; j++)
+                {
+                  num_som = mazone.sommet_elem(num_elem,j);
+                  if(num_som < nb_som_return)
+                    {
+                      compteur[num_som]++;
+                      for (ncomp=0; ncomp<nb_compo_; ncomp++)
+                        {
+                          champ_som(num_som,ncomp) += valeur_a_sommet_compo(num_som,num_elem,ncomp);
+                          for(face_adj=0; face_adj<nb_som_elem; face_adj ++)
+                            {
+                              if (face_adj != j )
+                                {
+                                  face_glob = elem_faces(num_elem, face_adj);
+                                  min_som(num_som,ncomp) = min ( ch(face_glob,ncomp),min_som(num_som,ncomp) ) ;
+                                  max_som(num_som,ncomp) = max ( ch(face_glob,ncomp),max_som(num_som,ncomp) ) ;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+      for (num_som=0; num_som<nb_som_return; num_som++)
+        for (ncomp=0; ncomp<nb_compo_; ncomp++)
+          {
+            champ_som(num_som,ncomp) /= compteur[num_som];
+            if ( methode_calcul_valeurs_sommets>1)
+              {
+                if ( champ_som(num_som,ncomp) < min_som(num_som,ncomp) )
+                  {
+                    champ_som(num_som,ncomp) = min_som(num_som,ncomp) ;
+                  }
+                if ( champ_som(num_som,ncomp) > max_som(num_som,ncomp) )
+                  {
+                    champ_som(num_som,ncomp) = max_som(num_som,ncomp) ;
+                  }
+              }
+          }
     }
-  for (num_som=0; num_som<nb_som_return; num_som++)
-    for (ncomp=0; ncomp<nb_compo_; ncomp++)
-      {
-        champ_som(num_som,ncomp) /= compteur[num_som];
-        if ( champ_som(num_som,ncomp) < min_som(num_som,ncomp) ) champ_som(num_som,ncomp) = min_som(num_som,ncomp) ;
-        if ( champ_som(num_som,ncomp) > max_som(num_som,ncomp) ) champ_som(num_som,ncomp) = max_som(num_som,ncomp) ;
-      }
+  else
+    {
+      assert(methode_calcul_valeurs_sommets==-1);
+      champ_som = 0;
+      compteur = 0;
+      int nb_comp=nb_compo_;
+      int nb_faces_tot=zone_VEF.nb_faces_tot();
+      int nb_som_face=zone_VEF.nb_som_face();
+      const IntTab& face_sommets=zone_VEF.face_sommets();
+      int face;
+      for(face=0; face<nb_faces_tot; face++)
+        {
+
+          for(int isom=0; isom<nb_som_face; isom++)
+            {
+              int som1=face_sommets(face,isom);
+              if (som1<nb_som_return)
+                {
+                  compteur[som1]++;
+                  if(nb_comp==1)
+                    {
+                      champ_som(som1,0)+=ch(face);
+                    }
+                  else
+                    {
+                      for(int k=0; k<nb_comp; k++)
+                        {
+                          champ_som(som1,k)+=ch(face,k);
+                        }
+                    }
+                }
+            }
+        }
+
+
+      for (int num_som=0; num_som<nb_som_return; num_som++)
+        for (int ncomp=0; ncomp<nb_compo_; ncomp++)
+          {
+            champ_som(num_som,ncomp) /= compteur[num_som];
+          }
+    }
   return champ_som;
 }
 
@@ -2271,60 +2340,98 @@ valeur_aux_sommets_compo(const Domaine& dom,
   const DoubleTab& ch = le_champ().valeurs();
 
   const Zone_VEF& zone_VEF = zone_vef();
-  const IntTab& elem_faces = zone_VEF.elem_faces();
 
-  int nb_elem_tot = mazone.nb_elem_tot();
+
   int nb_som = mazone.nb_som();
-  int nb_som_elem = mazone.nb_som_elem();
+
   IntVect compteur(nb_som);
-  int num_elem,num_som,j;
-  champ_som = 0;
-  compteur = 0;
-
-  DoubleVect min_som(nb_som) ;
-  DoubleVect max_som(nb_som) ;
-  int face_adj,face_glob;
-
-  for (j=0; j<nb_som; j++)
+  if (methode_calcul_valeurs_sommets>0)
     {
-      min_som(j) = 1.e+30 ;
-      max_som(j) = 1.e-30 ;
-    }
+      int nb_elem_tot = mazone.nb_elem_tot();
+      int nb_som_elem = mazone.nb_som_elem();
+      int num_elem,num_som,j;
+      champ_som = 0;
+      compteur = 0;
+      const IntTab& elem_faces = zone_VEF.elem_faces();
 
-  for (num_elem=0; num_elem<nb_elem_tot; num_elem++)
-    {
-      for (j=0; j<nb_som_elem; j++)
+
+      DoubleVect min_som(nb_som) ;
+      DoubleVect max_som(nb_som) ;
+      int face_adj,face_glob;
+
+      for (j=0; j<nb_som; j++)
         {
-          num_som = mazone.sommet_elem(num_elem,j);
-          if(num_som < nb_som)
+          min_som(j) = 1.e+30 ;
+          max_som(j) = 1.e-30 ;
+        }
+
+      for (num_elem=0; num_elem<nb_elem_tot; num_elem++)
+        {
+          for (j=0; j<nb_som_elem; j++)
             {
-              compteur[num_som]++;
-
-              champ_som(num_som) += valeur_a_sommet_compo(num_som,num_elem,ncomp);
-
-              for(face_adj=0; face_adj<nb_som_elem; face_adj ++)
+              num_som = mazone.sommet_elem(num_elem,j);
+              if(num_som < nb_som)
                 {
-                  if (face_adj != j )
-                    {
-                      face_glob = elem_faces(num_elem, face_adj);
-                      min_som(num_som) = min
-                                         ( ch(face_glob,ncomp),min_som(num_som) ) ;
-                      max_som(num_som) = max
-                                         ( ch(face_glob,ncomp),max_som(num_som) ) ;
-                    }
-                }
+                  compteur[num_som]++;
 
+                  champ_som(num_som) += valeur_a_sommet_compo(num_som,num_elem,ncomp);
+
+                  for(face_adj=0; face_adj<nb_som_elem; face_adj ++)
+                    {
+                      if (face_adj != j )
+                        {
+                          face_glob = elem_faces(num_elem, face_adj);
+                          min_som(num_som) = min
+                                             ( ch(face_glob,ncomp),min_som(num_som) ) ;
+                          max_som(num_som) = max
+                                             ( ch(face_glob,ncomp),max_som(num_som) ) ;
+                        }
+                    }
+
+                }
             }
         }
-    }
 
-  for (num_som=0; num_som<nb_som; num_som++)
+      for (num_som=0; num_som<nb_som; num_som++)
+        {
+          champ_som(num_som) /= compteur[num_som];
+          if (methode_calcul_valeurs_sommets>1)
+            {
+              if ( champ_som(num_som) < min_som(num_som) ) champ_som(num_som) = min_som(num_som) ;
+              if ( champ_som(num_som) > max_som(num_som) ) champ_som(num_som) = max_som(num_som) ;
+            }
+
+        }
+    }
+  else
     {
-      champ_som(num_som) /= compteur[num_som];
-      if ( champ_som(num_som) < min_som(num_som) ) champ_som(num_som) = min_som(num_som) ;
-      if ( champ_som(num_som) > max_som(num_som) ) champ_som(num_som) = max_som(num_som) ;
-    }
+      champ_som = 0;
+      compteur = 0;
+      int nb_faces_tot=zone_VEF.nb_faces_tot();
+      int nb_som_face=zone_VEF.nb_som_face();
+      const IntTab& face_sommets=zone_VEF.face_sommets();
+      int face;
+      for(face=0; face<nb_faces_tot; face++)
+        {
 
+          for(int isom=0; isom<nb_som_face; isom++)
+            {
+              int som1=face_sommets(face,isom);
+              if (som1<nb_som)
+                {
+                  compteur[som1]++;
+                  champ_som(som1)+=ch(face,ncomp);
+                }
+            }
+        }
+
+
+      for (int num_som=0; num_som<nb_som; num_som++)
+        {
+          champ_som(num_som) /= compteur[num_som];
+        }
+
+    }
   return champ_som;
 }
 
@@ -2442,8 +2549,8 @@ void Champ_P1NC_implementation::dimensionner_Mat_Bloc_Morse_Sym(Matrice& matrice
   int n1 = nb_colonnes_tot();
   int n2 = nb_colonnes();
   int iligne;
-  const IntVect& tab1=la_matrice.tab1_;
-  const IntVect& tab2=la_matrice.tab2_;
+  const IntVect& tab1=la_matrice.get_tab1();
+  const IntVect& tab2=la_matrice.get_tab2();
 
   matrice_tmp.typer("Matrice_Bloc");
   Matrice_Bloc& matrice=ref_cast(Matrice_Bloc,matrice_tmp.valeur());
@@ -2456,10 +2563,10 @@ void Champ_P1NC_implementation::dimensionner_Mat_Bloc_Morse_Sym(Matrice& matrice
   MBrr.dimensionner(n2,0);
   MBrv.dimensionner(n2,0);
 
-  IntVect& tab1RR=MBrr.tab1_;
-  IntVect& tab2RR=MBrr.tab2_;
-  IntVect& tab1RV=MBrv.tab1_;
-  IntVect& tab2RV=MBrv.tab2_;
+  IntVect& tab1RR=MBrr.get_set_tab1();
+  IntVect& tab2RR=MBrr.get_set_tab2();
+  IntVect& tab1RV=MBrv.get_set_tab1();
+  IntVect& tab2RV=MBrv.get_set_tab2();
 
   IntVect compteur_MBrr(n2);
   IntVect compteur_MBrv(n2);
@@ -2548,12 +2655,12 @@ void Champ_P1NC_implementation::Mat_Morse_to_Mat_Bloc(Matrice& matrice_tmp)
   Matrice_Morse& MBrr =  ref_cast(Matrice_Morse,matrice.get_bloc(0,0).valeur());
   Matrice_Morse& MBrv =  ref_cast(Matrice_Morse,matrice.get_bloc(0,1).valeur());
 
-  IntVect& tab1RR=MBrr.tab1_;
-  IntVect& tab2RR=MBrr.tab2_;
-  DoubleVect& coeffRR=MBrr.coeff_;
-  IntVect& tab1RV=MBrv.tab1_;
-  IntVect& tab2RV=MBrv.tab2_;
-  DoubleVect& coeffRV=MBrv.coeff_;
+  IntVect& tab1RR=MBrr.get_set_tab1();
+  IntVect& tab2RR=MBrr.get_set_tab2();
+  DoubleVect& coeffRR=MBrr.get_set_coeff();
+  IntVect& tab1RV=MBrv.get_set_tab1();
+  IntVect& tab2RV=MBrv.get_set_tab2();
+  DoubleVect& coeffRV=MBrv.get_set_coeff();
 
   DoubleTab ligne_tmp(n1);
   for(int i=0; i<n2; i++)
@@ -2561,8 +2668,8 @@ void Champ_P1NC_implementation::Mat_Morse_to_Mat_Bloc(Matrice& matrice_tmp)
       int k;
       // On recopie le premier bloc de la matrice dans un tableau :
       //      ligne_tmp = 0;
-      for ( k=la_matrice.tab1(i)-1; k<la_matrice.tab1(i+1)-1; k++)
-        ligne_tmp(la_matrice.tab2(k) - 1) = la_matrice.coeff(k);
+      for ( k=la_matrice.get_tab1()(i)-1; k<la_matrice.get_tab1()(i+1)-1; k++)
+        ligne_tmp(la_matrice.get_tab2()(k) - 1) = la_matrice.get_coeff()(k);
 
       // On complete la partie reelle de la matrice
       for ( k=tab1RR(i)-1; k<tab1RR(i+1)-1; k++)

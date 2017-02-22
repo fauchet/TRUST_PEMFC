@@ -501,7 +501,7 @@ void Convection_Diffusion_Fraction_Molaire_QC::assembler( Matrice_Morse& matrice
   int ndl=inco.dimension(0);
 
   int nb_c=resu.dimension(1);
-  Cerr<< " iiii" << inco(1050,nb_c-1)<<finl;
+//  Cerr<< " iiii" << inco(1050,nb_c-1)<<finl;
   for (int f=0; f<3; f++)
     {
       DoubleTab& mod_inco=inconnue().futur(f);
@@ -511,7 +511,7 @@ void Convection_Diffusion_Fraction_Molaire_QC::assembler( Matrice_Morse& matrice
           for(int c=0; c<nb_c-1; c++)
             mod_inco(i,nb_c-1)-=mod_inco(i,c);
         }
-      Cerr<<f<< " iiii" << mod_inco(1050,nb_c-1)<<" "<<inco(1050,nb_c-1)<<finl;
+//     Cerr<<f<< " iiii" << mod_inco(1050,nb_c-1)<<" "<<inco(1050,nb_c-1)<<finl;
     }
   // on retire Divu1 *inco
 
@@ -583,9 +583,9 @@ void Convection_Diffusion_Fraction_Molaire_QC::assembler( Matrice_Morse& matrice
     }
   matrice.ajouter_multvect(inco,resu);
 
-  const IntVect& tab1= matrice.tab1_;
+  const IntVect& tab1= matrice.get_tab1();
 
-  DoubleVect& coeff=matrice.coeff_;
+  DoubleVect& coeff=matrice.get_set_coeff();
   for (int i=0; i<ndl; i++)
     {
       int som=i*nb_c+nb_c-1;
