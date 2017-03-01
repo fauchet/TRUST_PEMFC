@@ -178,12 +178,12 @@ double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const d
 {
   // Valeur
   double  T=353.15;
-  // double  R=8.314;
+  double  R=8.314;
   //
-  double  Pg=1.5e5;
-  double  DO2N2 = 6.43e-5*pow( T ,1.823)/Pg;
-  double  DO2vap = 4.26e-6*pow( T ,2.334)/Pg;
-  double  DN2vap = 4.45e-6*pow( T ,2.334)/Pg;
+  //double  Pg=1.5e5;
+  double  DO2N2 = 6.43e-5*pow( T ,1.823);
+  double  DO2vap = 4.26e-6*pow( T ,2.334);
+  double  DN2vap = 4.45e-6*pow( T ,2.334);
 
   double DN2O2=DO2N2;
   double DvapO2=DO2vap;
@@ -221,8 +221,8 @@ double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const d
               a21,a22,a23,
               a31,a32,a33);
   Matrice33::inverse(M,invM);
-  Matrice33 coef(1,0,0,
-                 0,1,0,
+  Matrice33 coef(1./(R*T),0,0,
+                 0,1./(R*T),0,
                  0,0,0);
 
   for (int i=0; i<3; i++)

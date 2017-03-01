@@ -49,6 +49,7 @@ public :
   Loi_Etat_Melange_GP_Fraction_Molaire();
   void associer_fluide(const Fluide_Quasi_Compressible&);
   virtual  void associer_inconnue(const Champ_Inc_base& inconnue);
+  virtual  void associer_cg(const Champ_Inc_base& inconnue);
   void calculer_Cp();
   virtual void calculer_tab_Cp(DoubleTab& cp) const;
   void calculer_lambda();
@@ -76,7 +77,7 @@ protected :
   double Sc_;
   //  DoubleTab Masse_mol_mel;
   ArrOfDouble Mi_;
-  REF(Champ_Inc_base) ref_X_;
+  REF(Champ_Inc_base) ref_X_,ref_cg_;
 };
 
 

@@ -24,6 +24,8 @@
 
 #include <Pb_Thermohydraulique_QC.h>
 #include <Convection_Diffusion_Fraction_Molaire_QC.h>
+#include <Convection_Concentration_Gaz.h>
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // .DESCRIPTION : class Pb_Thermohydraulique_QC_fraction_molaire
@@ -43,6 +45,7 @@ public :
   int nombre_d_equations() const;
   int verifier();
 protected :
+  Convection_Concentration_Gaz eq_cg_;
   Convection_Diffusion_Fraction_Molaire_QC eq_fraction_molaire_;
 };
 

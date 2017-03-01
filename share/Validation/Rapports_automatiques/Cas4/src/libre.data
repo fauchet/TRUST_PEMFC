@@ -121,7 +121,7 @@ Read pb
 		}
 		
 	}
-	  Convection_Diffusion_Chaleur_QC
+       Convection_Diffusion_Chaleur_QC
         {
                 diffusion { }
                 convection { amont }
@@ -134,7 +134,20 @@ Read pb
                 }
                 initial_conditions { Temperature Champ_Uniforme 1 353.15 }
         }
-	  Convection_Diffusion_fraction_molaire_QC 
+       Convection_concentration_gaz
+        {
+                equation_non_resolue 1
+                convection { amont }
+                boundary_conditions 
+                {
+                        Bas paroi_adiabatique
+			Haut paroi_adiabatique
+                        Gauche  frontiere_ouverte_concentration_imposee Champ_Front_Uniforme 1 51.09
+                        Droit  frontiere_ouverte T_ext Champ_Front_Uniforme 1 51.09
+                }
+                initial_conditions { cg Champ_Uniforme 1 51.09 }
+        }
+       Convection_Diffusion_fraction_molaire_QC 
 	{
 		diffusion { pemfc { is_cas4 1
 	
@@ -150,7 +163,7 @@ Read pb
 			   Haut	  paroi
 			   Droit  frontiere_ouverte T_ext Champ_Front_Uniforme 3 0.18 0.16 0.66
 			   Gauche  Frontiere_ouverte_fraction_massique_imposee Champ_Front_Uniforme 3 0.18 0.16 0.66
-			   Bas    Paroi_flux_impose Champ_Front_Fonc_XYZ 3   -1e4/4./96500./51.09  1e4/2./96500./51.09 0. 
+			   Bas    Paroi_flux_impose Champ_Front_Fonc_XYZ 3   -1e4/4./96500.  1e4/2./96500. 0. 
 		}
 	}
 
@@ -165,17 +178,20 @@ Read pb
 				numero_op 0
 			}
 			Conc transformation {
-		 expression  1 Xi*51.09 
+		 expression  1 Xi*cg 
 		methode formule
-		sources { refchamp { pb_champ pb fraction_molaire nom_source Xi } }
+		sources { refchamp { pb_champ pb fraction_molaire nom_source Xi }
+
+		,  refchamp { pb_champ pb cg nom_source cg }
+                      }
 		}	
 		flux transformation {
-                 expression  1 Xi*51.09
+                 expression  1 Xi
                 methode formule
                 sources { refchamp { pb_champ pb Ni nom_source Xi } }
                 }
 		vitesse_diffusion transformation {
-		expression  1 Xi*51.09/rho_g
+		expression  1 Xi/rho_g
                 methode formule
 		sources { refchamp { pb_champ pb ud nom_source Xi } , interpolation { localisation elem sources { refchamp { pb_champ pb masse_volumique } } nom_source rho_g } }
 
@@ -199,6 +215,7 @@ Read pb
 			fraction_molaire som 
 			Conc som
                         flux elem			
+			cg som
                 }
 	}
 

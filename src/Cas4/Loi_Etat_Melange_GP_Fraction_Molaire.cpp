@@ -167,6 +167,10 @@ void Loi_Etat_Melange_GP_Fraction_Molaire::associer_inconnue(const Champ_Inc_bas
 }
 
 
+void Loi_Etat_Melange_GP_Fraction_Molaire::associer_cg(const Champ_Inc_base& inconnue)
+{
+  ref_cg_=inconnue;
+}
 // Description:
 //    Calcule le Cp du melange
 //    Le Cp depend du Cp de chaque espece et de la composition du melange (Yi)
@@ -494,11 +498,11 @@ void Loi_Etat_Melange_GP_Fraction_Molaire::calculer_alpha()
 // Postcondition:
 void Loi_Etat_Melange_GP_Fraction_Molaire::calculer_masse_volumique()
 {
-  const DoubleTab& tab_ICh = le_fluide->inco_chaleur().valeurs();
+  //const DoubleTab& tab_ICh = le_fluide->inco_chaleur().valeurs();
   DoubleTab& tab_rho = le_fluide->masse_volumique().valeurs();
-  double Pth = le_fluide->pression_th();
+// double Pth = le_fluide->pression_th();
   int som, n=tab_rho.size();
-  double r;
+// double r;
 
   //Correction pour calculer la masse volumique a partir de la pression
   //qui permet de conserver la masse
@@ -509,11 +513,11 @@ void Loi_Etat_Melange_GP_Fraction_Molaire::calculer_masse_volumique()
     }
 
   calculer_masse_molaire();
-
+  const DoubleTab& cg= ref_cg_->valeurs();
   for (som=0 ; som<n ; som++)
     {
-      r=8.314/Masse_mol_mel(som);
-      tab_rho_np1[som] = calculer_masse_volumique_case(Pth,tab_ICh[som],r,som);
+      // r=8.314/Masse_mol_mel(som);
+      tab_rho_np1[som] = Masse_mol_mel(som)*cg(som);//calculer_masse_volumique_case(Pth,tab_ICh[som],r,som);
 
       //Correction pour calculer la masse volumique a partir de la pression
       //qui permet de conserver la masse
@@ -549,6 +553,8 @@ void Loi_Etat_Melange_GP_Fraction_Molaire::calculer_masse_volumique()
 // Postcondition:
 double Loi_Etat_Melange_GP_Fraction_Molaire::calculer_masse_volumique_case(double P, double T, double r, int som) const
 {
+  return (Masse_mol_mel(som)*ref_cg_->valeurs()(som));
+  abort();
   if (inf_ou_egal(T,0))
     {
       Cerr << finl << "Temperature T must be defined in Kelvin." << finl;

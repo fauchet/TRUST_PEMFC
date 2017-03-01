@@ -37,33 +37,43 @@ Entree& Pb_Thermohydraulique_QC_fraction_molaire::readOn( Entree& is )
 
 int Pb_Thermohydraulique_QC_fraction_molaire::nombre_d_equations() const
 {
-  return 3;
+  return 4;
 }
 const Equation_base& Pb_Thermohydraulique_QC_fraction_molaire::equation(int i) const
 {
-  assert ((i>=0) && (i<=2));
-  if (i == 0)
-    return eq_hydraulique;
-  else
+  assert ((i>=0) && (i<=3));
+  switch(i)
     {
-      if (i==1)
-        return eq_thermique;
-      else
-        return eq_fraction_molaire_;
+    case 0:
+      return eq_hydraulique;
+    case 1:
+      return eq_thermique;
+    case 2:
+      return eq_cg_;
+    case 3:
+      return eq_fraction_molaire_;
+    default:
+      abort();
     }
+  throw;
 }
 Equation_base& Pb_Thermohydraulique_QC_fraction_molaire::equation(int i)
 {
-  assert ((i>=0) && (i<=2));
-  if (i == 0)
-    return eq_hydraulique;
-  else
+  assert ((i>=0) && (i<=3));
+  switch(i)
     {
-      if (i==1)
-        return eq_thermique;
-      else
-        return eq_fraction_molaire_;
+    case 0:
+      return eq_hydraulique;
+    case 1:
+      return eq_thermique;
+    case 2:
+      return eq_cg_;
+    case 3:
+      return eq_fraction_molaire_;
+    default:
+      abort();
     }
+  throw;
 }
 
 

@@ -365,6 +365,7 @@ Fluide_Incompressible& Convection_Diffusion_Fraction_Molaire_QC::fluide()
 // Postcondition:
 DoubleTab& Convection_Diffusion_Fraction_Molaire_QC::derivee_en_temps_inco(DoubleTab& derivee)
 {
+  abort();
   int nb_c=derivee.dimension(1);
   int ndl=derivee.dimension(0);
   Cerr<< " iiii" << inconnue().valeurs()(1050,nb_c-1)<<finl;
@@ -381,6 +382,13 @@ DoubleTab& Convection_Diffusion_Fraction_Molaire_QC::derivee_en_temps_inco(Doubl
 
 
   derivee=0;
+
+  operateur(0).ajouter(derivee);
+
+
+  // derivee/=cg;
+  const DoubleTab& cg=probleme().get_champ("cg").valeurs();
+  tab_divide_any_shape(derivee,cg);
 
   les_sources.ajouter(derivee);
 
@@ -409,7 +417,6 @@ DoubleTab& Convection_Diffusion_Fraction_Molaire_QC::derivee_en_temps_inco(Doubl
   // suite + standard
 
   operateur(1).ajouter(derivee_bis);
-  operateur(0).ajouter(derivee_bis);
   // solveur_masse->set_name_of_coefficient_temporel("masse_volumique");
   solveur_masse.appliquer(derivee_bis);
   // solveur_masse->set_name_of_coefficient_temporel("no_coeff");
@@ -485,7 +492,7 @@ DoubleTab& Convection_Diffusion_Fraction_Molaire_QC::derivee_en_temps_inco_diff_
 
 void Convection_Diffusion_Fraction_Molaire_QC::assembler( Matrice_Morse& matrice, const DoubleTab& inco, DoubleTab& resu)
 {
-
+  const DoubleTab& cg=probleme().get_champ("cg").valeurs();
   resu=0;
   //const IntVect& tab1= matrice.tab1_;
 
@@ -496,11 +503,26 @@ void Convection_Diffusion_Fraction_Molaire_QC::assembler( Matrice_Morse& matrice
 
   operateur(0).ajouter( resu );
 
+  int ndl=inco.dimension(0);
+  int nb_c=resu.dimension(1);
+  // on divise par cg chaque ligne
+  const IntVect& tab1 =matrice.get_tab1();
+  DoubleVect& coeff =matrice.get_set_coeff();
+  for (int som=0; som<ndl; som++)
+    {
+      double inv_rho=1./cg(som);
+      for(int c=0; c<nb_c; c++)
+        {
+          int in=som*nb_c+c;
+          for (int k=tab1(in)-1; k<tab1(in+1)-1; k++)
+            coeff(k)*=inv_rho;
+
+          resu(som,c)*=inv_rho;
+        }
+    }
   //  int ndl=rho.dimension(0);
 
-  int ndl=inco.dimension(0);
 
-  int nb_c=resu.dimension(1);
 //  Cerr<< " iiii" << inco(1050,nb_c-1)<<finl;
   for (int f=0; f<3; f++)
     {
@@ -583,9 +605,7 @@ void Convection_Diffusion_Fraction_Molaire_QC::assembler( Matrice_Morse& matrice
     }
   matrice.ajouter_multvect(inco,resu);
 
-  const IntVect& tab1= matrice.get_tab1();
 
-  DoubleVect& coeff=matrice.get_set_coeff();
   for (int i=0; i<ndl; i++)
     {
       int som=i*nb_c+nb_c-1;
