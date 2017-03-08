@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015, CEA
+* Copyright (c) 2015 - 2016, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,34 +14,51 @@
 *****************************************************************************/
 /////////////////////////////////////////////////////////////////////////////
 //
-// File      : Op_Diff_VEF_Face_PEMFC.h
-// Directory : $PEMFC_ROOT/src/Cas2
+// File      : Loi_Fermeture_PEMFC_Cas4.cpp
+// Directory : $PEMFC_ROOT/src
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef Op_Diff_VEF_Face_PEMFC_included
-#define Op_Diff_VEF_Face_PEMFC_included
+#include <Loi_Fermeture_PEMFC_Cas4.h>
+#include <Probleme_base.h>
+#include <Discretisation_base.h>
+#include <Equation_base.h>
 
-#include <Op_Diff_VEF_Face_Matricial.h>
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// .DESCRIPTION : class Op_Diff_VEF_Face_PEMFC
-//
-// <Description of class Op_Diff_VEF_Face_PEMFC>
-//
-/////////////////////////////////////////////////////////////////////////////
+Implemente_instanciable( Loi_Fermeture_PEMFC_Cas4, "Loi_Fermeture_PEMFC_Cas4", Loi_Fermeture_PEMFC_base ) ;
 
-class Op_Diff_VEF_Face_PEMFC : public Op_Diff_VEF_Face_Matricial
+Sortie& Loi_Fermeture_PEMFC_Cas4::printOn( Sortie& os ) const
 {
+  Loi_Fermeture_PEMFC_base::printOn( os );
+  return os;
+}
 
-  Declare_instanciable( Op_Diff_VEF_Face_PEMFC ) ;
+Entree& Loi_Fermeture_PEMFC_Cas4::readOn( Entree& is )
+{
+  Loi_Fermeture_PEMFC_base::readOn( is );
+  is_cas4_=1;
+  return is;
+}
 
-public :
-  void set_param(Param& param);
-  void completer();
-protected :
-  Nom diffu_name_;
-};
 
-#endif /* Op_Diff_VEF_Face_PEMFC_included */
+void Loi_Fermeture_PEMFC_Cas4::discretiser(const Discretisation_base& dis)
+{
+  Loi_Fermeture_PEMFC_base::discretiser(dis);
+  ref_equation_=mon_probleme().get_equation_by_name("Convection_Diffusion_fraction_molaire_QC");
+
+  dis.discretiser_champ("champ_elem",equation().zone_dis().valeur(),"pemfc_cas4","unit", equation().inconnue().valeur().nb_comp()*equation().inconnue().valeur().nb_comp(),0.,diffu_);
+  champs_compris_.ajoute_champ(diffu_);
+
+  dis.discretiser_champ("champ_elem",equation().zone_dis().valeur(),"Ni","unit", equation().inconnue().valeur().nb_comp()*dimension,0.,Ni_);
+  Ni_->fixer_nature_du_champ(multi_scalaire);
+  champs_compris_.ajoute_champ(Ni_);
+
+  dis.discretiser_champ("champ_elem",equation().zone_dis().valeur(),"ud","m/s", dimension,0.,ud_);
+  ud_->fixer_nature_du_champ(vectoriel);
+  champs_compris_.ajoute_champ(ud_);
+
+  dis.discretiser_champ("vitesse",equation().zone_dis().valeur(),"UM","m/s", dimension,1 /* une case en temps */,0.,Um_);
+  ud_->fixer_nature_du_champ(vectoriel);
+  champs_compris_.ajoute_champ(Um_);
+
+}

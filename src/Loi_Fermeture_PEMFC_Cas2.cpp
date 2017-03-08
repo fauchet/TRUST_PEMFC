@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015, CEA
+* Copyright (c) 2015 - 2016, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -12,60 +12,40 @@
 * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_Diff_VEF_Face_Matricial.h
-// Directory:   $TRUST_ROOT/src/VEF/Operateurs
-// Version:     /main/24
+// File      : Loi_Fermeture_PEMFC_Cas2.cpp
+// Directory : $PEMFC_ROOT/src
 //
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
+#include <Loi_Fermeture_PEMFC_Cas2.h>
+#include <Probleme_base.h>
+#include <Discretisation_base.h>
+#include <Equation_base.h>
 
-#ifndef Op_Diff_VEF_Face_Matricial_included
-#define Op_Diff_VEF_Face_Matricial_included
+Implemente_instanciable( Loi_Fermeture_PEMFC_Cas2, "Loi_Fermeture_PEMFC_Cas2", Loi_Fermeture_PEMFC_base ) ;
 
-#include <Op_Diff_VEF_Face.h>
-#include <Champ_base.h>
-#include <Champ_Don.h>
-#include <Ref_Champ_Don.h>
-
-class Param;
-
-class Op_Diff_VEF_Face_Matricial : public Op_Diff_VEF_Face
+Sortie& Loi_Fermeture_PEMFC_Cas2::printOn( Sortie& os ) const
 {
-  Declare_instanciable(Op_Diff_VEF_Face_Matricial);
+  Loi_Fermeture_PEMFC_base::printOn( os );
+  return os;
+}
 
-public:
+Entree& Loi_Fermeture_PEMFC_Cas2::readOn( Entree& is )
+{
+  Loi_Fermeture_PEMFC_base::readOn( is );
+  return is;
+}
 
-  virtual void set_param(Param& param);
+void Loi_Fermeture_PEMFC_Cas2::discretiser(const Discretisation_base& dis)
+{
+  Loi_Fermeture_PEMFC_base::discretiser(dis);
+  ref_equation_=mon_probleme().get_equation_by_name("Convection_diffusion_Concentration");
 
-  void associer_diffusivite(const Champ_base& );
+  dis.discretiser_champ("champ_elem",equation().zone_dis().valeur(),"pemfc_cas2","unit", equation().inconnue().valeur().nb_comp()*equation().inconnue().valeur().nb_comp(),0.,diffu_);
+  champs_compris_.ajoute_champ(diffu_);
+  diffu_.valeur().fixer_nature_du_champ(multi_scalaire);
 
-  const Champ_base& diffusivite() const;
-
-  DoubleTab& ajouter(const DoubleTab& ,  DoubleTab& ) const;
-  DoubleTab& calculer(const DoubleTab& , DoubleTab& ) const;
-
-  void ajouter_cas_multi_scalaire(const DoubleTab& inconnue,
-                                  DoubleTab& resu, DoubleTab& flux_bords,
-                                  const DoubleTab& nu,
-                                  const Zone_Cl_VEF& zone_Cl_VEF,
-                                  const Zone_VEF& zone_VEF,
-                                  int nb_comp) const;
-
-  void contribuer_a_avec(const DoubleTab&, Matrice_Morse&) const;
-  void check_diffusivity( const int& nb_comp ) const;
-  void mettre_a_jour(double);
-
-protected :
-
-
-  REF(Champ_base) diffusivite_;
-  Champ_Don diffusivity_read_from_datafile_;
-
-};
-
-
-#endif
-
-
+  //  diffu_.valeur().corriger_unite_nom_compo();
+}

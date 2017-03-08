@@ -87,8 +87,10 @@ Associate fluide gravite
 Associate pb dom
 Associate pb sch
 Associate pb fluide
-
+loi_fermeture_pemfc_cas4  loi
+associer pb loi
 Discretize pb dis
+read loi { }
 
 Read pb
 {
@@ -149,7 +151,7 @@ Read pb
         }
        Convection_Diffusion_fraction_molaire_QC 
 	{
-		diffusion { pemfc { is_cas4 1
+		diffusion { pemfc { diffusivity_fieldname pemfc_cas4
 	
 			 } 
 		}

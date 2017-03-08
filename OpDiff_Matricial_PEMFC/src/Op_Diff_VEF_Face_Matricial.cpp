@@ -41,6 +41,7 @@
 #include <Echange_global_impose.h>
 #include <Temperature_imposee_paroi.h>
 #include <Sortie_libre_pression_moyenne_imposee.h>
+#include <Debog.h>
 //
 
 Implemente_instanciable(Op_Diff_VEF_Face_Matricial,"Op_Diff_VEFMATRICIAL_const_P1NC",Op_Diff_VEF_Face);
@@ -73,17 +74,17 @@ void Op_Diff_VEF_Face_Matricial::set_param(Param& param)
 }
 
 
-void Op_Diff_VEF_Face_Matricial::check_diffusivity_read_from_datafile( const int& nb_comp ) const
+void Op_Diff_VEF_Face_Matricial::check_diffusivity( const int& nb_comp ) const
 {
-  const DoubleTab& diffusivity = diffusivity_read_from_datafile_.valeurs( );
-  int nb_coeffs = diffusivity.size( );
+  const DoubleTab& diffusivity = diffusivite_.valeur().valeurs( );
+  int nb_coeffs = diffusivity.dimension(1);
   int expected_nb_coeffs = nb_comp * nb_comp;
   assert( diffusivity.nb_dim( ) == 2 );
-  assert( diffusivity.dimension( 0 ) == 1 );
-  assert( diffusivity.dimension( 1 ) == nb_coeffs );
+  //assert( diffusivity.dimension( 0 ) == 1 );
+  //assert( diffusivity.dimension( 1 ) == nb_coeffs );
   if( nb_coeffs != expected_nb_coeffs )
     {
-      Cerr << "Error in Op_Diff_VEF_Face_Matricial::check_diffusivity_read_from_datafile "<<finl;
+      Cerr << "Error in Op_Diff_VEF_Face_Matricial::check_diffusivity "<<finl;
       Cerr << "There are "<< nb_coeffs <<" coefficients instead of "<< expected_nb_coeffs << " as expected ( nb_comp : "<<nb_comp<<" )"<<finl;
       Cerr << "Aborting..."<<finl;
       Process::abort( );
@@ -107,7 +108,7 @@ const Champ_base& Op_Diff_VEF_Face_Matricial::diffusivite() const
 
 DoubleTab& Op_Diff_VEF_Face_Matricial::ajouter(const DoubleTab& inconnue_org, DoubleTab& resu) const
 {
-
+  Debog::verifier("Op_Diff_VEF_Face_Matricial inco", inconnue_org);
   const Zone_Cl_VEF& zone_Cl_VEF = la_zcl_vef.valeur();
   const Zone_VEF& zone_VEF = la_zone_vef.valeur();
 
@@ -118,7 +119,7 @@ DoubleTab& Op_Diff_VEF_Face_Matricial::ajouter(const DoubleTab& inconnue_org, Do
   if(nb_dim==2)
     nb_comp=resu.dimension(1);
 
-  check_diffusivity_read_from_datafile( nb_comp );
+  check_diffusivity( nb_comp );
 
   // const DoubleTab& inconnue = inconnue_org;
   // const DoubleTab& nu = diffusivity_read_from_datafile_.valeurs( );
@@ -132,6 +133,7 @@ DoubleTab& Op_Diff_VEF_Face_Matricial::ajouter(const DoubleTab& inconnue_org, Do
   // // soit on a div(nu grad phi inco)
   // // cela depend si on diffuse phi_psi ou psi
   modif_par_porosite_si_flag(nu_,nu,!marq,porosite_elem);
+  Debog::verifier("Op_Diff_VEF_Face_Matricial nu", nu);
   const DoubleTab& inconnue=modif_par_porosite_si_flag(inconnue_org,tab_inconnue,marq,porosite_face);
 
 
@@ -156,6 +158,7 @@ DoubleTab& Op_Diff_VEF_Face_Matricial::ajouter(const DoubleTab& inconnue_org, Do
 
   modifier_flux(*this);
 
+  Debog::verifier("Op_Diff_VEF_Face_Matricial resu ", resu);
   return resu;
 }
 

@@ -77,12 +77,16 @@ Read c
   coefficient_diffusion Champ_Uniforme 3 5e-2 5e-2 5e-2 
 }
 
+loi_fermeture_pemfc_cas2 loi
+associer pb loi
+
 Associate pb dom
 Associate pb sch
 Associate pb fluide
 Associate pb c
 
 Discretize pb dis
+read loi { }
 Read pb
 {
 	Navier_Stokes_standard
@@ -114,7 +118,7 @@ Read pb
 	Convection_diffusion_Concentration
 	{
 		diffusion { pemfc { 
-	
+				diffusivity_fieldname pemfc_cas2	
 			 } 
 		}
 		convection { negligeable }

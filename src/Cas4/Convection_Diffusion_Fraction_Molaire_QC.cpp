@@ -128,8 +128,9 @@ int Convection_Diffusion_Fraction_Molaire_QC::lire_motcle_non_standard(const Mot
     {
 
       const Probleme_base& pb = probleme();
-      const Navier_Stokes_std& eqn_hydr = ref_cast(Navier_Stokes_std,pb.equation(0));
-      const Champ_Inc& vit_transportante =eqn_hydr.inconnue();
+      //      const Navier_Stokes_std& eqn_hydr = ref_cast(Navier_Stokes_std,pb.equation(0));
+      const Champ_base& vit_transportante =pb.get_champ("Um");
+      //const Champ_base& vit_transportante =pb.get_champ("vitesse");
       associer_vitesse(vit_transportante);
 
       terme_convectif.associer_vitesse(vit_transportante);
