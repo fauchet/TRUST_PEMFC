@@ -24,6 +24,7 @@
 
 #include <Loi_Fermeture_base.h>
 #include <Champ_Fonc.h>
+#include <Champ_Inc.h>
 #include <Ref_Equation_base.h>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ public :
   void mettre_a_jour(double);
   // void set_param(Param& param);
   // void completer();
-  void calculer_Ni(Champ_Fonc& Ni,Champ_Fonc& ud,const double& temps) const;
+  void calculer_Ni_ud(const double& temps) ;
   const Equation_base& equation() const
   {
     return ref_equation_.valeur();
@@ -53,6 +54,7 @@ public :
 protected :
   int is_cas4_;
   Champ_Fonc Ni_,ud_,diffu_;
+  Champ_Inc Um_;
   REF(Equation_base) ref_equation_;
 };
 

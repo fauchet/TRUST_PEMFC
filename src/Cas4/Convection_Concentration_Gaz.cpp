@@ -29,6 +29,8 @@
 #include <Loi_Etat_Melange_GP_Fraction_Molaire.h>
 
 Implemente_instanciable(Convection_Concentration_Gaz,"Convection_Concentration_Gaz",Equation_base);
+// XD convection_concentration_gaz eqn_base convection_concentration_gaz -1 equation of cg
+// XD attr diffusion suppress_param diffusion 1 no diffusion
 
 // Description:
 //    Simple appel a Equation_base::printOn(Sortie&)

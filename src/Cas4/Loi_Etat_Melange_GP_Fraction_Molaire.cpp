@@ -30,7 +30,7 @@
 #include <Fluide_Quasi_Compressible.h>
 
 Implemente_instanciable_sans_constructeur(Loi_Etat_Melange_GP_Fraction_Molaire,"Loi_Etat_Melange_Gaz_Parfait_Fraction_Molaire",Loi_Etat_Melange_GP);
-
+// XD melange_gaz_parfait_fraction_molaire  loi_etat_base melange_gaz_parfait_fraction_molaire -1 not_set
 Loi_Etat_Melange_GP_Fraction_Molaire::Loi_Etat_Melange_GP_Fraction_Molaire()
 {
   Sc_=-1;
@@ -75,16 +75,17 @@ Entree& Loi_Etat_Melange_GP_Fraction_Molaire::readOn(Entree& is)
   double gamma_ = -1;
   // parametre a mettre dans grains
   rabot_=0;
+  verif_fraction_=0;
   Pr_=-1;
   Param param(que_suis_je());
   //param.ajouter("Sc",&Sc_,0);
-  param.ajouter("Sc",&Sc_,Param::REQUIRED);
-  param.ajouter("masses_molaires",&Mi_,Param::REQUIRED);
-  param.ajouter( "Cp",&Cp_,Param::REQUIRED);
-  param.ajouter( "gamma",&gamma_,Param::REQUIRED);
-  param.ajouter( "Prandtl",&Pr_);
-  param.ajouter_flag( "rabot",&rabot_);
-  param.ajouter_flag( "verif_fraction",&verif_fraction_);
+  param.ajouter("Sc",&Sc_,Param::REQUIRED);  // XD_ADD_P double Sc ?
+  param.ajouter("masses_molaires",&Mi_,Param::REQUIRED);  // XD_ADD_P list masses molaires
+  param.ajouter( "Cp",&Cp_,Param::REQUIRED); // XD_ADD_P double Cp
+  param.ajouter( "gamma",&gamma_,Param::REQUIRED); // XD_ADD_P double gamma ???
+  param.ajouter( "Prandtl",&Pr_); // XD_ADD_P double Pr_
+// param.ajouter_flag( "rabot",&rabot_);
+// param.ajouter_flag( "verif_fraction",&verif_fraction_);
 
 
   param.lire_avec_accolades_depuis(is);

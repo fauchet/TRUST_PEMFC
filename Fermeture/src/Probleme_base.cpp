@@ -55,6 +55,25 @@ using ICoCo::WrongContext;
 
 Implemente_base_sans_constructeur_ni_destructeur(Probleme_base,"Probleme_base",Probleme_U);
 
+
+// XD Pb_base pb_gen_base Pb_base -3 Resolution of equations on a domain. A problem is defined by creating an object and assigning the problem type that the user wishes to resolve. To enter values for the problem objects created, the Lire (Read) interpretor is used with a data block.
+// XD  attr postraitement|Post_processing corps_postraitement postraitement 1 One post-processing (without name).
+// XD  attr postraitements|Post_processings postraitements postraitements 1 List of Postraitement objects (with name).
+// XD  attr liste_de_postraitements liste_post_ok liste_de_postraitements 1 This
+// XD  attr liste_postraitements liste_post liste_postraitements 1 This block defines the output files to be written during the computation. The output format is lata in order to use OpenDX to draw the results. This block can be divided in one or several sub-blocks that can be written at different frequencies and in different directories. Attention. The directory lata used in this example should be created before running the computation or the lata files will be lost.
+// XD  attr sauvegarde format_file sauvegarde 1 Keyword used when calculation results are to be backed up. When a coupling is performed, the backup-recovery file name must be well specified for each problem. In this case, you must save to different files and correctly specify these files when restarting the calculation.
+// XD  attr sauvegarde_simple format_file sauvegarde_simple 1 The same keyword than Sauvegarde except, the last time step only is saved.
+// XD  attr reprise format_file reprise 1 Keyword to restart a calculation based on the name_file file (see the class format_file). If format_reprise is xyz, the name_file file should be the .xyz file created by the previous calculation. With this file, it is possible to restart a parallel calculation on P processors, whereas the previous calculation has been run on N (N<>P) processors. Should the calculation be restarted, values for the tinit (see schema_temps_base) time fields are taken from the name_file file. If there is no backup corresponding to this time in the name_file, TRUST exits in error.
+//  XD  attr resume_last_time format_file resume_last_time 1 Keyword to restart a calculation based on the name_file file, restart the calculation at the last time found in the file (tinit is set to last time of saved files).
+//  XD ref domaine domaine
+//  XD ref scheme schema_temps_base
+//  XD ref milieu milieu_base
+//  XD ref loi1 loi_fermeture_base
+//  XD ref loi2 loi_fermeture_base
+//  XD ref loi3 loi_fermeture_base
+//  XD ref loi4 loi_fermeture_base
+//  XD ref loi5 loi_fermeture_base
+
 // Variables globales pour initialiser est_le_premier_postraitement_pour_nom_fic
 // et est_le_dernier_postraitement_pour_nom_fic en une seule passe.
 LIST(Nom) glob_noms_fichiers;

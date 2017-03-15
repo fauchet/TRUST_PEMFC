@@ -23,6 +23,10 @@
 
 Implemente_instanciable( Pb_Thermohydraulique_QC_fraction_molaire, "Pb_Thermohydraulique_QC_fraction_molaire", Pb_Thermohydraulique_QC ) ;
 
+// XD pb_thermohydraulique_qc_fraction_molaire pb_thermohydraulique_qc pb_thermohydraulique_qc_fraction_molaire -1 Resolution of thermohydraulic problem under smal Mach number with fraction molaire equation . NL2 Keywords for the unknowns other than pressure, velocity, temperature are : NL2 masse_volumique : density NL2 enthalpie : enthalpy NL2 pression : reduced pressure NL2 pression_tot : total pressure.
+// XD attr convection_concentration_gaz convection_concentration_gaz convection_concentration_gaz 0  equation of cg
+// XD attr convection_diffusion_fraction_molaire_qc convection_diffusion_fraction_molaire_qc convection_diffusion_fraction_molaire_qc 0 equation of Xi
+
 Sortie& Pb_Thermohydraulique_QC_fraction_molaire::printOn( Sortie& os ) const
 {
   Pb_Thermohydraulique_QC::printOn( os );

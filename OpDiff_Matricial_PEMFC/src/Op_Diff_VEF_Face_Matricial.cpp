@@ -45,6 +45,7 @@
 //
 
 Implemente_instanciable(Op_Diff_VEF_Face_Matricial,"Op_Diff_VEFMATRICIAL_const_P1NC",Op_Diff_VEF_Face);
+// XD diffusion_matricial diffusion_deriv matricial 1 matricial diffusion (only in VEF)
 
 //// printOn
 //
@@ -69,7 +70,7 @@ Entree& Op_Diff_VEF_Face_Matricial::readOn(Entree& s )
 
 void Op_Diff_VEF_Face_Matricial::set_param(Param& param)
 {
-  param.ajouter("Diffusivity",&diffusivity_read_from_datafile_);
+  param.ajouter("Diffusivity",&diffusivity_read_from_datafile_); // XD_ADD_P field_base diffusivity coefficients
 
 }
 

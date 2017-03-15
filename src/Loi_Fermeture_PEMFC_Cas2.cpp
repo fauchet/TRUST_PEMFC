@@ -25,6 +25,7 @@
 #include <Equation_base.h>
 
 Implemente_instanciable( Loi_Fermeture_PEMFC_Cas2, "Loi_Fermeture_PEMFC_Cas2", Loi_Fermeture_PEMFC_base ) ;
+// XD loi_fermeture_pemfc_cas2 loi_fermeture_base loi_fermeture_pemfc_cas2 -1 Loi for test only
 
 Sortie& Loi_Fermeture_PEMFC_Cas2::printOn( Sortie& os ) const
 {
@@ -47,5 +48,6 @@ void Loi_Fermeture_PEMFC_Cas2::discretiser(const Discretisation_base& dis)
   champs_compris_.ajoute_champ(diffu_);
   diffu_.valeur().fixer_nature_du_champ(multi_scalaire);
 
-  //  diffu_.valeur().corriger_unite_nom_compo();
+// READON optionel
+  status_ = READON_FAIT;
 }

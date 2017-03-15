@@ -26,6 +26,7 @@
 
 
 Implemente_instanciable( Loi_Fermeture_PEMFC_Cas4, "Loi_Fermeture_PEMFC_Cas4", Loi_Fermeture_PEMFC_base ) ;
+// XD loi_fermeture_pemfc_cas4 loi_fermeture_base loi_fermeture_pemfc_cas4 -1 Loi for test only
 
 Sortie& Loi_Fermeture_PEMFC_Cas4::printOn( Sortie& os ) const
 {
@@ -60,5 +61,8 @@ void Loi_Fermeture_PEMFC_Cas4::discretiser(const Discretisation_base& dis)
   dis.discretiser_champ("vitesse",equation().zone_dis().valeur(),"UM","m/s", dimension,1 /* une case en temps */,0.,Um_);
   ud_->fixer_nature_du_champ(vectoriel);
   champs_compris_.ajoute_champ(Um_);
+
+// READON optionel
+  status_ = READON_FAIT;
 
 }

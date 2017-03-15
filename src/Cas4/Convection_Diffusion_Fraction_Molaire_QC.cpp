@@ -40,7 +40,7 @@
 #include <Champ_Uniforme.h>
 
 Implemente_instanciable(Convection_Diffusion_Fraction_Molaire_QC,"Convection_Diffusion_Fraction_Molaire_QC",Convection_Diffusion_std);
-
+// XD convection_diffusion_fraction_molaire_qc eqn_base convection_diffusion_fraction_molaire_qc -1 equatoin of Xi
 
 // Description:
 //    Simple appel a: Convection_Diffusion_std::printOn(Sortie&)

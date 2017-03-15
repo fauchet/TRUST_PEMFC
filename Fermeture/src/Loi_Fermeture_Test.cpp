@@ -26,6 +26,7 @@
 #include <Param.h>
 
 Implemente_instanciable( Loi_Fermeture_Test, "Loi_Fermeture_Test", Loi_Fermeture_base ) ;
+// XD loi_fermeture_test loi_fermeture_base loi_fermeture_test -1 Loi for test only
 
 Sortie& Loi_Fermeture_Test::printOn( Sortie& os ) const
 {
@@ -42,7 +43,7 @@ Entree& Loi_Fermeture_Test::readOn( Entree& is )
 
 void Loi_Fermeture_Test::set_param(Param& param)
 {
-  param.ajouter("coef",&coef_);
+  param.ajouter("coef",&coef_); // XD_ADD_P double coefficient
 }
 void Loi_Fermeture_Test::mettre_a_jour(double temps)
 {

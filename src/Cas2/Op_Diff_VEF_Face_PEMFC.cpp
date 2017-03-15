@@ -28,6 +28,7 @@
 #include <Probleme_base.h>
 
 Implemente_instanciable( Op_Diff_VEF_Face_PEMFC, "Op_Diff_VEFPEMFC_const_P1NC", Op_Diff_VEF_Face_Matricial ) ;
+// XD diffusion_pemfc diffusion_deriv pemfc 1 diffusion (only in VEF)
 
 Sortie& Op_Diff_VEF_Face_PEMFC::printOn( Sortie& os ) const
 {
@@ -51,7 +52,7 @@ Entree& Op_Diff_VEF_Face_PEMFC::readOn( Entree& is )
 void Op_Diff_VEF_Face_PEMFC::set_param(Param& param)
 {
 // param.ajouter("is_cas4",&is_cas4_);
-  param.ajouter("diffusivity_fieldname",&diffu_name_,Param::REQUIRED);
+  param.ajouter("diffusivity_fieldname",&diffu_name_,Param::REQUIRED); // XD_ADD_P chaine name of the diffusity field
   // abort();
 }
 
