@@ -1,0 +1,161 @@
+--         Progression:  25 # - Assemblage du motif de remplissage de la matrice
+--         Progression:  25 # - Assemblage des matrices
+--         Progression:  25 # - Factorisation des matrices
+--         Progression:  25 # - Solution du système linéaire
+2    9.2e-006    3.7e-005   1.0000000    3.8e-005   16   12   24 3.9e-011 1.7e-013
+
+Paramètre de continuation I_0 = 500.
+---        Progression:  32 # - Assemblage des matrices
+---        Progression:  32 # - Assemblage du motif de remplissage de la matrice
+---        Progression:  32 # - Assemblage des matrices
+---        Progression:  32 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---        Progression:  32 # - Solution du système linéaire
+---        Progression:  32 # - Assemblage des matrices
+---        Progression:  32 # - Solution du système linéaire
+1     0.00012         1.5   1.0000000         2.1   18   13   26   1e-006 5.2e-008
+---        Progression:  33 # - Assemblage du motif de remplissage de la matrice
+---        Progression:  33 # - Assemblage des matrices
+---        Progression:  33 # - Factorisation des matrices
+---        Progression:  33 # - Solution du système linéaire
+---        Progression:  33 # - Assemblage des matrices
+---        Progression:  33 # - Solution du système linéaire
+2    1.8e-005     0.00033   1.0000000     0.00012   19   14   28  0.00065 3.9e-005
+---        Progression:  34 # - Solution du système linéaire
+---        Progression:  34 # - Assemblage des matrices
+---        Progression:  34 # - Factorisation des matrices
+---        Progression:  34 # - Solution du système linéaire
+---        Progression:  34 # - Assemblage des matrices
+---        Progression:  34 # - Solution du système linéaire
+3    2.9e-005    3.6e-005   1.0000000    1.8e-005   20   15   30   2e-006 2.8e-007
+
+Paramètre de continuation I_0 = 700.
+----       Progression:  40 # - Assemblage des matrices
+----       Progression:  40 # - Assemblage du motif de remplissage de la matrice
+----       Progression:  40 # - Assemblage des matrices
+----       Progression:  40 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+----       Progression:  40 # - Solution du système linéaire
+1     0.00011         1.5   1.0000000         2.4   22   16   32 1.2e-005 3.6e-007
+----       Progression:  40 # - Assemblage du motif de remplissage de la matrice
+----       Progression:  40 # - Assemblage des matrices
+----       Progression:  40 # - Factorisation des matrices
+----       Progression:  40 # - Solution du système linéaire
+2    9.2e-005    3.6e-005   1.0000000     0.00011   23   17   34 1.7e-011 5.8e-013
+
+Paramètre de continuation I_0 = 1000.
+----       Progression:  47 # - Assemblage des matrices
+----       Progression:  47 # - Assemblage du motif de remplissage de la matrice
+----       Progression:  47 # - Assemblage des matrices
+----       Progression:  47 # - Prise en compte des contraintes
+----       Progression:  47 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+----       Progression:  47 # - Solution du système linéaire
+1     0.00021         3.3   1.0000000         4.3   25   18   36 7.4e-010   2e-011
+----       Progression:  48 # - Solution du système linéaire
+----       Progression:  48 # - Assemblage des matrices
+----       Progression:  48 # - Factorisation des matrices
+----       Progression:  48 # - Solution du système linéaire
+2    1.4e-005    3.5e-005   1.0000000     0.00021   26   19   38 4.1e-011 2.8e-013
+
+Paramètre de continuation I_0 = 1500.
+-----      Progression:  55 # - Assemblage des matrices
+-----      Progression:  55 # - Assemblage du motif de remplissage de la matrice
+-----      Progression:  55 # - Assemblage des matrices
+-----      Progression:  55 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-----      Progression:  55 # - Solution du système linéaire
+1      0.0041         8.6   1.0000000         5.4   28   20   40 4.1e-010 8.9e-014
+-----      Progression:  56 # - Solution du système linéaire
+-----      Progression:  56 # - Assemblage des matrices
+-----      Progression:  56 # - Prise en compte des contraintes
+-----      Progression:  56 # - Factorisation des matrices
+-----      Progression:  56 # - Solution du système linéaire
+2     0.00012    3.1e-005   1.0000000      0.0016   29   21   42   4e-011 2.6e-013
+
+Paramètre de continuation I_0 = 2000.
+------     Progression:  62 # - Prise en compte des contraintes
+------     Progression:  62 # - Assemblage des matrices
+------     Progression:  62 # - Prise en compte des contraintes
+------     Progression:  62 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+------     Progression:  62 # - Solution du système linéaire
+1        0.03          36   1.0000000         3.4   31   22   44   0.0027 3.8e-005
+------     Progression:  63 # - Assemblage du motif de remplissage de la matrice
+------     Progression:  63 # - Assemblage des matrices
+------     Progression:  63 # - Factorisation des matrices
+------     Progression:  63 # - Solution du système linéaire
+------     Progression:  63 # - Assemblage des matrices
+------     Progression:  63 # - Solution du système linéaire
+2    9.3e-005    2.6e-005   1.0000000       0.055   32   23   46 4.7e-011 2.2e-013
+
+Paramètre de continuation I_0 = 3000.
+-------    Progression:  70 # - Prise en compte des contraintes
+-------    Progression:  70 # - Assemblage des matrices
+-------    Progression:  70 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-------    Progression:  70 # - Solution du système linéaire
+1      0.0016          22   1.0000000         9.2   34   24   48 3.4e-010 8.9e-014
+-------    Progression:  71 # - Assemblage du motif de remplissage de la matrice
+-------    Progression:  71 # - Assemblage des matrices
+-------    Progression:  71 # - Factorisation des matrices
+-------    Progression:  71 # - Solution du système linéaire
+-------    Progression:  71 # - Assemblage des matrices
+-------    Progression:  71 # - Solution du système linéaire
+2    2.1e-005    2.3e-005   1.0000000      0.0021   35   25   50 4.7e-011 2.8e-013
+
+Paramètre de continuation I_0 = 5000.
+-------    Progression:  77 # - Assemblage du motif de remplissage de la matrice
+-------    Progression:  77 # - Assemblage des matrices
+-------    Progression:  77 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-------    Progression:  77 # - Solution du système linéaire
+1      0.0012          62   1.0000000           2   37   26   52 2.8e-010   9e-014
+-------    Progression:  78 # - Assemblage du motif de remplissage de la matrice
+-------    Progression:  78 # - Assemblage des matrices
+-------    Progression:  78 # - Factorisation des matrices
+-------    Progression:  78 # - Solution du système linéaire
+-------    Progression:  78 # - Assemblage des matrices
+-------    Progression:  78 # - Solution du système linéaire
+2    4.7e-006    1.9e-005   1.0000000      0.0012   38   27   54 6.7e-011   3e-013
+
+Paramètre de continuation I_0 = 7000.
+--------   Progression:  85 # - Assemblage du motif de remplissage de la matrice
+--------   Progression:  85 # - Assemblage des matrices
+--------   Progression:  85 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--------   Progression:  85 # - Solution du système linéaire
+--------   Progression:  85 # - Assemblage des matrices
+--------   Progression:  85 # - Solution du système linéaire
+1       0.067          65   1.0000000           4   40   28   56   0.0032 6.8e-005
+--------   Progression:  86 # - Assemblage du motif de remplissage de la matrice
+--------   Progression:  86 # - Assemblage des matrices
+--------   Progression:  86 # - Prise en compte des contraintes
+--------   Progression:  86 # - Factorisation des matrices
+--------   Progression:  86 # - Solution du système linéaire
+2    2.8e-005      0.0032   1.0000000       0.059   41   29   58   0.0052 1.7e-005
+--------   Progression:  86 # - Assemblage du motif de remplissage de la matrice
+--------   Progression:  86 # - Assemblage des matrices
+--------   Progression:  86 # - Factorisation des matrices
+--------   Progression:  86 # - Solution du système linéaire
+3      2e-005    1.7e-005   1.0000000    2.8e-005   42   30   60 6.8e-011 1.9e-013
+---------  Progression:  92 # - Assemblage des matrices
+
+Paramètre de continuation I_0 = 10000.
+---------  Progression:  92 # - Assemblage du motif de remplissage de la matrice
+---------  Progression:  92 # - Assemblage des matrices
+---------  Progression:  92 # - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---------  Progression:  92 # - Solution du système linéaire
+---------  Progression:  92 # - Assemblage des matrices
+---------  Progression:  92 # - Solution du système linéaire
+1       0.011          54   1.0000000         2.2   44   31   62 2.4e-010 8.9e-014
+---------  Progression:  93 # - Assemblage du motif de remplissage de la matrice
+---------  Progression:  93 # - Assemblage des matrices
+---------  Progression:  93 # - Factorisation des matrices
+---------  Progression:  93 # - Solution du système linéaire
+2    4.1e-006    1.7e-005   1.0000000      0.0097   45   32   64 2.3e-010 1.4e-013
+---------- Progression: 100 # - Assemblage des matrices
+Solveur stationnaire 1 dans Etude 1/Solution 1 (sol1): durée du calcul: 478 s. (7 minutes, 58 secondes)
+Mémoire physique: 1.78 GB
+Mémoire virtuelle: 1.89 GB

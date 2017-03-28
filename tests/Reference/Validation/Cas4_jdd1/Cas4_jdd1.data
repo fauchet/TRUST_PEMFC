@@ -20,9 +20,13 @@ Mailler dom
 		Bord Droit  X = 2	0. <= Y <= 2    
 		}
 }
-/* raffiner_isotrope dom */
-Transformer dom x*1e-3 y*0.5e-3
+Transformer dom x y*0.5
 Trianguler_H dom
+
+
+
+dilate dom 1e-3
+
 # END MESH #
 
 # BEGIN PARTITION 
@@ -42,8 +46,9 @@ Scatter DOM.Zones dom
 
 VEFPrep1b dis
 # ecrire dis #
-lire dis { P0 P1 changement_de_base_P1bulle 1 modif_div_face_dirichlet 1 cl_pression_sommet_faible 0  }
-
+/*
+lire dis { P0 P1 changement_de_base_P1bulle 1 modif_div_face_dirichlet 0 cl_pression_sommet_faible 0  }
+*/
 Scheme_euler_implicit sch
 Read sch
 {
@@ -53,13 +58,13 @@ Read sch
 	dt_max 5e-1
 	dt_impr 0.001
 	dt_sauv 100
-	seuil_statio 1e-9
+	seuil_statio 1e-6
 solveur implicite { 
 	solveur gmres { diag seuil -1 nb_it_max 10 impr dim_espace_krilov 10 }
 	solveur petsc bicgstab { seuil 1e-12 seuil_relatif 0e-3 impr precond  pilut { level 30 epsilon 0.01   } }
 		solveur gmres { diag seuil -1 nb_it_max 5 impr  }
  }
-facsec 5
+facsec 5e2
 /* facsec_max 20 */
 }
 
@@ -77,7 +82,7 @@ Read fluide
 
         }
 	traitement_pth constant
-temps_debut_prise_en_compte_drho_dt 100.
+temps_debut_prise_en_compte_drho_dt 100.e4
 }
 
 Champ_Uniforme gravite
@@ -90,7 +95,9 @@ Associate pb fluide
 loi_fermeture_pemfc_cas4  loi
 associer pb loi
 Discretize pb dis
-read loi { }
+read loi { 
+VGDL 2 0. 0.0005070803631101063  /* a retirer plus tard.... */
+ }
 
 Read pb
 {
@@ -111,20 +118,22 @@ Read pb
 		diffusion { }
 		initial_conditions
 		{
-			vitesse Champ_Uniforme 2 0.2 0.
+			vitesse Champ_fonc_xyz dom 2 0.2*6*y/1e-3*(1-y/1e-3) 0.
 		}
 		boundary_conditions
 		{
-			Bas Paroi_fixe	
+			Bas  frontiere_ouverte_vitesse_imposee  champ_front_fonc_xyz 2 0 0
+
 			Haut  Paroi_fixe
 			Droit    frontiere_ouverte_pression_imposee champ_front_uniforme 1 0.	
 
-			Gauche	frontiere_ouverte_vitesse_imposee champ_front_uniforme 2 0.2 0
+			Gauche	frontiere_ouverte_vitesse_imposee champ_front_fonc_xyz 2 0.2*6*y/1e-3*(1-y/1e-3) 0
 		}
 		
 	}
        Convection_Diffusion_Chaleur_QC
         {
+                equation_non_resolue 1
                 diffusion { }
                 convection { amont }
                 boundary_conditions 
@@ -155,7 +164,9 @@ Read pb
 	
 			 } 
 		}
+		convection { negligeable }
 		convection { amont  }
+		convection { muscl  }
 		initial_conditions
 		{
 			fraction_molaire Champ_Fonc_XYZ dom 3 0.18 0.16 0.66
@@ -165,7 +176,7 @@ Read pb
 			   Haut	  paroi
 			   Droit  frontiere_ouverte T_ext Champ_Front_Uniforme 3 0.18 0.16 0.66
 			   Gauche  Frontiere_ouverte_fraction_massique_imposee Champ_Front_Uniforme 3 0.18 0.16 0.66
-			   Bas    Paroi_flux_impose Champ_Front_Fonc_XYZ 3   -1e4/4./96500.  1e4/2./96500. 0. 
+			   Bas    Paroi_flux_impose Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/2./96500. 0. 
 		}
 	}
 
@@ -187,36 +198,46 @@ Read pb
 		,  refchamp { pb_champ pb cg nom_source cg }
                       }
 		}	
-		flux transformation {
-                 expression  1 Xi
-                methode formule
-                sources { refchamp { pb_champ pb Ni nom_source Xi } }
+		vlisse  interpolation {
+		localisation som
+                sources { refchamp { pb_champ pb vitesse  } }
                 }
-		vitesse_diffusion transformation {
-		expression  1 Xi/rho_g
+		umlisse  interpolation {
+		localisation som
+                sources { refchamp { pb_champ pb um  } }
+                }
+		flux interpolation {
+		localisation som
+                sources { refchamp { pb_champ pb Ni  } }
+                }
+		vitesse_diffusion  interpolation { localisation som sources { transformation {
+		expression  1 ud/rho_g
                 methode formule
-		sources { refchamp { pb_champ pb ud nom_source Xi } , interpolation { localisation elem sources { refchamp { pb_champ pb masse_volumique } } nom_source rho_g } }
+		sources { refchamp { pb_champ pb ud nom_source ud } , interpolation { localisation elem sources { refchamp { pb_champ pb masse_volumique } } nom_source rho_g } }
 
+		}
+		}
 		}
 		}
 		format lml	
 		probes {
 		vitesse_diffusion vitesse_diffusion  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
-		vitesse vitesse  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
+		vitesse vlisse  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
+		um  umlisse  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
 		Conc Conc  periode 1e-2 position_like vitesse_diffusion
 		masse_volumique masse_volumique  periode 1e-2 position_like vitesse_diffusion
 		flux flux  periode 1e-2 position_like vitesse_diffusion
 }
-                fields dt_post 10.
+                fields dt_post 10.e-0
                 {
                         pression som
-                        vitesse som 
+                        vitesse som
                         temperature som
                         masse_volumique elem
 			ud elem
 			fraction_molaire som 
 			Conc som
-                        flux elem			
+                        flux 
 			cg som
                 }
 	}

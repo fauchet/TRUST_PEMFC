@@ -89,8 +89,16 @@ int Convection_Concentration_Gaz::lire_motcle_non_standard(const Motcle& mot, En
   if (mot=="convection")
     {
       Cerr << "Reading and typing of the convection operator : " << finl;
-      const Champ_base& ch_vitesse_transportante = vitesse_pour_transport();
+      //   const Champ_base& ch_vitesse_transportante = vitesse_pour_transport();
+
+      const Probleme_base& pb = probleme();
+      const Champ_base& ch_vitesse_transportante =pb.get_champ("Um");
+      //const Champ_base& vit_transportante =pb.get_champ("vitesse");
+
+
       associer_vitesse(ch_vitesse_transportante);
+
+
       terme_convectif.associer_vitesse(ch_vitesse_transportante);
       is >> terme_convectif;
       return 1;

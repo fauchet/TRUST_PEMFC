@@ -15,7 +15,7 @@ source TRUST/TRUST-1.7.4/env_TRUST.sh
 
 # get code
 
-git clone  http://github.com/fauchet/TRUST_PEMFC.git 
+git clone  https://github.com/fauchet/TRUST_PEMFC.git 
 
 # build code
 

@@ -49,5 +49,5 @@ void Loi_Fermeture_PEMFC_Cas2::discretiser(const Discretisation_base& dis)
   diffu_.valeur().fixer_nature_du_champ(multi_scalaire);
 
 // READON optionel
-  status_ = READON_FAIT;
+//  status_ = READON_FAIT;
 }

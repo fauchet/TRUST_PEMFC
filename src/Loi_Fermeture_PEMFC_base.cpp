@@ -28,7 +28,9 @@
 #include <Zone_VF.h>
 #include <Debog.h>
 #include <Check_espace_virtuel.h>
-
+#include <Fluide_Quasi_Compressible.h>
+#include <Loi_Etat_Melange_GP_Fraction_Molaire.h>
+#include <Neumann_paroi.h>
 
 Implemente_base( Loi_Fermeture_PEMFC_base, "Loi_Fermeture_PEMFC_base", Loi_Fermeture_base ) ;
 
@@ -229,27 +231,28 @@ double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const d
   double a32=XN2*invDAvapN2;
   double a33=-XO2*invDAO2N2-Xvap*invDAvapN2;
 
+
+  a21 = 1;
+
+  a22 = 1;
+  a23 = 1;
+
+
+
   Matrice33 M(a11,a12,a13,
               a21,a22,a23,
               a31,a32,a33);
-  for (int j=0; j<3; j++)
-    {
-      double t=0;
-      for (int i=0; i<3; i++)
-        t+=M(i,j);
-      if (!est_egal(t,0)) throw;
-    }
-  for (int i=2; i<3; i++)
-    for (int j=0; j<3; j++)
-      {
-        M(i,j)+=1.e3;
-      }
   Matrice33::inverse(M,invM);
+  Matrice33 coef(1./(R*T),0,0,
+                 0,0./(R*T),0,
+                 0,0,1./(R*T));
+
   for (int i=0; i<3; i++)
     for (int j=0; j<3; j++)
       {
         double p=0;
-        p+=invM(i,j);
+        for (int k=0; k<3; k++)
+          p+=invM(i,k)*coef(k,j);
         Diff(elem,i*3+j)=-p;
       }
 #endif
@@ -435,12 +438,24 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
 
   const Champ_base& vitesse=mon_probleme().get_champ("vitesse");
 
-  ArrOfDouble mi(3);
-  mi[0]=32e-3;
-  mi[1]=18e-3;
-  mi[2]=28e-3;
+  const Fluide_Quasi_Compressible& le_fluideQC=ref_cast(Fluide_Quasi_Compressible,mon_probleme().milieu());
+  const Loi_Etat_Melange_GP_Fraction_Molaire& loi_etat = ref_cast(Loi_Etat_Melange_GP_Fraction_Molaire,le_fluideQC.loi_etat().valeur());
+  const ArrOfDouble& mi=loi_etat.get_masses_molaires();
+  /*  ArrOfDouble mi(3);
+    mi[0]=32e-3;
+    mi[1]=18e-3;
+    mi[2]=28e-3;
+  */
+
   const DoubleTab& nu=diffu_.valeurs();
+
+  Debog::verifier("loi nu",nu);
+  Debog::verifier("loi inco",inco);
+
   Champ_P1NC::calcul_gradient(inco,grad,ref_cast(Zone_Cl_VEF,equation().zone_Cl_dis().valeur()));
+  Debog::verifier("loi grad",grad);
+  grad.echange_espace_virtuel();
+  Debog::verifier("loi grad",grad);
   for (int elem=0; elem<grad.dimension(0); elem++)
     {
 
@@ -476,14 +491,54 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
         }
     }
   ude.echange_espace_virtuel();
+  Ni.echange_espace_virtuel();
+
   // on devrait appeler Discretsisation_tools
   Discretisation_tools_cells_to_faces(ud_,Um_);
   Um_.valeurs()*=-1;
   tab_divide_any_shape(Um_.valeurs(),rho_face);
   Um_.valeurs()+=vitesse.valeurs();
-  if (1)
+  if (0)
     Um_.valeurs()=vitesse.valeurs();
+  if (1)
+    {
 
+      //  ArrOfDouble VGDL(dimension);
+      //  VGDL(1)= 0.005070803631101063;
+
+      // assert( nb_comp>1 );
+      int nb_bords= equation().zone_Cl_dis().nb_cond_lim();
+
+      int ok=0;
+      for (int n_bord=0; n_bord<nb_bords; n_bord++)
+        {
+          const Cond_lim& la_cl = equation().probleme().equation(0).zone_Cl_dis().les_conditions_limites(n_bord);
+          const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
+          if (le_bord.le_nom()=="Bas")
+            {
+              DoubleTab& val= ref_cast_non_const(DoubleTab,la_cl.valeur().champ_front().valeur().valeurs());
+              ok=1;
+              int num1 = 0;
+              int num2 = le_bord.nb_faces_tot();
+              //int nb_faces_bord_reel = le_bord.nb_faces();
+              for (int ind_face=num1; ind_face<num2; ind_face++)
+                {
+                  int num_face = le_bord.num_face(ind_face);
+                  for (int dir=0 ; dir<dimension; dir++)
+                    {
+                      double vgdl=VGDL_(dir);
+                      val(ind_face,dir)=(vitesse.valeurs()(num_face,dir)-(Um_(num_face,dir)-vgdl));
+                      Um_(num_face,dir)=vgdl;
+                    }
+                }
+            }
+        }
+
+      if (!ok) abort();
+    }
+  Debog::verifier("loi Ni",Ni_);
+  Debog::verifier("loi ud",ud_);
+  Debog::verifier("loi Um",Um_);
   Ni_.changer_temps(temps);
   ud_.changer_temps(temps);
   Um_.changer_temps(temps);

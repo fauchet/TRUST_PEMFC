@@ -1,0 +1,283 @@
+Parameters {
+	Title "Cas4_jdd2 2D calculation"
+	Author "fauchet"
+ 	TestCase .  libre.data  /* jdd */
+}
+
+
+
+chapter {
+	Title concentration
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
+
+	curve {
+	file comsol/Cas_4_c_O2
+	}
+	curve {
+	segment libre CONC
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol/Cas_4_c_N2
+	}
+	curve {
+	segment libre CONC
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol/Cas_4_c_vap
+	}
+	
+		
+	curve {
+	segment libre CONC
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol/Cas_4_rhog
+	}
+	curve {
+	segment libre MASSE_VOLUMIQUE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+}
+Chapter {
+	Title flux
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol/Cas_4_N_O2_x
+	}
+	curve {
+	segment libre FLUX
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol/Cas_4_N_O2_y
+	}
+	curve {
+	segment libre FLUX
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
+
+	curve {
+	file comsol/Cas_4_N_vap_x
+	}
+	curve {
+	segment libre FLUX
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
+
+	curve {
+	file comsol/Cas_4_N_vap_y
+	}
+	curve {
+	segment libre FLUX
+	colonnes ($1) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol/Cas_4_N_N2_x
+	}
+	curve {
+	segment libre FLUX
+	colonnes ($1) ($6)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol/Cas_4_N_N2_y
+	}
+	curve {
+	segment libre FLUX
+	colonnes ($1) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse
+	Figure {
+		include_description_curves 0
+	labely U_X
+
+	titre 
+	curve {
+	file comsol/Cas_4_u_mass
+	}
+	curve {
+	segment libre VITESSE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol/Cas_4_v_mass
+	}
+	curve {
+	segment libre VITESSE
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title vitesse_diffusion
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol/Cas_4_u_diff_mass
+	}
+	curve {
+	segment libre VITESSE_DIFFUSION
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol/Cas_4_v_diff_mass
+	}
+	curve {
+	segment libre VITESSE_DIFFUSION
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+
+
+
+	Title "Convergence" 
+
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file libre.dt_ev
+			columns ($1) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
+}
+
+Chapter {
+	Title "Visualization via VisIt" 
+
+	visu {
+		title "MESH"
+		mesh libre.lata dom
+	}
+
+	visu {
+		title "PRESSION SOM"
+		pseudocolor libre.lata dom PRESSION SOM
+	}
+
+	visu {
+		title "VITESSE_X SOM"
+		pseudocolor libre.lata dom VITESSE_X SOM
+	}
+
+
+
+	visu {
+		title "MASSE_VOLUMIQUE ELEM"
+		pseudocolor libre.lata dom MASSE_VOLUMIQUE ELEM
+	}
+
+
+
+
+	visu {
+		title "XO2 SOM"
+		pseudocolor libre.lata dom FRACTION_MOLAIRE_0 SOM
+	}
+
+
+	visu {
+		title "CO2 SOM"
+		pseudocolor libre.lata dom CONC_0 SOM
+	}
+
+}
+

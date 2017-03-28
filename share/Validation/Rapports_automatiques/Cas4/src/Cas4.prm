@@ -1,23 +1,26 @@
 Parameters {
-	Title "Cas4_jdd2 2D calculation"
+	Title "Cas4
 	Author "fauchet"
- 	TestCase .  libre.data  /* jdd */
+	TestCase . aniso_I4
+	TestCase . aniso_I5
+	TestCase . iso
+	TestCase . iso_big_vd
+	TestCase . iso_S_N2
 }
 
 
-
 chapter {
-	Title concentration
+	Title concentration aniso_I4
 	Figure {
 	include_description_curves 0
 	labelx y
 	labely  cO2
 
 	curve {
-	file comsol/Cas_4_c_O2
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_c_O2.txt
 	}
 	curve {
-	segment libre CONC
+	segment aniso_I4 CONC
 	colonnes ($1) ($2)
 	style linespoints
 	}
@@ -28,10 +31,10 @@ chapter {
 		labely cN2
 
 	curve {
-	file comsol/Cas_4_c_N2
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_c_N2.txt
 	}
 	curve {
-	segment libre CONC
+	segment aniso_I4 CONC
 	colonnes ($1) ($4)
 	style linespoints
 	}
@@ -41,12 +44,12 @@ chapter {
 	labelx y
 	labely comsol cvap
 	curve {
-	file comsol/Cas_4_c_vap
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_c_vap.txt
 	}
 	
 		
 	curve {
-	segment libre CONC
+	segment aniso_I4 CONC
 	colonnes ($1) ($3)
 	style linespoints
 	}
@@ -54,32 +57,32 @@ chapter {
 }
 
 chapter {
-	Title rho
+	Title rho aniso_I4
 	Figure {
 		include_description_curves 0
 	labelx y
 	labely rho
 	curve {
-	file comsol/Cas_4_rhog
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_rhog.txt
 	}
 	curve {
-	segment libre MASSE_VOLUMIQUE
+	segment aniso_I4 MASSE_VOLUMIQUE
 	colonnes ($1) ($2)
 	style linespoints
 	}
 	}
 }
 Chapter {
-	Title flux
+	Title flux aniso_I4
 	Figure {
 		include_description_curves 0
 	labelx y
 	labely flux_O2_x
 	curve {
-	file comsol/Cas_4_N_O2_x
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_N_O2_x.txt
 	}
 	curve {
-	segment libre FLUX
+	segment aniso_I4 FLUX
 	colonnes ($1) ($2)
 	style linespoints
 	}
@@ -90,10 +93,10 @@ Chapter {
 	labelx y
 	labely flux_N_O2_y
 	curve {
-	file comsol/Cas_4_N_O2_y
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_N_O2_y.txt
 	}
 	curve {
-	segment libre FLUX
+	segment aniso_I4 FLUX
 	colonnes ($1) ($3)
 	style linespoints
 	}
@@ -104,10 +107,10 @@ Chapter {
 	labely flux_vap_x
 
 	curve {
-	file comsol/Cas_4_N_vap_x
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_N_vap_x.txt
 	}
 	curve {
-	segment libre FLUX
+	segment aniso_I4 FLUX
 	colonnes ($1) ($4)
 	style linespoints
 	}
@@ -120,10 +123,10 @@ Chapter {
 	labely flux_N_vap_y
 
 	curve {
-	file comsol/Cas_4_N_vap_y
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_N_vap_y.txt
 	}
 	curve {
-	segment libre FLUX
+	segment aniso_I4 FLUX
 	colonnes ($1) ($5)
 	style linespoints
 	}
@@ -133,10 +136,10 @@ Chapter {
 	labelx y
 	labely flux_N2_x
 	curve {
-	file comsol/Cas_4_N_N2_x
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_N_N2_x.txt
 	}
 	curve {
-	segment libre FLUX
+	segment aniso_I4 FLUX
 	colonnes ($1) ($6)
 	style linespoints
 	}
@@ -147,27 +150,27 @@ Chapter {
 	labelx y
 	labely flux_N_N2_y
 	curve {
-	file comsol/Cas_4_N_N2_y
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_N_N2_y.txt
 	}
 	curve {
-	segment libre FLUX
+	segment aniso_I4 FLUX
 	colonnes ($1) ($7)
 	style linespoints
 	}
 	}
 }
 chapter {
-	Title vitesse
+	Title vitesse aniso_I4
 	Figure {
 		include_description_curves 0
 	labely U_X
 
 	titre 
 	curve {
-	file comsol/Cas_4_u_mass
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_U_vol.txt
 	}
 	curve {
-	segment libre VITESSE
+	segment aniso_I4 UM 
 	colonnes ($1) ($2)
 	style linespoints
 	}
@@ -177,10 +180,18 @@ chapter {
 	labelx y
 	labely U_y
 	curve {
-	file comsol/Cas_4_v_mass
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_V_vol.txt
 	}
 	curve {
-	segment libre VITESSE
+	segment aniso_I4 UM
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_v_mass.txt
+	}
+	curve {
+	segment aniso_I4 VITESSE
 	colonnes ($1) ($3)
 	style linespoints
 	}
@@ -188,16 +199,16 @@ chapter {
 }
 
 chapter {
-	Title vitesse_diffusion
+	Title vitesse_diffusion aniso_I4
 	Figure {
 		include_description_curves 0
 	labelx y
 	labely diffU_X
 	curve {
-	file comsol/Cas_4_u_diff_mass
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_u_diff_mass.txt
 	}
 	curve {
-	segment libre VITESSE_DIFFUSION
+	segment aniso_I4 VITESSE_DIFFUSION
 	colonnes ($1) ($2)
 	style linespoints
 	}
@@ -207,10 +218,10 @@ chapter {
 	labelx y
 	labely diffu_y
 	curve {
-	file comsol/Cas_4_v_diff_mass
+	file comsol_aniso_I4/Cas_4_sepa4_iso_U_v_diff_mass.txt
 	}
 	curve {
-	segment libre VITESSE_DIFFUSION
+	segment aniso_I4 VITESSE_DIFFUSION
 	colonnes ($1) ($3)
 	style linespoints
 	}
@@ -219,11 +230,7 @@ chapter {
 	
 Chapter {
 
-
-
-
-	Title "Convergence" 
-
+	Title "Convergence aniso_I4" 
 	figure { 
 		title "Evolution of residue"
 		include_description_curves 0
@@ -232,52 +239,959 @@ Chapter {
 		labelY "residu=max|Ri|"
 		logY
 		curve {
-			file libre.dt_ev
+			file aniso_I4.dt_ev
 			columns ($1) ($4)
 			legend "column 4"
 			style linespoints
 		}
 	}
 }
+chapter {
+	Title concentration aniso_I5
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
 
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_c_O2.txt
+	}
+	curve {
+	segment aniso_I5 CONC
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_c_N2.txt
+	}
+	curve {
+	segment aniso_I5 CONC
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_c_vap.txt
+	}
+	
+		
+	curve {
+	segment aniso_I5 CONC
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho aniso_I5
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_rhog.txt
+	}
+	curve {
+	segment aniso_I5 MASSE_VOLUMIQUE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+}
 Chapter {
-	Title "Visualization via VisIt" 
-
-	visu {
-		title "MESH"
-		mesh libre.lata dom
+	Title flux aniso_I5
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_N_O2_x.txt
+	}
+	curve {
+	segment aniso_I5 FLUX
+	colonnes ($1) ($2)
+	style linespoints
+	}
 	}
 
-	visu {
-		title "PRESSION SOM"
-		pseudocolor libre.lata dom PRESSION SOM
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_N_O2_y.txt
+	}
+	curve {
+	segment aniso_I5 FLUX
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
+
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_N_vap_x.txt
+	}
+	curve {
+	segment aniso_I5 FLUX
+	colonnes ($1) ($4)
+	style linespoints
+	}
 	}
 
-	visu {
-		title "VITESSE_X SOM"
-		pseudocolor libre.lata dom VITESSE_X SOM
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
+
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_N_vap_y.txt
+	}
+	curve {
+	segment aniso_I5 FLUX
+	colonnes ($1) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_N_N2_x.txt
+	}
+	curve {
+	segment aniso_I5 FLUX
+	colonnes ($1) ($6)
+	style linespoints
+	}
 	}
 
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_N_N2_y.txt
+	}
+	curve {
+	segment aniso_I5 FLUX
+	colonnes ($1) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse aniso_I5
+	Figure {
+		include_description_curves 0
+	labely U_X
 
+	titre 
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_U_vol.txt
+	}
+	curve {
+	segment aniso_I5 UM 
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_V_vol.txt
+	}
+	curve {
+	segment aniso_I5 UM
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_v_mass.txt
+	}
+	curve {
+	segment aniso_I5 VITESSE
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
 
-	visu {
-		title "MASSE_VOLUMIQUE ELEM"
-		pseudocolor libre.lata dom MASSE_VOLUMIQUE ELEM
+chapter {
+	Title vitesse_diffusion aniso_I5
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_u_diff_mass.txt
+	}
+	curve {
+	segment aniso_I5 VITESSE_DIFFUSION
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol_aniso_I5/Cas_4_sepa4_iso_U_v_diff_mass.txt
+	}
+	curve {
+	segment aniso_I5 VITESSE_DIFFUSION
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+	Title "Convergence aniso_I5" 
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file aniso_I5.dt_ev
+			columns ($1) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
+}
+chapter {
+	Title concentration iso
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
+
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_c_O2.txt
+	}
+	curve {
+	segment iso CONC
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_c_N2.txt
+	}
+	curve {
+	segment iso CONC
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_c_vap.txt
+	}
+	
+		
+	curve {
+	segment iso CONC
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho iso
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_rhog.txt
+	}
+	curve {
+	segment iso MASSE_VOLUMIQUE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+}
+Chapter {
+	Title flux iso
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_N_O2_x.txt
+	}
+	curve {
+	segment iso FLUX
+	colonnes ($1) ($2)
+	style linespoints
+	}
 	}
 
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_N_O2_y.txt
+	}
+	curve {
+	segment iso FLUX
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
 
-
-
-	visu {
-		title "XO2 SOM"
-		pseudocolor libre.lata dom FRACTION_MOLAIRE_0 SOM
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_N_vap_x.txt
+	}
+	curve {
+	segment iso FLUX
+	colonnes ($1) ($4)
+	style linespoints
+	}
 	}
 
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
 
-	visu {
-		title "CO2 SOM"
-		pseudocolor libre.lata dom CONC_0 SOM
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_N_vap_y.txt
+	}
+	curve {
+	segment iso FLUX
+	colonnes ($1) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_N_N2_x.txt
+	}
+	curve {
+	segment iso FLUX
+	colonnes ($1) ($6)
+	style linespoints
+	}
 	}
 
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_N_N2_y.txt
+	}
+	curve {
+	segment iso FLUX
+	colonnes ($1) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse iso
+	Figure {
+		include_description_curves 0
+	labely U_X
+
+	titre 
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_U_vol.txt
+	}
+	curve {
+	segment iso UM 
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_V_vol.txt
+	}
+	curve {
+	segment iso UM
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_v_mass.txt
+	}
+	curve {
+	segment iso VITESSE
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title vitesse_diffusion iso
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_u_diff_mass.txt
+	}
+	curve {
+	segment iso VITESSE_DIFFUSION
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol_iso/Cas_4_sepa4_iso_U_v_diff_mass.txt
+	}
+	curve {
+	segment iso VITESSE_DIFFUSION
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+	Title "Convergence iso" 
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file iso.dt_ev
+			columns ($1) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
+}
+chapter {
+	Title concentration iso_big_vd
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
+
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_c_O2.txt
+	}
+	curve {
+	segment iso_big_vd CONC
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_c_N2.txt
+	}
+	curve {
+	segment iso_big_vd CONC
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_c_vap.txt
+	}
+	
+		
+	curve {
+	segment iso_big_vd CONC
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho iso_big_vd
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_rhog.txt
+	}
+	curve {
+	segment iso_big_vd MASSE_VOLUMIQUE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+}
+Chapter {
+	Title flux iso_big_vd
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_N_O2_x.txt
+	}
+	curve {
+	segment iso_big_vd FLUX
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_N_O2_y.txt
+	}
+	curve {
+	segment iso_big_vd FLUX
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
+
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_N_vap_x.txt
+	}
+	curve {
+	segment iso_big_vd FLUX
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
+
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_N_vap_y.txt
+	}
+	curve {
+	segment iso_big_vd FLUX
+	colonnes ($1) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_N_N2_x.txt
+	}
+	curve {
+	segment iso_big_vd FLUX
+	colonnes ($1) ($6)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_N_N2_y.txt
+	}
+	curve {
+	segment iso_big_vd FLUX
+	colonnes ($1) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse iso_big_vd
+	Figure {
+		include_description_curves 0
+	labely U_X
+
+	titre 
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_U_vol.txt
+	}
+	curve {
+	segment iso_big_vd UM 
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_V_vol.txt
+	}
+	curve {
+	segment iso_big_vd UM
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_v_mass.txt
+	}
+	curve {
+	segment iso_big_vd VITESSE
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title vitesse_diffusion iso_big_vd
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_u_diff_mass.txt
+	}
+	curve {
+	segment iso_big_vd VITESSE_DIFFUSION
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol_iso_big_vd/Cas_4_sepa4_iso_U_v_diff_mass.txt
+	}
+	curve {
+	segment iso_big_vd VITESSE_DIFFUSION
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+	Title "Convergence iso_big_vd" 
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file iso_big_vd.dt_ev
+			columns ($1) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
+}
+chapter {
+	Title concentration iso_S_N2
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
+
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_c_O2.txt
+	}
+	curve {
+	segment iso_S_N2 CONC
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_c_N2.txt
+	}
+	curve {
+	segment iso_S_N2 CONC
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_c_vap.txt
+	}
+	
+		
+	curve {
+	segment iso_S_N2 CONC
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho iso_S_N2
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_rhog.txt
+	}
+	curve {
+	segment iso_S_N2 MASSE_VOLUMIQUE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+}
+Chapter {
+	Title flux iso_S_N2
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_N_O2_x.txt
+	}
+	curve {
+	segment iso_S_N2 FLUX
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_N_O2_y.txt
+	}
+	curve {
+	segment iso_S_N2 FLUX
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
+
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_N_vap_x.txt
+	}
+	curve {
+	segment iso_S_N2 FLUX
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
+
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_N_vap_y.txt
+	}
+	curve {
+	segment iso_S_N2 FLUX
+	colonnes ($1) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_N_N2_x.txt
+	}
+	curve {
+	segment iso_S_N2 FLUX
+	colonnes ($1) ($6)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_N_N2_y.txt
+	}
+	curve {
+	segment iso_S_N2 FLUX
+	colonnes ($1) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse iso_S_N2
+	Figure {
+		include_description_curves 0
+	labely U_X
+
+	titre 
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_U_vol.txt
+	}
+	curve {
+	segment iso_S_N2 UM 
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_V_vol.txt
+	}
+	curve {
+	segment iso_S_N2 UM
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_v_mass.txt
+	}
+	curve {
+	segment iso_S_N2 VITESSE
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title vitesse_diffusion iso_S_N2
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_u_diff_mass.txt
+	}
+	curve {
+	segment iso_S_N2 VITESSE_DIFFUSION
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol_iso_S_N2/Cas_4_sepa4_iso_U_v_diff_mass.txt
+	}
+	curve {
+	segment iso_S_N2 VITESSE_DIFFUSION
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+	Title "Convergence iso_S_N2" 
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file iso_S_N2.dt_ev
+			columns ($1) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
 }
 

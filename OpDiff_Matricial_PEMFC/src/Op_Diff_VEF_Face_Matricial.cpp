@@ -109,6 +109,7 @@ const Champ_base& Op_Diff_VEF_Face_Matricial::diffusivite() const
 
 DoubleTab& Op_Diff_VEF_Face_Matricial::ajouter(const DoubleTab& inconnue_org, DoubleTab& resu) const
 {
+  remplir_nu(nu_);
   Debog::verifier("Op_Diff_VEF_Face_Matricial inco", inconnue_org);
   const Zone_Cl_VEF& zone_Cl_VEF = la_zcl_vef.valeur();
   const Zone_VEF& zone_VEF = la_zone_vef.valeur();
@@ -159,6 +160,7 @@ DoubleTab& Op_Diff_VEF_Face_Matricial::ajouter(const DoubleTab& inconnue_org, Do
 
   modifier_flux(*this);
 
+  //resu.echange_espace_virtuel();
   Debog::verifier("Op_Diff_VEF_Face_Matricial resu ", resu);
   return resu;
 }
@@ -421,6 +423,7 @@ void Op_Diff_VEF_Face_Matricial::mettre_a_jour(double)
 
 void Op_Diff_VEF_Face_Matricial::contribuer_a_avec(const DoubleTab& transporte, Matrice_Morse& matrice) const
 {
+  remplir_nu(nu_);
   modifier_matrice_pour_periodique_avant_contribuer(matrice,equation());
   // On remplit le tableau nu car l'assemblage d'une
   // matrice avec ajouter_contribution peut se faire

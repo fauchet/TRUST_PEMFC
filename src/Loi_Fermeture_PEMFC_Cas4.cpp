@@ -23,7 +23,7 @@
 #include <Probleme_base.h>
 #include <Discretisation_base.h>
 #include <Equation_base.h>
-
+#include <Param.h>
 
 Implemente_instanciable( Loi_Fermeture_PEMFC_Cas4, "Loi_Fermeture_PEMFC_Cas4", Loi_Fermeture_PEMFC_base ) ;
 // XD loi_fermeture_pemfc_cas4 loi_fermeture_base loi_fermeture_pemfc_cas4 -1 Loi for test only
@@ -37,11 +37,21 @@ Sortie& Loi_Fermeture_PEMFC_Cas4::printOn( Sortie& os ) const
 Entree& Loi_Fermeture_PEMFC_Cas4::readOn( Entree& is )
 {
   Loi_Fermeture_PEMFC_base::readOn( is );
+
   is_cas4_=1;
+  if (VGDL_.size_array()!=dimension)
+    {
+      Cerr<<" VGDL faux "<<finl;
+      exit();
+    }
   return is;
 }
 
-
+void Loi_Fermeture_PEMFC_Cas4::set_param(Param& param)
+{
+  Loi_Fermeture_PEMFC_base::set_param(param);
+  param.ajouter("VGDL",&VGDL_,Param::REQUIRED); // XD_ADD_P list  VGDL en bas provisoire
+}
 void Loi_Fermeture_PEMFC_Cas4::discretiser(const Discretisation_base& dis)
 {
   Loi_Fermeture_PEMFC_base::discretiser(dis);
@@ -63,6 +73,6 @@ void Loi_Fermeture_PEMFC_Cas4::discretiser(const Discretisation_base& dis)
   champs_compris_.ajoute_champ(Um_);
 
 // READON optionel
-  status_ = READON_FAIT;
+//  status_ = READON_FAIT;
 
 }

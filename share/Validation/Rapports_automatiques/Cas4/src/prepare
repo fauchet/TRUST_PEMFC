@@ -1,0 +1,32 @@
+#!/bin/bash
+# Pour assurer NR seq //
+# [ $TRUST_IN_COPIE_CAS_TEST =  1 ] &&  sed "s/seuil -1 nb_it_max 5 impr/seuil 1e-20 nb_it_max 30 impr/" -i iso.data
+ [ $TRUST_IN_COPIE_CAS_TEST =  1 ] &&  sed "s/lire_med family_names_from_group_names dom cas4 cas4.med//" -i iso.data
+
+
+sed "s?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/4./96500. 0.?Champ_Front_Fonc_XYZ 3 -1e5/4./96500. 1e5/4./96500. 0.?; s/masses_molaires 3 32.e-3 18.e-3 28.e-3/masses_molaires 3 32.e-2 18.e-3 28.e-3/" iso.data > iso_big_vd.data 
+grep masses_mo iso_big_vd.data 
+
+sed "s?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/4./96500. 0.?Champ_Front_Fonc_XYZ 3 -1e5/4./96500. 0. 1e5/4./96500.?" iso.data  > iso_S_N2.data 
+
+sed "s?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/4./96500. 0.?Champ_Front_Fonc_XYZ 3 -1e5/4./96500. 1e5/2./96500. 0.?;s?seuil_statio 1e-7?seuil_statio 1e-6?;s?VGDL 2 0. 0.?VGDL 2 0. 0.005070803631101063?" iso.data  > aniso_I5.data 
+
+sed "s?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/4./96500. 0.?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/2./96500. 0.?;s?seuil_statio 1e-7?seuil_statio 1e-6?;s?VGDL 2 0. 0.?VGDL 2 0. 0.0005070803631101063?" iso.data  > aniso_I4.data 
+echo "#Pset(listcas "aniso_I4 aniso_I5 iso iso_big_vd iso_S_N2 ")" > list_cas
+
+
+python $TRUST_ROOT/bin/KSH/preprocessor.py Cas4.prm.P Cas4.prm
+
+
+cd comsol_aniso_I5
+for f in `ls`; do 
+  f2=$(echo $f |sed "s/sepa4_/sepa4_iso_/")
+  [ ! -f $f2 ]  &&  ln $f  $f2
+done
+cd ..
+cd comsol_aniso_I4
+for f in `ls`; do 
+  f2=$(echo $f |sed "s/sepa4_/sepa4_iso_U_/")
+  [ ! -f $f2 ]  &&  ln $f  $f2
+done
+cd ..

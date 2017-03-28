@@ -1,0 +1,256 @@
+*******************************************
+***COMSOL 5.2.1.262 progress output file***
+*******************************************
+Fri Mar 24 09:46:07 CET 2017
+Ordre des fonctions de forme géométrique: Linéaire
+Progression:   1 % - Maillage étendu
+Progression:   1 % - Variables dépendantes 1
+Solveur stationnaire 1 dans Etude 1/Solution 1 (sol1) démarré à 24-mars-2017 09:46:09.
+Solveur de continuation
+Solveur non-linéaire
+Nombre de degrés de liberté résolus: 31955 (plus 1520 DDL internes).
+
+Paramètre de continuation I_0 = 0.
+Progression:   2 % - Assemblage du motif de remplissage de la matrice
+Matrices non symétriques détectées.
+Progression:   2 % - Assemblage des matrices
+Mises à l'échelle pour les variables dépendantes:
+Variable dépendante cn (mod1.cn): 1
+Variable dépendante cv (mod1.cv): 1
+Variable dépendante cx (mod1.cx): 1
+Variable dépendante U (mod1.U): 0.42
+Variable dépendante V (mod1.V): 0.38
+Fonction noyau orthonormée utilisée.
+Progression:   2 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+Progression:   2 % - Solution du système linéaire
+1        0.42    1.9e+003   0.0001000        0.42    2    1    2 3.9e-010   3e-015
+Progression:   2 % - Assemblage des matrices
+Progression:   2 % - Factorisation des matrices
+Progression:   2 % - Solution du système linéaire
+2        0.44    1.9e+003   0.0010000        0.44    3    2    4 2.5e-010   3e-015
+Progression:   3 % - Assemblage du motif de remplissage de la matrice
+Progression:   3 % - Factorisation des matrices
+Progression:   3 % - Solution du système linéaire
+3        0.45    1.9e+003   0.0100000        0.46    4    3    6 2.7e-010   3e-015
+Progression:   3 % - Assemblage des matrices
+Progression:   3 % - Factorisation des matrices
+Progression:   3 % - Solution du système linéaire
+4        0.43    1.7e+003   0.1000000        0.48    5    4    8 2.8e-010   3e-015
+Progression:   4 % - Assemblage du motif de remplissage de la matrice
+Progression:   4 % - Factorisation des matrices
+Progression:   4 % - Solution du système linéaire
+5    2.5e-005       0.077   1.0000000        0.22    6    5   10 2.4e-010 2.9e-014
+Progression:   7 % - Assemblage des matrices
+Progression:   7 % - Factorisation des matrices
+Progression:   7 % - Solution du système linéaire
+6    7.1e-005      9e-005   1.0000000     0.00061    7    6   12 3.7e-010 3.5e-013
+
+Paramètre de continuation I_0 = 100.
+Progression:   7 % - Assemblage des matrices
+Progression:   7 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+Progression:   7 % - Solution du système linéaire
+1      4e-005       0.021   1.0000000         1.6    9    7   14 2.9e-010 3.3e-014
+Progression:   7 % - Assemblage du motif de remplissage de la matrice
+Progression:   7 % - Factorisation des matrices
+Progression:   7 % - Solution du système linéaire
+2    3.5e-005    7.5e-006   1.0000000      4e-005   10    8   16   1e-010 4.2e-013
+
+Paramètre de continuation I_0 = 200.
+-          Progression:  12 % - Assemblage des matrices
+-          Progression:  12 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-          Progression:  12 % - Solution du système linéaire
+1    6.2e-005        0.02   1.0000000         1.1   12    9   18 2.8e-010 3.3e-014
+-          Progression:  12 % - Assemblage du motif de remplissage de la matrice
+-          Progression:  12 % - Factorisation des matrices
+-          Progression:  12 % - Solution du système linéaire
+2    2.6e-005    7.7e-006   1.0000000    6.3e-005   13   10   20 3.4e-011 5.6e-013
+
+Paramètre de continuation I_0 = 300.
+-          Progression:  17 % - Assemblage des matrices
+-          Progression:  17 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-          Progression:  17 % - Solution du système linéaire
+1    5.3e-005        0.02   1.0000000         3.6   15   11   22 2.1e-010 3.3e-014
+-          Progression:  17 % - Assemblage du motif de remplissage de la matrice
+-          Progression:  17 % - Factorisation des matrices
+-          Progression:  17 % - Solution du système linéaire
+2    3.9e-005    7.6e-006   1.0000000    5.3e-005   16   12   24 1.1e-010 4.2e-013
+
+Paramètre de continuation I_0 = 500.
+--         Progression:  22 % - Assemblage des matrices
+--         Progression:  22 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--         Progression:  22 % - Solution du système linéaire
+1    2.3e-005       0.077   1.0000000         1.1   18   13   26 2.4e-010 3.3e-014
+--         Progression:  22 % - Assemblage des matrices
+--         Progression:  22 % - Factorisation des matrices
+2    1.3e-005    7.7e-006   1.0000000    2.3e-005   19   14   28 5.4e-011 4.1e-013
+--         Progression:  26 % - Assemblage des matrices
+
+Paramètre de continuation I_0 = 700.
+--         Progression:  26 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--         Progression:  26 % - Assemblage des matrices
+1    5.6e-005       0.077   1.0000000        0.91   21   15   30 2.7e-010 3.4e-014
+--         Progression:  27 % - Assemblage des matrices
+--         Progression:  27 % - Factorisation des matrices
+--         Progression:  27 % - Solution du système linéaire
+2    8.2e-006    7.8e-006   1.0000000    5.3e-005   22   16   32 1.7e-010 4.4e-013
+
+Paramètre de continuation I_0 = 1000.
+---        Progression:  31 % - Assemblage du motif de remplissage de la matrice
+---        Progression:  31 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---        Progression:  31 % - Assemblage des matrices
+1    1.9e-005        0.17   1.0000000         1.4   24   17   34 3.1e-010 3.5e-014
+---        Progression:  32 % - Assemblage des matrices
+---        Progression:  32 % - Factorisation des matrices
+---        Progression:  32 % - Solution du système linéaire
+2    9.1e-006    7.9e-006   1.0000000    1.9e-005   25   18   36 1.4e-010 5.9e-013
+
+Paramètre de continuation I_0 = 1500.
+---        Progression:  36 % - Assemblage du motif de remplissage de la matrice
+---        Progression:  36 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---        Progression:  36 % - Solution du système linéaire
+1    4.3e-005        0.46   1.0000000         1.2   27   19   38   4e-010 3.4e-014
+---        Progression:  37 % - Assemblage des matrices
+---        Progression:  37 % - Factorisation des matrices
+---        Progression:  37 % - Solution du système linéaire
+2    1.4e-005    7.9e-006   1.0000000    4.3e-005   28   20   40 7.5e-011   7e-013
+
+Paramètre de continuation I_0 = 2000.
+----       Progression:  41 % - Assemblage des matrices
+----       Progression:  41 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+----       Progression:  41 % - Solution du système linéaire
+1    4.9e-005        0.45   1.0000000         1.5   30   21   42 3.3e-010 3.4e-014
+----       Progression:  42 % - Assemblage des matrices
+----       Progression:  42 % - Factorisation des matrices
+----       Progression:  42 % - Solution du système linéaire
+2    1.8e-005      8e-006   1.0000000    4.9e-005   31   22   44   7e-011 4.9e-013
+
+Paramètre de continuation I_0 = 3000.
+----       Progression:  46 % - Assemblage des matrices
+----       Progression:  46 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+----       Progression:  46 % - Solution du système linéaire
+1      0.0019         1.8   1.0000000         8.2   33   23   46   3e-010 3.4e-014
+----       Progression:  47 % - Assemblage des matrices
+----       Progression:  47 % - Factorisation des matrices
+----       Progression:  47 % - Solution du système linéaire
+2    1.5e-005    7.9e-006   1.0000000      0.0015   34   24   48 2.1e-010 4.4e-013
+
+Paramètre de continuation I_0 = 5000.
+-----      Progression:  51 % - Assemblage des matrices
+-----      Progression:  51 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-----      Progression:  51 % - Assemblage des matrices
+1     0.00017         6.9   1.0000000        0.43   36   25   50 4.4e-010 3.4e-014
+-----      Progression:  51 % - Factorisation des matrices
+-----      Progression:  51 % - Solution du système linéaire
+2    2.4e-006      8e-006   1.0000000     0.00017   37   26   52 7.6e-011 7.2e-013
+
+Paramètre de continuation I_0 = 7000.
+-----      Progression:  56 % - Assemblage des matrices
+-----      Progression:  56 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-----      Progression:  56 % - Solution du système linéaire
+1     0.00011         6.5   1.0000000        0.49   39   27   54 3.6e-010 3.4e-014
+-----      Progression:  56 % - Assemblage du motif de remplissage de la matrice
+-----      Progression:  56 % - Factorisation des matrices
+-----      Progression:  56 % - Solution du système linéaire
+2    2.9e-006    7.9e-006   1.0000000     0.00011   40   28   56 2.2e-010 4.1e-013
+
+Paramètre de continuation I_0 = 10000.
+------     Progression:  61 % - Assemblage des matrices
+------     Progression:  61 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+------     Progression:  61 % - Solution du système linéaire
+1     0.00018          14   1.0000000        0.52   42   29   58 3.2e-010 3.4e-014
+------     Progression:  61 % - Assemblage des matrices
+------     Progression:  61 % - Factorisation des matrices
+2    2.5e-006    8.1e-006   1.0000000     0.00018   43   30   60 9.2e-011 2.3e-013
+------     Progression:  66 % - Assemblage des matrices
+
+Paramètre de continuation I_0 = 15000.
+------     Progression:  66 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+------     Progression:  66 % - Solution du système linéaire
+1     0.00095          35   1.0000000         1.1   45   31   62 3.6e-010 3.4e-014
+------     Progression:  66 % - Assemblage des matrices
+------     Progression:  66 % - Factorisation des matrices
+------     Progression:  66 % - Solution du système linéaire
+2    4.5e-006    1.2e-005   1.0000000     0.00087   46   32   64 5.5e-010 6.5e-014
+
+Paramètre de continuation I_0 = 20000.
+-------    Progression:  71 % - Assemblage des matrices
+-------    Progression:  71 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-------    Progression:  71 % - Solution du système linéaire
+1     0.00025          32   1.0000000        0.21   48   33   66 3.3e-010 3.4e-014
+-------    Progression:  71 % - Assemblage du motif de remplissage de la matrice
+-------    Progression:  71 % - Factorisation des matrices
+-------    Progression:  71 % - Solution du système linéaire
+2    3.9e-006    1.1e-005   1.0000000     0.00026   49   34   68 2.3e-010 5.5e-014
+
+Paramètre de continuation I_0 = 30000.
+-------    Progression:  75 % - Assemblage du motif de remplissage de la matrice
+-------    Progression:  75 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-------    Progression:  75 % - Solution du système linéaire
+1      0.0019    1.1e+002   1.0000000        0.41   51   35   70 3.5e-010 3.3e-014
+-------    Progression:  76 % - Assemblage des matrices
+-------    Progression:  76 % - Factorisation des matrices
+-------    Progression:  76 % - Solution du système linéaire
+2    5.7e-006      0.0001   1.0000000      0.0018   52   36   72   5e-010   9e-015
+
+Paramètre de continuation I_0 = 40000.
+--------   Progression:  80 % - Assemblage des matrices
+--------   Progression:  80 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--------   Progression:  80 % - Solution du système linéaire
+1       0.011          95   1.0000000        0.77   54   37   74 4.6e-010 3.3e-014
+--------   Progression:  81 % - Assemblage du motif de remplissage de la matrice
+--------   Progression:  81 % - Factorisation des matrices
+--------   Progression:  81 % - Solution du système linéaire
+2    4.2e-006    8.9e-005   1.0000000      0.0041   55   38   76 5.4e-010 8.5e-015
+
+Paramètre de continuation I_0 = 60000.
+--------   Progression:  85 % - Assemblage des matrices
+--------   Progression:  85 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--------   Progression:  85 % - Solution du système linéaire
+1      0.0082    3.3e+002   1.0000000         0.4   57   39   78   1e-009 3.1e-014
+--------   Progression:  86 % - Assemblage des matrices
+--------   Progression:  86 % - Factorisation des matrices
+--------   Progression:  86 % - Solution du système linéaire
+2    1.3e-006      0.0011   1.0000000       0.026   58   40   80 5.4e-010 8.9e-015
+
+Paramètre de continuation I_0 = 80000.
+---------  Progression:  90 % - Assemblage des matrices
+---------  Progression:  90 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+1      0.0037    2.6e+002   1.0000000        0.16   60   41   82 1.4e-009   3e-014
+---------  Progression:  91 % - Assemblage du motif de remplissage de la matrice
+---------  Progression:  91 % - Factorisation des matrices
+---------  Progression:  91 % - Solution du système linéaire
+2    1.1e-006      0.0009   1.0000000      0.0032   61   42   84 8.5e-010 8.4e-015
+
+Paramètre de continuation I_0 = 100000.
+---------  Progression:  95 % - Assemblage des matrices
+---------  Progression:  95 % - Factorisation des matrices
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---------  Progression:  95 % - Solution du système linéaire
+1      0.0039    2.1e+002   1.0000000        0.12   63   43   86 1.5e-009 2.8e-014
+---------  Progression:  96 % - Assemblage des matrices
+---------  Progression:  96 % - Factorisation des matrices
+---------  Progression:  96 % - Solution du système linéaire
+2    1.5e-006     0.00076   1.0000000      0.0042   64   44   88   4e-010 8.1e-015
+---------- Progression: 100 % - Assemblage des matrices
+Solveur stationnaire 1 dans Etude 1/Solution 1 (sol1): durée du calcul: 86 s. (1 minute, 26 secondes)
+Mémoire physique: 911 MB
+Mémoire virtuelle: 1003 MB

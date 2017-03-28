@@ -1,0 +1,250 @@
+# Thermohydraulique 2D avec transport 4 constituants et terme source #
+# PARALLEL OK 2 #
+dimension 2
+Pb_Thermohydraulique_QC_fraction_molaire pb
+Domaine dom
+
+# BEGIN MESH #
+Mailler dom
+{
+	Pave Cavite 
+		{
+		Origine 0. 0.
+		Nombre_de_Noeuds  11 21
+		Longueurs 2 2
+		}
+		{
+		Bord Gauche X = 0.	0. <= Y <= 2    
+		Bord Haut   Y = 2	0. <= X <= 2    
+		Bord Bas    Y = 0.	0. <= X <= 2    
+		Bord Droit  X = 2	0. <= Y <= 2    
+		}
+}
+Transformer dom x y*0.5
+Trianguler_H dom
+
+lire_med family_names_from_group_names dom cas4 cas4.med
+
+dilate dom 1e-3
+
+# END MESH #
+
+# BEGIN PARTITION 
+Partition dom
+{
+    Partitionneur metis { Nb_parts 2 }
+    Larg_joint 2
+    Nom_Zones DOM
+    Nb_parts_tot 2
+}
+End 
+ END PARTITION #
+
+# BEGIN SCATTER 
+Scatter DOM.Zones dom
+  END SCATTER #
+
+VEFPrep1b dis
+# ecrire dis #
+/*
+lire dis { P0 P1 changement_de_base_P1bulle 1 modif_div_face_dirichlet 0 cl_pression_sommet_faible 0  }
+*/
+Scheme_euler_implicit sch
+Read sch
+{
+	tinit 0
+	nb_pas_dt_max 30000
+	dt_min 1.e-12
+	dt_max 5e-1
+	dt_impr 0.001
+	dt_sauv 100
+	seuil_statio 1e-7
+solveur implicite { 
+	solveur gmres { diag seuil -1 nb_it_max 10 impr dim_espace_krilov 10 }
+	solveur petsc bicgstab { seuil 1e-12 seuil_relatif 0e-3 impr precond  pilut { level 30 epsilon 0.01   } }
+		solveur gmres { diag seuil -1 nb_it_max 5 impr  }
+ }
+facsec 5e2
+/* facsec_max 20 */
+}
+
+Fluide_Quasi_Compressible fluide
+Read fluide
+{
+        mu Champ_Uniforme 1 1.2e-5
+        pression 1.5e5
+        loi_etat Melange_gaz_parfait_fraction_molaire {
+                masses_molaires 3 32.e-3 18.e-3 28.e-3
+                Prandtl 0.70610687022900753274
+		Sc 1.                
+                Cp 1006.
+                gamma 1.4
+
+        }
+	traitement_pth constant
+temps_debut_prise_en_compte_drho_dt 100.e4
+}
+
+Champ_Uniforme gravite
+Read gravite 2 0. 0. 
+
+Associate fluide gravite
+Associate pb dom
+Associate pb sch
+Associate pb fluide
+loi_fermeture_pemfc_cas4  loi
+associer pb loi
+Discretize pb dis
+read loi { 
+VGDL 2 0. 0.  /* a retirer plus tard.... */
+ }
+
+Read pb
+{
+	Navier_Stokes_QC
+	{
+	equation_non_resolue 0
+	 	solveur_pression GCP { 
+			precond ssor { omega 1.500000 } 
+			seuil 1.e-14
+			impr
+		}
+	solveur_pression petsc cholesky { }
+                projection_initiale 1								
+
+		convection { amont }
+		convection { negligeable }
+		convection { muscl }
+		diffusion { }
+		initial_conditions
+		{
+			vitesse Champ_fonc_xyz dom 2 0.2*6*y/1e-3*(1-y/1e-3) 0.
+		}
+		boundary_conditions
+		{
+			Bas  frontiere_ouverte_vitesse_imposee  champ_front_fonc_xyz 2 0 0
+
+			Haut  Paroi_fixe
+			Droit    frontiere_ouverte_pression_imposee champ_front_uniforme 1 0.	
+
+			Gauche	frontiere_ouverte_vitesse_imposee champ_front_fonc_xyz 2 0.2*6*y/1e-3*(1-y/1e-3) 0
+		}
+		
+	}
+       Convection_Diffusion_Chaleur_QC
+        {
+                equation_non_resolue 1
+                diffusion { }
+                convection { amont }
+                boundary_conditions 
+                {
+                        Bas paroi_adiabatique
+			Haut paroi_adiabatique
+                        Gauche  frontiere_ouverte_temperature_imposee Champ_Front_Uniforme 1 353.15
+                        Droit  frontiere_ouverte T_ext Champ_Front_Uniforme 1 353.15
+                }
+                initial_conditions { Temperature Champ_Uniforme 1 353.15 }
+        }
+       Convection_concentration_gaz
+        {
+                equation_non_resolue 1
+                convection { amont }
+                boundary_conditions 
+                {
+                        Bas paroi_adiabatique
+			Haut paroi_adiabatique
+                        Gauche  frontiere_ouverte_concentration_imposee Champ_Front_Uniforme 1 51.09
+                        Droit  frontiere_ouverte T_ext Champ_Front_Uniforme 1 51.09
+                }
+                initial_conditions { cg Champ_Uniforme 1 51.09 }
+        }
+       Convection_Diffusion_fraction_molaire_QC 
+	{
+		diffusion { pemfc { diffusivity_fieldname pemfc_cas4
+	
+			 } 
+		}
+		convection { negligeable }
+		convection { amont  }
+		convection { muscl  }
+		initial_conditions
+		{
+			fraction_molaire Champ_Fonc_XYZ dom 3 0.18 0.16 0.66
+		}
+		boundary_conditions
+		{
+			   Haut	  paroi
+			   Droit  frontiere_ouverte T_ext Champ_Front_Uniforme 3 0.18 0.16 0.66
+			   Gauche  Frontiere_ouverte_fraction_massique_imposee Champ_Front_Uniforme 3 0.18 0.16 0.66
+			   Bas    Paroi_flux_impose Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/4./96500. 0. 
+		}
+	}
+
+	Post_processing
+	{
+
+		Definition_champs 
+		{
+			diffusion_matrice operateur_eqn 
+			{ 
+				sources { refchamp { pb_champ pb fraction_molaire } }
+				numero_op 0
+			}
+			Conc transformation {
+		 expression  1 Xi*cg 
+		methode formule
+		sources { refchamp { pb_champ pb fraction_molaire nom_source Xi }
+
+		,  refchamp { pb_champ pb cg nom_source cg }
+                      }
+		}	
+		vlisse  interpolation {
+		localisation som
+                sources { refchamp { pb_champ pb vitesse  } }
+                }
+		umlisse  interpolation {
+		localisation som
+                sources { refchamp { pb_champ pb um  } }
+                }
+		flux interpolation {
+		localisation som
+                sources { refchamp { pb_champ pb Ni  } }
+                }
+		vitesse_diffusion  interpolation { localisation som sources { transformation {
+		expression  1 ud/rho_g
+                methode formule
+		sources { refchamp { pb_champ pb ud nom_source ud } , interpolation { localisation elem sources { refchamp { pb_champ pb masse_volumique } } nom_source rho_g } }
+
+		}
+		}
+		}
+		}
+		format lata	
+		probes {
+		vitesse_diffusion vitesse_diffusion  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
+		vitesse vlisse  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
+		um  umlisse  periode 1e-2 segment 100 1.e-3 0. 1e-3 1e-3
+		Conc Conc  periode 1e-2 position_like vitesse_diffusion
+		masse_volumique masse_volumique  periode 1e-2 position_like vitesse_diffusion
+		flux flux  periode 1e-2 position_like vitesse_diffusion
+}
+                fields dt_post 10.e-0
+                {
+                        pression som
+                        vitesse som
+                        temperature som
+                        masse_volumique elem
+			ud elem
+			fraction_molaire som 
+			Conc som
+                        flux 
+			cg som
+                }
+	}
+
+
+}
+
+Solve pb
+End
+

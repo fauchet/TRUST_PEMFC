@@ -1,0 +1,424 @@
+*******************************************
+***COMSOL 5.2.1.262 progress output file***
+*******************************************
+Tue Mar 21 11:15:25 CET 2017
+Ordre des fonctions de forme géométrique: Linéaire
+           Progression:   1 % - Maillage étendu
+Memory: 651/651 739/743
+           Progression:   1 % - Variables dépendantes 1
+Memory: 657/679 744/766
+Solveur stationnaire 1 dans Etude 1/Solution 1 (sol1) démarré à 21-mars-2017 11:15:26.
+Solveur de continuation
+Solveur non-linéaire
+Nombre de degrés de liberté résolus: 126305 (plus 3020 DDL internes).
+  
+Paramètre de continuation I_0 = 0.
+           Progression:   2 % - Assemblage du motif de remplissage de la matrice
+Memory: 708/708 795/795
+           Progression:   2 % - Assemblage des matrices
+Memory: 813/815 900/902
+Matrices non symétriques détectées.
+Mises à l'échelle pour les variables dépendantes:
+Variable dépendante cn (mod1.cn): 1
+Variable dépendante cv (mod1.cv): 1
+Variable dépendante cx (mod1.cx): 1
+Variable dépendante U (mod1.U): 0.49
+Variable dépendante V (mod1.V): 0.44
+Fonction noyau orthonormée utilisée.
+           Progression:   2 % - Prise en compte des contraintes
+Memory: 846/864 941/952
+           Progression:   2 % - Factorisation des matrices
+Memory: 886/911 987/1010
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+           Progression:   2 % - Solution du système linéaire
+Memory: 1690/1690 1805/1805
+           Progression:   2 % - Assemblage des matrices
+Memory: 1702/1702 1816/1816
+           Progression:   2 % - Solution du système linéaire
+Memory: 1699/1702 1813/1816
+   1        0.27    2.6e+003   0.0001000        0.27    2    1    2 2.8e-010 1.6e-015
+           Progression:   3 % - Solution du système linéaire
+Memory: 1568/1702 1663/1817
+           Progression:   3 % - Assemblage des matrices
+Memory: 821/1702 909/1817
+           Progression:   3 % - Factorisation des matrices
+Memory: 805/1702 890/1817
+           Progression:   3 % - Solution du système linéaire
+Memory: 1696/1702 1808/1817
+   2        0.28    2.6e+003   0.0010000        0.28    3    2    4 4.6e-010 1.6e-015
+           Progression:   3 % - Assemblage des matrices
+Memory: 857/1709 948/1820
+           Progression:   3 % - Factorisation des matrices
+Memory: 809/1709 894/1820
+           Progression:   3 % - Solution du système linéaire
+Memory: 1710/1710 1818/1820
+   3        0.29    2.6e+003   0.0100000         0.3    4    3    6 2.9e-010 1.6e-015
+           Progression:   3 % - Assemblage du motif de remplissage de la matrice
+Memory: 783/1722 888/1830
+           Progression:   3 % - Assemblage des matrices
+Memory: 858/1722 949/1830
+           Progression:   3 % - Factorisation des matrices
+Memory: 879/1722 1003/1830
+           Progression:   3 % - Solution du système linéaire
+Memory: 1710/1722 1820/1830
+           Progression:   3 % - Assemblage des matrices
+Memory: 1721/1722 1831/1831
+           Progression:   3 % - Solution du système linéaire
+Memory: 1718/1722 1828/1831
+   4        0.28    2.3e+003   0.1000000        0.31    5    4    8 5.1e-010 1.6e-015
+           Progression:   5 % - Assemblage du motif de remplissage de la matrice
+Memory: 782/1722 868/1831
+           Progression:   5 % - Assemblage des matrices
+Memory: 860/1722 950/1831
+           Progression:   5 % - Factorisation des matrices
+Memory: 905/1722 1007/1831
+           Progression:   5 % - Solution du système linéaire
+Memory: 1728/1728 1837/1837
+   5    4.2e-006      0.0042   1.0000000        0.26    6    5   10 3.1e-010   2e-014
+-          Progression:  10 % - Solution du système linéaire
+Memory: 1069/1739 1154/1848
+-          Progression:  10 % - Assemblage des matrices
+Memory: 857/1739 949/1848
+-          Progression:  10 % - Factorisation des matrices
+Memory: 778/1739 863/1848
+-          Progression:  10 % - Solution du système linéaire
+Memory: 1734/1739 1844/1848
+-          Progression:  10 % - Assemblage des matrices
+Memory: 1745/1745 1856/1856
+-          Progression:  10 % - Solution du système linéaire
+Memory: 1738/1745 1848/1856
+   6    3.4e-005     0.00018   1.0000000     0.00031    7    6   12 2.5e-011 1.5e-013
+-          Progression:  10 % - Assemblage des matrices
+Memory: 1736/1745 1846/1856
+  
+Paramètre de continuation I_0 = 100.
+-          Progression:  10 % - Assemblage du motif de remplissage de la matrice
+Memory: 779/1746 865/1856
+-          Progression:  10 % - Assemblage des matrices
+Memory: 861/1746 953/1856
+-          Progression:  10 % - Factorisation des matrices
+Memory: 888/1746 1017/1856
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-          Progression:  10 % - Solution du système linéaire
+Memory: 1728/1746 1836/1856
+   1    2.8e-005        0.38   1.0000000         3.5    9    7   14 3.5e-010 8.7e-014
+-          Progression:  10 % - Assemblage du motif de remplissage de la matrice
+Memory: 809/1746 894/1856
+-          Progression:  10 % - Assemblage des matrices
+Memory: 865/1746 956/1856
+-          Progression:  10 % - Factorisation des matrices
+Memory: 882/1746 1018/1856
+-          Progression:  10 % - Solution du système linéaire
+Memory: 1766/1766 1873/1874
+   2      2e-005    3.7e-005   1.0000000    2.8e-005   10    8   16   2e-011 2.6e-013
+  
+Paramètre de continuation I_0 = 200.
+-          Progression:  17 % - Assemblage des matrices
+Memory: 1778/1778 1886/1886
+-          Progression:  17 % - Assemblage du motif de remplissage de la matrice
+Memory: 770/1778 866/1886
+-          Progression:  17 % - Assemblage des matrices
+Memory: 864/1778 957/1886
+-          Progression:  17 % - Factorisation des matrices
+Memory: 911/1778 1017/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-          Progression:  17 % - Solution du système linéaire
+Memory: 1731/1778 1842/1886
+-          Progression:  17 % - Assemblage des matrices
+Memory: 1745/1778 1855/1886
+-          Progression:  17 % - Solution du système linéaire
+Memory: 1742/1778 1852/1886
+   1    2.5e-005        0.38   1.0000000         3.5   12    9   18 2.2e-010 8.8e-014
+-          Progression:  18 % - Assemblage du motif de remplissage de la matrice
+Memory: 778/1778 864/1886
+-          Progression:  18 % - Assemblage des matrices
+Memory: 867/1778 960/1886
+-          Progression:  18 % - Factorisation des matrices
+Memory: 931/1778 1021/1886
+-          Progression:  18 % - Solution du système linéaire
+Memory: 1741/1778 1849/1886
+   2    6.4e-006    3.7e-005   1.0000000    2.5e-005   13   10   20 4.5e-011 1.6e-013
+  
+Paramètre de continuation I_0 = 300.
+--         Progression:  25 % - Prise en compte des contraintes
+Memory: 1080/1778 1164/1886
+--         Progression:  25 % - Assemblage des matrices
+Memory: 851/1778 941/1886
+--         Progression:  25 % - Prise en compte des contraintes
+Memory: 811/1778 938/1886
+--         Progression:  25 % - Factorisation des matrices
+Memory: 927/1778 1016/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--         Progression:  25 % - Solution du système linéaire
+Memory: 1745/1778 1853/1886
+   1    3.8e-005        0.37   1.0000000         7.1   15   11   22 2.4e-010 8.8e-014
+--         Progression:  25 % - Assemblage du motif de remplissage de la matrice
+Memory: 784/1778 899/1886
+--         Progression:  25 % - Assemblage des matrices
+Memory: 870/1778 962/1886
+--         Progression:  25 % - Factorisation des matrices
+Memory: 921/1778 1024/1886
+--         Progression:  25 % - Solution du système linéaire
+Memory: 1736/1778 1846/1886
+   2    9.2e-006    3.7e-005   1.0000000    3.8e-005   16   12   24 3.9e-011 1.7e-013
+  
+Paramètre de continuation I_0 = 500.
+---        Progression:  32 % - Assemblage des matrices
+Memory: 1744/1778 1853/1886
+---        Progression:  32 % - Assemblage du motif de remplissage de la matrice
+Memory: 783/1778 868/1886
+---        Progression:  32 % - Assemblage des matrices
+Memory: 868/1778 960/1886
+---        Progression:  32 % - Factorisation des matrices
+Memory: 931/1778 1021/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---        Progression:  32 % - Solution du système linéaire
+Memory: 1728/1778 1841/1886
+---        Progression:  32 % - Assemblage des matrices
+Memory: 1743/1778 1853/1886
+---        Progression:  32 % - Solution du système linéaire
+Memory: 1740/1778 1850/1886
+   1     0.00012         1.5   1.0000000         2.1   18   13   26   1e-006 5.2e-008
+---        Progression:  33 % - Assemblage du motif de remplissage de la matrice
+Memory: 780/1778 866/1886
+---        Progression:  33 % - Assemblage des matrices
+Memory: 872/1778 963/1886
+---        Progression:  33 % - Factorisation des matrices
+Memory: 888/1778 1026/1886
+---        Progression:  33 % - Solution du système linéaire
+Memory: 1727/1778 1838/1886
+---        Progression:  33 % - Assemblage des matrices
+Memory: 1742/1778 1851/1886
+---        Progression:  33 % - Solution du système linéaire
+Memory: 1735/1778 1845/1886
+   2    1.8e-005     0.00033   1.0000000     0.00012   19   14   28  0.00065 3.9e-005
+---        Progression:  34 % - Solution du système linéaire
+Memory: 1702/1778 1811/1886
+---        Progression:  34 % - Assemblage des matrices
+Memory: 828/1778 913/1886
+---        Progression:  34 % - Factorisation des matrices
+Memory: 792/1778 876/1886
+---        Progression:  34 % - Solution du système linéaire
+Memory: 1731/1778 1840/1886
+---        Progression:  34 % - Assemblage des matrices
+Memory: 1744/1778 1852/1886
+---        Progression:  34 % - Solution du système linéaire
+Memory: 1738/1778 1846/1886
+   3    2.9e-005    3.6e-005   1.0000000    1.8e-005   20   15   30   2e-006 2.8e-007
+  
+Paramètre de continuation I_0 = 700.
+----       Progression:  40 % - Assemblage des matrices
+----       Progression:  40 % - Assemblage du motif de remplissage de la matrice
+Memory: 818/1778 904/1886
+----       Progression:  40 % - Assemblage des matrices
+Memory: 870/1778 963/1886
+----       Progression:  40 % - Factorisation des matrices
+Memory: 895/1778 1022/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+----       Progression:  40 % - Solution du système linéaire
+Memory: 1733/1778 1842/1886
+   1     0.00011         1.5   1.0000000         2.4   22   16   32 1.2e-005 3.6e-007
+----       Progression:  40 % - Assemblage du motif de remplissage de la matrice
+Memory: 812/1778 896/1886
+----       Progression:  40 % - Assemblage des matrices
+Memory: 873/1778 965/1886
+----       Progression:  40 % - Factorisation des matrices
+Memory: 877/1778 1026/1886
+----       Progression:  40 % - Solution du système linéaire
+Memory: 1733/1778 1841/1886
+   2    9.2e-005    3.6e-005   1.0000000     0.00011   23   17   34 1.7e-011 5.8e-013
+  
+Paramètre de continuation I_0 = 1000.
+----       Progression:  47 % - Assemblage des matrices
+Memory: 1745/1778 1853/1886
+----       Progression:  47 % - Assemblage du motif de remplissage de la matrice
+Memory: 789/1778 897/1886
+----       Progression:  47 % - Assemblage des matrices
+Memory: 871/1778 963/1886
+----       Progression:  47 % - Prise en compte des contraintes
+Memory: 795/1778 880/1886
+----       Progression:  47 % - Factorisation des matrices
+Memory: 934/1778 1024/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+----       Progression:  47 % - Solution du système linéaire
+Memory: 1729/1778 1836/1886
+   1     0.00021         3.3   1.0000000         4.3   25   18   36 7.4e-010   2e-011
+----       Progression:  48 % - Solution du système linéaire
+Memory: 1076/1778 1160/1886
+----       Progression:  48 % - Assemblage des matrices
+Memory: 858/1778 950/1886
+----       Progression:  48 % - Factorisation des matrices
+Memory: 939/1778 1028/1886
+----       Progression:  48 % - Solution du système linéaire
+Memory: 1735/1778 1843/1886
+   2    1.4e-005    3.5e-005   1.0000000     0.00021   26   19   38 4.1e-011 2.8e-013
+  
+Paramètre de continuation I_0 = 1500.
+-----      Progression:  55 % - Assemblage des matrices
+Memory: 1747/1778 1855/1886
+-----      Progression:  55 % - Assemblage du motif de remplissage de la matrice
+Memory: 802/1778 894/1886
+-----      Progression:  55 % - Assemblage des matrices
+Memory: 873/1778 965/1886
+-----      Progression:  55 % - Factorisation des matrices
+Memory: 830/1778 953/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-----      Progression:  55 % - Solution du système linéaire
+Memory: 1745/1778 1854/1886
+   1      0.0041         8.6   1.0000000         5.4   28   20   40 4.1e-010 8.9e-014
+-----      Progression:  56 % - Solution du système linéaire
+Memory: 770/1778 854/1886
+-----      Progression:  56 % - Assemblage des matrices
+Memory: 863/1778 955/1886
+-----      Progression:  56 % - Prise en compte des contraintes
+Memory: 807/1778 892/1886
+-----      Progression:  56 % - Factorisation des matrices
+Memory: 941/1778 1030/1886
+-----      Progression:  56 % - Solution du système linéaire
+Memory: 1742/1778 1851/1886
+   2     0.00012    3.1e-005   1.0000000      0.0016   29   21   42   4e-011 2.6e-013
+  
+Paramètre de continuation I_0 = 2000.
+------     Progression:  62 % - Prise en compte des contraintes
+Memory: 1408/1778 1493/1886
+------     Progression:  62 % - Assemblage des matrices
+Memory: 827/1778 912/1886
+------     Progression:  62 % - Prise en compte des contraintes
+Memory: 820/1778 958/1886
+------     Progression:  62 % - Factorisation des matrices
+Memory: 939/1778 1028/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+------     Progression:  62 % - Solution du système linéaire
+Memory: 1734/1778 1843/1886
+   1        0.03          36   1.0000000         3.4   31   22   44   0.0027 3.8e-005
+------     Progression:  63 % - Assemblage du motif de remplissage de la matrice
+Memory: 822/1778 912/1886
+------     Progression:  63 % - Assemblage des matrices
+Memory: 878/1778 972/1886
+------     Progression:  63 % - Factorisation des matrices
+Memory: 904/1778 1032/1886
+------     Progression:  63 % - Solution du système linéaire
+Memory: 1753/1778 1865/1886
+------     Progression:  63 % - Assemblage des matrices
+Memory: 1765/1778 1874/1886
+------     Progression:  63 % - Solution du système linéaire
+Memory: 1763/1778 1872/1886
+   2    9.3e-005    2.6e-005   1.0000000       0.055   32   23   46 4.7e-011 2.2e-013
+  
+Paramètre de continuation I_0 = 3000.
+-------    Progression:  70 % - Prise en compte des contraintes
+Memory: 804/1778 888/1886
+-------    Progression:  70 % - Assemblage des matrices
+Memory: 876/1778 970/1886
+-------    Progression:  70 % - Factorisation des matrices
+Memory: 825/1778 915/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-------    Progression:  70 % - Solution du système linéaire
+Memory: 1743/1778 1851/1886
+   1      0.0016          22   1.0000000         9.2   34   24   48 3.4e-010 8.9e-014
+-------    Progression:  71 % - Assemblage du motif de remplissage de la matrice
+Memory: 815/1778 899/1886
+-------    Progression:  71 % - Assemblage des matrices
+Memory: 877/1778 972/1886
+-------    Progression:  71 % - Factorisation des matrices
+Memory: 880/1778 1031/1886
+-------    Progression:  71 % - Solution du système linéaire
+Memory: 1738/1778 1850/1886
+-------    Progression:  71 % - Assemblage des matrices
+Memory: 1752/1778 1860/1886
+-------    Progression:  71 % - Solution du système linéaire
+Memory: 1750/1778 1858/1886
+   2    2.1e-005    2.3e-005   1.0000000      0.0021   35   25   50 4.7e-011 2.8e-013
+  
+Paramètre de continuation I_0 = 5000.
+-------    Progression:  77 % - Assemblage du motif de remplissage de la matrice
+Memory: 807/1778 892/1886
+-------    Progression:  77 % - Assemblage des matrices
+Memory: 866/1778 959/1886
+-------    Progression:  77 % - Factorisation des matrices
+Memory: 865/1778 953/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+-------    Progression:  77 % - Solution du système linéaire
+Memory: 1730/1778 1837/1886
+   1      0.0012          62   1.0000000           2   37   26   52 2.8e-010   9e-014
+-------    Progression:  78 % - Assemblage du motif de remplissage de la matrice
+Memory: 809/1778 894/1886
+-------    Progression:  78 % - Assemblage des matrices
+Memory: 868/1778 963/1886
+-------    Progression:  78 % - Factorisation des matrices
+Memory: 879/1778 1022/1886
+-------    Progression:  78 % - Solution du système linéaire
+Memory: 1736/1778 1847/1886
+-------    Progression:  78 % - Assemblage des matrices
+Memory: 1748/1778 1856/1886
+-------    Progression:  78 % - Solution du système linéaire
+Memory: 1746/1778 1854/1886
+   2    4.7e-006    1.9e-005   1.0000000      0.0012   38   27   54 6.7e-011   3e-013
+  
+Paramètre de continuation I_0 = 7000.
+--------   Progression:  85 % - Assemblage du motif de remplissage de la matrice
+Memory: 784/1778 882/1886
+--------   Progression:  85 % - Assemblage des matrices
+Memory: 867/1778 960/1886
+--------   Progression:  85 % - Factorisation des matrices
+Memory: 913/1778 1021/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+--------   Progression:  85 % - Solution du système linéaire
+Memory: 1735/1778 1847/1886
+--------   Progression:  85 % - Assemblage des matrices
+Memory: 1747/1778 1857/1886
+--------   Progression:  85 % - Solution du système linéaire
+Memory: 1745/1778 1855/1886
+   1       0.067          65   1.0000000           4   40   28   56   0.0032 6.8e-005
+--------   Progression:  86 % - Assemblage du motif de remplissage de la matrice
+Memory: 795/1778 904/1886
+--------   Progression:  86 % - Assemblage des matrices
+Memory: 870/1778 962/1886
+--------   Progression:  86 % - Prise en compte des contraintes
+Memory: 832/1778 955/1886
+--------   Progression:  86 % - Factorisation des matrices
+Memory: 941/1778 1034/1886
+--------   Progression:  86 % - Solution du système linéaire
+Memory: 1745/1778 1855/1886
+   2    2.8e-005      0.0032   1.0000000       0.059   41   29   58   0.0052 1.7e-005
+--------   Progression:  86 % - Assemblage du motif de remplissage de la matrice
+Memory: 800/1778 907/1886
+--------   Progression:  86 % - Assemblage des matrices
+Memory: 871/1778 963/1886
+--------   Progression:  86 % - Factorisation des matrices
+Memory: 893/1778 1022/1886
+--------   Progression:  86 % - Solution du système linéaire
+Memory: 1741/1778 1849/1886
+   3      2e-005    1.7e-005   1.0000000    2.8e-005   42   30   60 6.8e-011 1.9e-013
+---------  Progression:  92 % - Assemblage des matrices
+Memory: 1751/1778 1859/1886
+  
+Paramètre de continuation I_0 = 10000.
+---------  Progression:  92 % - Assemblage du motif de remplissage de la matrice
+Memory: 818/1778 910/1886
+---------  Progression:  92 % - Assemblage des matrices
+Memory: 867/1778 960/1886
+---------  Progression:  92 % - Factorisation des matrices
+Memory: 910/1778 1022/1886
+Iter      SolEst      ResEst     Damping    Stepsize #Res #Jac #Sol   LinErr   LinRes
+---------  Progression:  92 % - Solution du système linéaire
+Memory: 1740/1778 1851/1886
+---------  Progression:  92 % - Assemblage des matrices
+Memory: 1753/1778 1861/1886
+---------  Progression:  92 % - Solution du système linéaire
+Memory: 1750/1778 1858/1886
+   1       0.011          54   1.0000000         2.2   44   31   62 2.4e-010 8.9e-014
+---------  Progression:  93 % - Assemblage du motif de remplissage de la matrice
+Memory: 798/1778 897/1886
+---------  Progression:  93 % - Assemblage des matrices
+Memory: 873/1778 966/1886
+---------  Progression:  93 % - Factorisation des matrices
+Memory: 938/1778 1028/1886
+---------  Progression:  93 % - Solution du système linéaire
+Memory: 1749/1778 1857/1886
+   2    4.1e-006    1.7e-005   1.0000000      0.0097   45   32   64 2.3e-010 1.4e-013
+---------- Progression: 100 % - Assemblage des matrices
+Memory: 693/1778 777/1886
+Solveur stationnaire 1 dans Etude 1/Solution 1 (sol1): durée du calcul: 478 s. (7 minutes, 58 secondes)
+                                                       Mémoire physique: 1.78 GB
+                                                       Mémoire virtuelle: 1.89 GB

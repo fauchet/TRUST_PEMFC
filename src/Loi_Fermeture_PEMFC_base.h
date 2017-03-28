@@ -56,6 +56,9 @@ protected :
   Champ_Fonc Ni_,ud_,diffu_;
   Champ_Inc Um_;
   REF(Equation_base) ref_equation_;
+
+  ArrOfDouble VGDL_;
+
 };
 
 #endif /* Loi_Fermeture_PEMFC_base_included */

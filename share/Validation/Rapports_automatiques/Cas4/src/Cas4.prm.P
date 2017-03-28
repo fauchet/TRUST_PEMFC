@@ -1,0 +1,282 @@
+Parameters {
+	Title "Cas4
+	Author "fauchet"
+#Pinclude(list_cas)
+#Pforeach _cas_ (listcas)
+	TestCase . _cas_
+#Pendforeach(_cas_)
+}
+
+
+#Pforeach _cas_ (listcas)
+chapter {
+	Title concentration _cas_
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
+
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_c_O2.txt
+	}
+	curve {
+	segment _cas_ CONC
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_c_N2.txt
+	}
+	curve {
+	segment _cas_ CONC
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_c_vap.txt
+	}
+	
+		
+	curve {
+	segment _cas_ CONC
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho _cas_
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_rhog.txt
+	}
+	curve {
+	segment _cas_ MASSE_VOLUMIQUE
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+}
+Chapter {
+	Title flux _cas_
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_N_O2_x.txt
+	}
+	curve {
+	segment _cas_ FLUX
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_N_O2_y.txt
+	}
+	curve {
+	segment _cas_ FLUX
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
+
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_N_vap_x.txt
+	}
+	curve {
+	segment _cas_ FLUX
+	colonnes ($1) ($4)
+	style linespoints
+	}
+	}
+
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
+
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_N_vap_y.txt
+	}
+	curve {
+	segment _cas_ FLUX
+	colonnes ($1) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_N_N2_x.txt
+	}
+	curve {
+	segment _cas_ FLUX
+	colonnes ($1) ($6)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_N_N2_y.txt
+	}
+	curve {
+	segment _cas_ FLUX
+	colonnes ($1) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse _cas_
+	Figure {
+		include_description_curves 0
+	labely U_X
+
+	titre 
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_U_vol.txt
+	}
+	curve {
+	segment _cas_ UM 
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_V_vol.txt
+	}
+	curve {
+	segment _cas_ UM
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_v_mass.txt
+	}
+	curve {
+	segment _cas_ VITESSE
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title vitesse_diffusion _cas_
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_u_diff_mass.txt
+	}
+	curve {
+	segment _cas_ VITESSE_DIFFUSION
+	colonnes ($1) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol__cas_/Cas_4_sepa4_iso_U_v_diff_mass.txt
+	}
+	curve {
+	segment _cas_ VITESSE_DIFFUSION
+	colonnes ($1) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+	Title "Convergence _cas_" 
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file _cas_.dt_ev
+			columns ($1) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
+}
+#Pif(0)
+Chapter {
+	Title Visualization via VisIt  _cas_
+
+	visu {
+		title "MESH"
+		mesh _cas_.lata dom
+	}
+
+	visu {
+		title "PRESSION SOM"
+		pseudocolor _cas_.lata dom PRESSION SOM
+	}
+	visu {
+		title "VITESSE_X SOM"
+		pseudocolor _cas_.lata dom VITESSE_X SOM
+	}
+
+	visu {
+		title "MASSE_VOLUMIQUE ELEM"
+		pseudocolor _cas_.lata dom MASSE_VOLUMIQUE ELEM
+	}
+
+	visu {
+		title "XO2 SOM"
+		pseudocolor _cas_.lata dom FRACTION_MOLAIRE_0 SOM
+	}
+	visu {
+		title "CO2 SOM"
+		pseudocolor _cas_.lata dom CONC_0 SOM
+	}
+}
+#Pendif
+#Pendforeach(_cas_)
