@@ -428,6 +428,9 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
   DoubleTab grad(0, nb_comp, Objet_U::dimension);
   equation().zone_dis().zone().creer_tableau_elements(grad);
 
+  const Zone_VF& zone_VF = ref_cast(Zone_VF,equation().zone_dis().valeur());
+
+
   DoubleTab& Ni=Ni_.valeurs();
   DoubleTab& ude=ud_.valeurs();
 
@@ -437,6 +440,7 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
   assert(rho_face.get_md_vector()==Um_.valeurs().get_md_vector());
 
   const Champ_base& vitesse=mon_probleme().get_champ("vitesse");
+  const DoubleTab& cg=mon_probleme().get_champ("cg").valeurs();
 
   const Fluide_Quasi_Compressible& le_fluideQC=ref_cast(Fluide_Quasi_Compressible,mon_probleme().milieu());
   const Loi_Etat_Melange_GP_Fraction_Molaire& loi_etat = ref_cast(Loi_Etat_Melange_GP_Fraction_Molaire,le_fluideQC.loi_etat().valeur());
@@ -510,13 +514,21 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
       int nb_bords= equation().zone_Cl_dis().nb_cond_lim();
 
       int ok=0;
-      for (int n_bord=0; n_bord<nb_bords; n_bord++)
+      for (int i_bord=0; i_bord<nb_bords; i_bord++)
         {
-          const Cond_lim& la_cl = equation().probleme().equation(0).zone_Cl_dis().les_conditions_limites(n_bord);
-          const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
-          if (le_bord.le_nom()=="Bas")
+          const Cond_lim& la_cl_sur_X = equation().zone_Cl_dis().les_conditions_limites(i_bord);
+
+          if (sub_type(Neumann_paroi,la_cl_sur_X.valeur()))
+
             {
-              DoubleTab& val= ref_cast_non_const(DoubleTab,la_cl.valeur().champ_front().valeur().valeurs());
+
+              const Neumann_paroi& la_cl_flux=ref_cast(Neumann_paroi,la_cl_sur_X.valeur());
+              const Nom& nom_bord =la_cl_sur_X.frontiere_dis().le_nom();
+              Cerr <<"on calcule VGDL sur " <<nom_bord<<finl;
+              const Cond_lim_base& la_cl = equation().probleme().equation(0).zone_Cl_dis().valeur().condition_limite_de_la_frontiere(nom_bord);
+              const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
+
+              DoubleTab& val= ref_cast_non_const(DoubleTab,la_cl.champ_front().valeur().valeurs());
               ok=1;
               int num1 = 0;
               int num2 = le_bord.nb_faces_tot();
@@ -524,13 +536,24 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
               for (int ind_face=num1; ind_face<num2; ind_face++)
                 {
                   int num_face = le_bord.num_face(ind_face);
+                  double flux=0;
+                  for (int nc=0; nc<nb_comp; nc++)
+                    flux+=la_cl_flux.flux_impose(ind_face,nc);
+                  flux/=cg(num_face)*zone_VF.face_surfaces(num_face);
                   for (int dir=0 ; dir<dimension; dir++)
                     {
-                      double vgdl=VGDL_(dir);
+                      double vgdl=-flux*zone_VF.face_normales(num_face,dir); // - car normale sortante
+                      if (VGDL_.size_array()!=0)
+                        if (!est_egal(vgdl,VGDL_(dir)))
+                          {
+                            Cout << " vgdl "<< vgdl << " VGDL "<<VGDL_(dir)<<finl;
+                            abort();
+                          }
                       val(ind_face,dir)=(vitesse.valeurs()(num_face,dir)-(Um_(num_face,dir)-vgdl));
                       Um_(num_face,dir)=vgdl;
                     }
                 }
+              val.echange_espace_virtuel();
             }
         }
 

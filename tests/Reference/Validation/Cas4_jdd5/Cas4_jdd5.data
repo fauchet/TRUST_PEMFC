@@ -96,7 +96,7 @@ loi_fermeture_pemfc_cas4  loi
 associer pb loi
 Discretize pb dis
 read loi { 
-VGDL 2 0. 0.  /* a retirer plus tard.... */
+/* VGDL 2 0. 0.   a retirer plus tard.... */
  }
 
 Read pb
