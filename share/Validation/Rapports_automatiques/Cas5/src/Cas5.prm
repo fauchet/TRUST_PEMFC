@@ -1,0 +1,244 @@
+Parameters {
+	Title "Cas5
+	Author "fauchet"
+	TestCase . aniso_I4
+}
+
+
+chapter {
+	Title concentration aniso_I4
+	Figure {
+	include_description_curves 0
+	labelx y
+	labely  cO2
+
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_c_O2.txt
+	}
+	curve {
+	segment aniso_I4 CONC
+	colonnes ($1+0.2e-3) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+		labely cN2
+
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_c_N2.txt
+	}
+	curve {
+	segment aniso_I4 CONC
+	colonnes ($1+0.2e-3) ($4)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely comsol cvap
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_c_vap.txt
+	}
+	
+		
+	curve {
+	segment aniso_I4 CONC
+	colonnes ($1+0.2e-3) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title rho aniso_I4
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely rho
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_rhog.txt
+	}
+	curve {
+	segment aniso_I4 MASSE_VOLUMIQUE
+	colonnes ($1+0.2e-3) ($2)
+	style linespoints
+	}
+	}
+}
+Chapter {
+	Title flux aniso_I4
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_O2_x
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_N_O2_x.txt
+	}
+	curve {
+	segment aniso_I4 FLUX
+	colonnes ($1+0.2e-3) ($2)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_O2_y
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_N_O2_y.txt
+	}
+	curve {
+	segment aniso_I4 FLUX
+	colonnes ($1+0.2e-3) ($3)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_vap_x
+
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_N_vap_x.txt
+	}
+	curve {
+	segment aniso_I4 FLUX
+	colonnes ($1+0.2e-3) ($4)
+	style linespoints
+	}
+	}
+
+	Figure {
+	
+		include_description_curves 0
+	labelx y
+	labely flux_N_vap_y
+
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_N_vap_y.txt
+	}
+	curve {
+	segment aniso_I4 FLUX
+	colonnes ($1+0.2e-3) ($5)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N2_x
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_N_N2_x.txt
+	}
+	curve {
+	segment aniso_I4 FLUX
+	colonnes ($1+0.2e-3) ($6)
+	style linespoints
+	}
+	}
+
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely flux_N_N2_y
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_N_N2_y.txt
+	}
+	curve {
+	segment aniso_I4 FLUX
+	colonnes ($1+0.2e-3) ($7)
+	style linespoints
+	}
+	}
+}
+chapter {
+	Title vitesse aniso_I4
+	Figure {
+		include_description_curves 0
+	labely U_X
+
+	titre 
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_U_vol.txt
+	}
+	curve {
+	segment aniso_I4 UM 
+	colonnes ($1+0.2e-3) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely U_y
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_V_vol.txt
+	}
+	curve {
+	segment aniso_I4 UM
+	colonnes ($1+0.2e-3) ($3)
+	style linespoints
+	}
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_v_mass.txt
+	}
+	curve {
+	segment aniso_I4 VITESSE
+	colonnes ($1+0.2e-3) ($3)
+	style linespoints
+	}
+	}
+}
+
+chapter {
+	Title vitesse_diffusion aniso_I4
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffU_X
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_u_diff_mass.txt
+	}
+	curve {
+	segment aniso_I4 VITESSE_DIFFUSION
+	colonnes ($1+0.2e-3) ($2)
+	style linespoints
+	}
+	}
+	Figure {
+		include_description_curves 0
+	labelx y
+	labely diffu_y
+	curve {
+	file comsol_aniso_I4/Cas_5_base4_v_diff_mass.txt
+	}
+	curve {
+	segment aniso_I4 VITESSE_DIFFUSION
+	colonnes ($1+0.2e-3) ($3)
+	style linespoints
+	}
+	}
+}
+	
+Chapter {
+
+	Title "Convergence aniso_I4" 
+	figure { 
+		title "Evolution of residue"
+		include_description_curves 0
+			include_description_curves 0
+	labelx "TIME"
+		labelY "residu=max|Ri|"
+		logY
+		curve {
+			file aniso_I4.dt_ev
+			columns ($1+0.2e-3) ($4)
+			legend "column 4"
+			style linespoints
+		}
+	}
+}

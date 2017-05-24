@@ -12,37 +12,44 @@
 * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //
-// File      : Loi_Fermeture_PEMFC_Cas4.h
-// Directory : $PEMFC_ROOT/src
+// File:        Perte_Charge_Cas5_VEF_P1NC.h
+// Directory:   $TRUST_ROOT/src/VEF/Sources
+// Version:     /main/8
 //
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
-#ifndef Loi_Fermeture_PEMFC_Cas4_included
-#define Loi_Fermeture_PEMFC_Cas4_included
 
-#include <Loi_Fermeture_PEMFC_base.h>
+#ifndef Perte_Charge_Cas5_VEF_P1NC_included
+#define Perte_Charge_Cas5_VEF_P1NC_included
 
-/////////////////////////////////////////////////////////////////////////////
+#include <Perte_Charge_VEF_Face.h>
+#include <Perte_Charge_Reguliere.h>
+#include <Champ_Don.h>
 //
-// .DESCRIPTION : class Loi_Fermeture_PEMFC_Cas4
+// .DESCRIPTION class Perte_Charge_Cas5_VEF_P1NC
 //
-// <Description of class Loi_Fermeture_PEMFC_Cas4>
-//
-/////////////////////////////////////////////////////////////////////////////
 
-class Loi_Fermeture_PEMFC_Cas4 : public Loi_Fermeture_PEMFC_base
+//
+// .SECTION voir aussi Perte_Charge_VEF_P1NC
+// calcul:  -mu_sur_K*U
+//
+
+class Perte_Charge_Cas5_VEF_P1NC : public Perte_Charge_VEF_Face
+
 {
 
-  Declare_instanciable( Loi_Fermeture_PEMFC_Cas4 ) ;
+  Declare_instanciable(Perte_Charge_Cas5_VEF_P1NC);
 
-public :
-  void discretiser(const Discretisation_base& dis);
-  void set_param(Param& param);
-  void preparer_calcul();
-protected :
+public:
 
+  DoubleTab& ajouter(DoubleTab& ) const;
+  DoubleTab& calculer(DoubleTab& ) const ;
+  void contribuer_a_avec(const DoubleTab&, Matrice_Morse&) const ;
+  virtual void completer();
+protected:
+  Champ_Don mu_sur_K_;
 };
 
-#endif /* Loi_Fermeture_PEMFC_Cas4_included */
+#endif
