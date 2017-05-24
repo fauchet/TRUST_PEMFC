@@ -12,12 +12,13 @@
 * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //
-// File      : Loi_Fermeture_Test.cpp
-// Directory : $FERMETURE_ROOT/src
+// File:        Loi_Fermeture_Test.cpp
+// Directory:   $TRUST_ROOT/src/Kernel/Framework
+// Version:     1
 //
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 #include <Loi_Fermeture_Test.h>
 #include <Discretisation_base.h>
