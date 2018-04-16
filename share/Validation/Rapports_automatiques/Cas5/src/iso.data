@@ -47,7 +47,7 @@ Scatter DOM.Zones dom
   END SCATTER #
 
 Sous_zone poreux
-associer dom poreux
+associer poreux dom
 lire poreux {
 fonction_sous_zone y<0
 }
