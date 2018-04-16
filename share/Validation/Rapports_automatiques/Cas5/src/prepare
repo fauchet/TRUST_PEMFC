@@ -1,0 +1,7 @@
+#!/bin/bash
+# Pour assurer NR seq //
+# [ $TRUST_IN_COPIE_CAS_TEST =  1 ] &&  sed "s/seuil -1 nb_it_max 5 impr/seuil 1e-20 nb_it_max 30 impr/" -i iso.data
+ [ "$TRUST_IN_COPIE_CAS_TEST" =  "1" ] &&  sed "s/lire_med family_names_from_group_names dom cas5 cas5.med//" -i iso.data
+
+sed "s?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/4./96500. 0.?Champ_Front_Fonc_XYZ 3 -1e4/4./96500. 1e4/2./96500. 0.?;s?seuil_statio 1e-7?seuil_statio 1e-6?" iso.data  > aniso_I4.data
+

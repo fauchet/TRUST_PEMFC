@@ -12,12 +12,13 @@
 * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //
-// File      : Loi_Fermeture_base.cpp
-// Directory : $FERMETURE_ROOT/src
+// File:        Loi_Fermeture_base.cpp
+// Directory:   $TRUST_ROOT/src/Kernel/Framework
+// Version:     1
 //
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 
 #include <Loi_Fermeture_base.h>
@@ -41,10 +42,9 @@ void Loi_Fermeture_base::associer_pb_base(const Probleme_base& pb)
 {
   if (status_ == PB_ASSOCIE)
     {
-      Cerr << "Error associating " << que_suis_je() << " " << le_nom()
-           << " to problem " << pb.que_suis_je()
-           << ".\n This object is already associated to problem " << mon_probleme().le_nom()
-           << finl;
+      Cerr << "Error associating " << que_suis_je() << " " << le_nom();
+      Cerr << " to problem " << pb.que_suis_je();
+      Cerr  << ".\n This object is already associated to problem " << mon_probleme().le_nom() << finl;
       barrier();
       exit();
     }

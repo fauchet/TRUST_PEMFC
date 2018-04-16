@@ -165,7 +165,7 @@ double  eval_matrice_diffusion(const double& cO2,const double& cvap,const double
   return 1.;
 }
 
-double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const double& XN2b, DoubleTab& Diff,int elem)
+double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const double& XN2b, DoubleTab& Diff,int elem,const double& eps_sur_tau2)
 {
   // Valeur
   double  T=353.15;
@@ -212,8 +212,8 @@ double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const d
               a21,a22,a23,
               a31,a32,a33);
   Matrice33::inverse(M,invM);
-  Matrice33 coef(1./(R*T),0,0,
-                 0,1./(R*T),0,
+  Matrice33 coef(eps_sur_tau2/(R*T),0,0,
+                 0,eps_sur_tau2/(R*T),0,
                  0,0,0);
 
   for (int i=0; i<3; i++)
@@ -243,9 +243,9 @@ double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const d
               a21,a22,a23,
               a31,a32,a33);
   Matrice33::inverse(M,invM);
-  Matrice33 coef(1./(R*T),0,0,
+  Matrice33 coef(eps_sur_tau2/(R*T),0,0,
                  0,0./(R*T),0,
-                 0,0,1./(R*T));
+                 0,0,eps_sur_tau2/(R*T));
 
   for (int i=0; i<3; i++)
     for (int j=0; j<3; j++)
@@ -269,7 +269,7 @@ double  eval_matrice_diffusion_cas4(const double& XO2,const double& Xvap,const d
 }
 
 
-void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VF& zone_VF,int is_cas4)
+void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VF& zone_VF,int is_cas4, const Champ_Don& eps_sur_tau2)
 {
 
   int nb_comp=inconnue_org.dimension(1);
@@ -286,6 +286,7 @@ void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VF& 
   assert(zone_VF.nb_faces()==inconnue_org.dimension(0));
 
   assert(elem_faces.dimension(0)==nb_elem);
+  double eps_sur_tau2_elem=1.;
   for (int elem=0; elem<nb_elem; elem++)
     {
       c=0;
@@ -296,10 +297,17 @@ void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VF& 
             c(nc)+=inconnue_org(face,nc);
           }
       c*=invnbf;
+
+
+      if (eps_sur_tau2.non_nul())
+        {
+          eps_sur_tau2_elem=eps_sur_tau2.valeurs()(elem,0);
+        }
       if (is_cas4)
-        eval_matrice_diffusion_cas4(c[0],c[1],c[2],  nu, elem);
+        eval_matrice_diffusion_cas4(c[0],c[1],c[2],  nu, elem,eps_sur_tau2_elem);
       else
         eval_matrice_diffusion(c[0],c[1],c[2],  nu, elem);
+
     }
   nu.echange_espace_virtuel();
   double maxc=local_max_vect(nu);
@@ -310,7 +318,6 @@ void  bidouille_nu(DoubleTab& nu,const DoubleTab&   inconnue_org,const Zone_VF& 
     }
   Cerr<<"iii "<<nu(0,0)<<finl;
   Cerr<<"max nu "<<maxc<<finl;
-
 }
 
 // copy of discretiation_tools
@@ -525,10 +532,10 @@ void Loi_Fermeture_PEMFC_base::calculer_Ni_ud(const double& temps)
               const Neumann_paroi& la_cl_flux=ref_cast(Neumann_paroi,la_cl_sur_X.valeur());
               const Nom& nom_bord =la_cl_sur_X.frontiere_dis().le_nom();
               Cerr <<"on calcule VGDL sur " <<nom_bord<<finl;
-              const Cond_lim_base& la_cl = equation().probleme().equation(0).zone_Cl_dis().valeur().condition_limite_de_la_frontiere(nom_bord);
+              Cond_lim_base& la_cl = ref_equation_.valeur().probleme().equation(0).zone_Cl_dis().valeur().condition_limite_de_la_frontiere(nom_bord);
               const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
 
-              DoubleTab& val= ref_cast_non_const(DoubleTab,la_cl.champ_front().valeur().valeurs());
+              DoubleTab& val= la_cl.champ_front().valeur().valeurs();
               ok=1;
               int num1 = 0;
               int num2 = le_bord.nb_faces_tot();
@@ -575,7 +582,7 @@ void Loi_Fermeture_PEMFC_base::mettre_a_jour(double temps)
   DoubleTab& nu=diffu_.valeurs();
   diffu_->changer_temps(temps);
 
-  bidouille_nu(nu,inconnue_org,zone_VF,is_cas4_);
+  bidouille_nu(nu,inconnue_org,zone_VF,is_cas4_,eps_sur_tau2_);
   if (is_cas4_)
     calculer_Ni_ud(temps);
 }

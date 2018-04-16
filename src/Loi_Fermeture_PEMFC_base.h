@@ -24,6 +24,7 @@
 
 #include <Loi_Fermeture_base.h>
 #include <Champ_Fonc.h>
+#include <Champ_Don.h>
 #include <Champ_Inc.h>
 #include <Ref_Equation_base.h>
 
@@ -54,6 +55,7 @@ public :
 protected :
   int is_cas4_;
   Champ_Fonc Ni_,ud_,diffu_;
+  Champ_Don eps_sur_tau2_;
   Champ_Inc Um_;
   REF(Equation_base) ref_equation_;
 

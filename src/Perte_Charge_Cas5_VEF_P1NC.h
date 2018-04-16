@@ -14,17 +14,42 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Deriv_Loi_Fermeture_base.h
-// Directory:   $TRUST_ROOT/src/Kernel/Framework
-// Version:     1
+// File:        Perte_Charge_Cas5_VEF_P1NC.h
+// Directory:   $TRUST_ROOT/src/VEF/Sources
+// Version:     /main/8
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef Deriv_Loi_Fermeture_base_included
-#define Deriv_Loi_Fermeture_base_included
 
-#include <Deriv.h>
-class Loi_Fermeture_base ;
-Declare_deriv( Loi_Fermeture_base ) ;
+#ifndef Perte_Charge_Cas5_VEF_P1NC_included
+#define Perte_Charge_Cas5_VEF_P1NC_included
 
-#endif /* Deriv_Loi_Fermeture_base_included */
+#include <Perte_Charge_VEF_Face.h>
+#include <Perte_Charge_Reguliere.h>
+#include <Champ_Don.h>
+//
+// .DESCRIPTION class Perte_Charge_Cas5_VEF_P1NC
+//
+
+//
+// .SECTION voir aussi Perte_Charge_VEF_P1NC
+// calcul:  -mu_sur_K*U
+//
+
+class Perte_Charge_Cas5_VEF_P1NC : public Perte_Charge_VEF_Face
+
+{
+
+  Declare_instanciable(Perte_Charge_Cas5_VEF_P1NC);
+
+public:
+
+  DoubleTab& ajouter(DoubleTab& ) const;
+  DoubleTab& calculer(DoubleTab& ) const ;
+  void contribuer_a_avec(const DoubleTab&, Matrice_Morse&) const ;
+  virtual void completer();
+protected:
+  Champ_Don mu_sur_K_;
+};
+
+#endif

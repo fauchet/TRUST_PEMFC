@@ -23,6 +23,7 @@
 #include <Probleme_base.h>
 #include <Discretisation_base.h>
 #include <Equation_base.h>
+#include <Schema_Temps_base.h>
 #include <Param.h>
 
 Implemente_instanciable_sans_constructeur( Loi_Fermeture_PEMFC_Cas4, "Loi_Fermeture_PEMFC_Cas4", Loi_Fermeture_PEMFC_base ) ;
@@ -53,10 +54,24 @@ Entree& Loi_Fermeture_PEMFC_Cas4::readOn( Entree& is )
   return is;
 }
 
+void Loi_Fermeture_PEMFC_Cas4::preparer_calcul()
+{
+  Loi_Fermeture_PEMFC_base::preparer_calcul();
+  if (mon_probleme().reprise_effectuee())
+    {
+      Equation_base& NS=ref_equation_.valeur().probleme().equation(0);
+      double temps=NS.schema_temps().temps_courant();
+
+      NS.zone_Cl_dis().imposer_cond_lim(NS.inconnue(),temps);
+      NS.inconnue().valeurs().echange_espace_virtuel();
+    }
+}
+
 void Loi_Fermeture_PEMFC_Cas4::set_param(Param& param)
 {
   Loi_Fermeture_PEMFC_base::set_param(param);
-  param.ajouter("VGDL",&VGDL_); // XD_ADD_P list  VGDL en bas provisoire
+  param.ajouter("VGDL",&VGDL_); // XD_ADD_P list  VGDL pour verification
+  param.ajouter("eps_sur_tau2",&eps_sur_tau2_); // XD_ADD_P field_base eps/tau/tau
 }
 void Loi_Fermeture_PEMFC_Cas4::discretiser(const Discretisation_base& dis)
 {

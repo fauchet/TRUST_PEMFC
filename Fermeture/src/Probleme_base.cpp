@@ -538,6 +538,7 @@ Entree& Probleme_base::readOn(Entree& is)
                   Cerr<<"tinit was defined in .data file to "<< schema_temps().temps_init()<< ". The value is fixed to "<<last_time<<" accroding to resume_last_time_option" <<finl;
                 }
               schema_temps().set_temps_init()=last_time;
+              schema_temps().set_temps_precedent()=last_time;
               Cerr << "==================================================================================================" << finl;
               Cerr << "In the " << nomfic << " file, we find the last time: " << last_time << " and read the fields." << finl;
               fic->close();
@@ -1172,6 +1173,12 @@ void Probleme_base::imprimer(Sortie& os) const
 // Postcondition:
 void Probleme_base::associer_sch_tps_base(const Schema_Temps_base& un_schema_en_temps)
 {
+  if (le_schema_en_temps.non_nul())
+    {
+      Cerr << finl;
+      Cerr<<"Error: Problem "<<le_nom()<<" was already associated with the scheme "<< le_schema_en_temps.valeur().le_nom()<<" and we try to associate it with "<<un_schema_en_temps.le_nom() << "." <<finl;
+      exit();
+    }
   le_schema_en_temps=un_schema_en_temps;
   le_schema_en_temps->associer_pb(*this);
   for(int i=0; i<nombre_d_equations(); i++)
@@ -1513,7 +1520,7 @@ const Champ_base& Probleme_base::get_champ(const Motcle& un_nom) const
   Cerr<<"please remove the localisation elem or som that you may have specified."<<finl;
   Cerr<<"2) It you have used "<<un_nom<<" in Definition_champs, please use 'sources_reference { "<<un_nom<<" }'"<<finl;
   Cerr<<"instead of 'source refchamp { pb_champ "<<le_nom()<<" "<<un_nom<<" }'"<<finl;
-  Cerr<<"3) Check User's manual." << finl;
+  Cerr<<"3) Check reference manual." << finl;
   Cerr<<"4) Contact TRUST support." << finl;
   exit();
 
@@ -1606,8 +1613,10 @@ const Champ_Generique_base& Probleme_base::get_champ_post(const Motcle& un_nom) 
         }
       ++curseur_post;
     }
-  Cerr<<"The field of name "<<un_nom<<" do not correspond to a field understood by the problem."<<finl;
-  Cerr<<"Check the name of the field indicated into the postprocessing block of the data file."<<finl;
+  Cerr<<" "<<finl;
+  Cerr<<"The field named "<<un_nom<<" do not correspond to a field understood by the problem."<<finl;
+  Cerr<<"Check the name of the field indicated into the postprocessing block of the data file " << finl;
+  Cerr<<"or in the list of post-processed fields above (in the block 'Reading of fields to be postprocessed')."<<finl;
   exit();
 
   //Pour compilation
